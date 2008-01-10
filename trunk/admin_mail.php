@@ -1,0 +1,74 @@
+<?php
+/*
+ * This file is part of uBook - a website to buy and sell books.
+ * Copyright (C) 2008 Maikel Linke
+ */
+ 
+$books = '';
+
+require_once 'mysql_conn.php';
+
+if (isset($_POST['subject'])) {
+	require_once 'func_book.php';
+	require_once 'func_mail.php';
+	$subject = stripslashes($_POST['subject']);
+	$text = stripslashes($_POST['text']);
+	$query = 'select distinct mail from books';
+	$result = mysql_query($query);
+	$user_number = mysql_num_rows($result);
+	$sent_mails = 0;
+	while ($mail_row = mysql_fetch_row($result)) {
+		$mail = $mail_row[0];
+		$query = 
+		'select
+		 id, author, title, price, year, description, auth_key
+		 from books where mail="'.$mail.'" 
+		 order by author, title, price';
+		$book_result = mysql_query($query);
+		$books = "\n";
+		while ($book = fetch_book($book_result)) {
+			$books .= "\n";
+			$books .= $book['author'].': '.$book['title']."\n";
+			$books .= edit_link($book['id'], $book['auth_key'])."\n";
+		}
+		$mail_text = $text.$books;
+		$success = ubookmail($mail,$subject,$mail_text);
+		if ($success) $sent_mails++;
+	}
+	header('Location: admin_mail.php?sent_mails='.$sent_mails.'&user_number='.$user_number);
+}
+
+include 'header.php';
+
+?>
+
+ <div class="menu">
+   <span><a href="./">Buch suchen</a></span>
+   <span><a href="add.php">Buch anbieten</a></span>
+   <span><a href="help.php">Hilfe</a></span>
+   <span><a href="about.php">Impressum</a></span>
+  </div>
+  
+  <?php if (isset($_GET['sent_mails'])) { ?>
+  <div class="infobox">
+   Es wurden <?php echo $_GET['sent_mails']; ?> von <?php echo $_GET['user_number']; ?> E-Mails verschickt.
+  </div>
+  <?php } ?>
+
+  <fieldset>
+  <legend>Mail an alle NutzerInnen verschicken...&nbsp;</legend>
+  <form action="admin_mail.php" method="post">
+    <label>Betreff<br/>
+    <input type="text" name="subject" value="" class="fullsize" />
+    </label>
+
+    <label>Text<br/>
+    <textarea name="text" cols="24" rows="10" class="fullsize"></textarea>
+    </label>
+    <br/>
+      <input type="submit" value="Verschicken" />
+  </form>
+  </fieldset>
+ </body> 
+</html>
+

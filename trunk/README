@@ -1,0 +1,36 @@
+Hi!
+
+	/* Requirements */
+This is uBook. To run it on a server you need
+ - a webserver with PHP support (Apache)
+ - PHP4 or higher with MySQL support (perhaps you have to activate it
+   during compiling)
+ - MySQL5 or higher (for MySQL4 you need to rewrite some SQL
+   statements in the uBook code)
+ 
+	/* Install / Config */
+ - Place this directory with all files in some webspace. Don't forget
+   the hidden files .htaccess and .htusers. The .htaccess file will 
+   protect the admin scripts.
+ - Configure these two files.
+ - Now uBook needs MySQL access. Create a user in the database (e.g.
+   phpMyAdmin).
+ - The username, password and database has to be stored in a file
+   named 'mysql.php'. The best way to do this is to give the 
+   webserver write access to this directory for a short time 
+   (chmod 777 ./). Then you call admin_setup.php through your 
+   webbrowser and let this script write the config file.
+ - After this you should change the rights for others (chmod 755 ./).
+ - Now we have a mysql.php file, which is owned by the server and
+   nobody else can read or write it.
+ - Installation complete.
+ - You should create some categories for the books on
+   admin_categories.php and write some information about the 
+   responsible person in about.php.
+
+	/* Create something new */
+Perhaps you want to change some html code or play with the style 
+sheets. Feel free to write me an E-Mail (ubook@asta-bielefeld.de) and
+report about problems, experience and further developement. But you 
+have to keep the license, which can be found in the file COPYING.
+uBook is free software.

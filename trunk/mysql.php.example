@@ -1,0 +1,12 @@
+<?php
+/*
+ * This file is part of uBook - a website to buy and sell books.
+ * Copyright (C) 2007 Maikel Linke
+ */
+ 
+ $server = 'localhost';
+ $username = 'ubook';
+ $password = 's3cr3t';
+ $database = 'ubook';
+
+?>
