@@ -11,7 +11,7 @@ require_once 'Categories.php';
 function categoryMenu() {
 	$categories = new Categories();
 	$cat_arr = $categories->getArray();
-	$menu =	'<div class="categories">';
+	$menu =	'<div class="categories" style="margin-top:1em;">';
 	foreach ($cat_arr as $index => $category) {
 		$menu .= '<span><a href="category.php?cat=';
 		$menu .= $category;
@@ -53,7 +53,7 @@ include 'header.php';
    <span><a href="help.php">Hilfe</a></span>
    <span><a href="about.php">Impressum</a></span>
 </div>
-<p><?php echo categoryMenu(); ?></p>
+<?php echo categoryMenu(); ?>
 
   <br clear="all" />
   <?php if ($category != '') { ?>
