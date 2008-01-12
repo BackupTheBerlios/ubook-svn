@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2007 Maikel Linke
+ * Copyright (C) 2008 Maikel Linke
  */
 
  include 'header.php';
@@ -15,7 +15,7 @@
   
  <div class="text">
    <p>
-    Diese Seite basiert auf der freien Software uBook und wird Angeboten von:
+    Diese Seite basiert auf der <a href="http://ubook.berlios.de/" target="_blank">freien Software uBook</a> und wird Angeboten von:
    </p>
    <p style="padding-left:1em;">
     <a href="http://www.your-domain.net/" target="_blank">Responsible name or company</a><br />
