@@ -15,7 +15,7 @@
   
  <div class="text">
    <p>
-    Diese Seite basiert auf der <a href="http://ubook.berlios.de/" target="_blank">freien Software uBook</a> und wird Angeboten von:
+    Diese Seite basiert auf der <a href="http://ubook.berlios.de/" target="_blank">freien Software uBook</a> und wird angeboten von:
    </p>
    <p style="padding-left:1em;">
     <a href="http://www.your-domain.net/" target="_blank">Responsible name or company</a><br />
@@ -23,7 +23,7 @@
     Additional information
    </p>
    <p>
-    Diese Dienstleistung wird unentgeltlich zur Verfügung gestellt. Dabei werden keine Gewährleistungen übernommen, insbesondere wird keine Verantwortung für die Richtigkeit oder Vollständigkeit der angegebenen Buchdaten übernommen. Die Buchangebote werden von beliebigen Personen eingetragen. Für deren Angebot ist die jeweilige das Buch anbietende Person (nicht der AStA) verantwortlich. Ein Kauf wird mit dieser Person selbst verhandelt. Es wird kein Kaufvertrag mit dem AStA geschlossen.
+    Diese Dienstleistung wird unentgeltlich zur Verfügung gestellt. Dabei werden keine Gewährleistungen übernommen, insbesondere wird keine Verantwortung für die Richtigkeit oder Vollständigkeit der angegebenen Buchdaten übernommen. Die Buchangebote werden von beliebigen Personen eingetragen. Für deren Angebot ist die jeweilige das Buch anbietende Person verantwortlich. Ein Kauf wird mit dieser Person selbst verhandelt. Es wird kein Kaufvertrag mit der oben stehenden Seitenbetreiberin geschlossen.
    </p>
  </div>
 <?php include 'footer.php'; ?>

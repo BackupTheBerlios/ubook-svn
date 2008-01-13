@@ -49,6 +49,5 @@ header('Content-Type: text/html;charset=utf-8');
   <a href="./">
    <img src="ubook_small.gif" border="0" alt="uBook-Logo" />
   </a>
-   <div>...Die Bielefelder B&uuml;cherb&ouml;rse</div>
   </div>
   <br clear="all"/>
