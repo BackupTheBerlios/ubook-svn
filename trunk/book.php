@@ -93,14 +93,12 @@ include 'header.php';
    <?php } ?>
   <?php } else { ?>
   <?php if ($user_key) { ?>
-  <p>
-  <form action="edit.php?id=<?php echo $book['id']; ?>&key=<?php echo $user_key; ?>" method="POST" style="display:inline">
+  <form action="edit.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
     <input type="submit" value="Angebot ändern" />
   </form>
-  <form action="delete.php?id=<?php echo $book['id']; ?>&key=<?php echo $user_key; ?>" method="POST" style="display:inline">
+  <form action="delete.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
     <input type="submit" value="Angebot löschen" />
   </form>
-  </p>
   <?php } else { ?>
   <h2>Das will ich haben!</h2>
   <form action="book.php?id=<?php echo $book['id']; ?>" method="post">

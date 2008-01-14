@@ -58,9 +58,8 @@ include 'header.php';
    <span><a href="help.php">Hilfe</a></span>
    <span><a href="about.php">Impressum</a></span>
  </div>
-  <p>
-   <form action="edit.php?id=<?php echo $_GET['id']; ?>&key=<?php echo $_GET['key']; ?>" method="POST">
-    <table style="width:20em; border:gray;solid;1px;" align="center">
+   <form action="edit.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post">
+    <table style="width:20em; border:gray;solid;1px; margin-top:1em;" align="center">
      <tr><td>Autor:</td><td><input type="text" name="author" value="<?php echo $book['author']; ?>" /></td></tr>
      <tr><td>Titel:</td><td><input type="text" name="title" value="<?php echo $book['title']; ?>" /></td></tr>
      <tr><td>Preis:</td><td><input type="text" name="price" value="<?php echo $book['price']; ?>" size="5" /> Euro</td></tr>
@@ -71,6 +70,5 @@ include 'header.php';
     </table>
     <p><input type="submit" value="Speichern" /></p>
    </form>
-  </p>
  </body>
 </html>

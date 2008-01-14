@@ -48,7 +48,7 @@ require 'header.php';
   
   <?php if ($error == 'no file') {?>
   Dieses Programm braucht Zugang zu einer MySQL-Datenbank.
-  <form action="admin.php" method="POST">
+  <form action="admin.php" method="post">
    <table align="center" style="width:35em;">
     <tr><td>MySQL-Server</td><td><input type="text" name="server" value="localhost" /></td></tr>
     <tr><td>Benutzername</td><td><input type="text" name="username" value="ubook" /></td></tr>
