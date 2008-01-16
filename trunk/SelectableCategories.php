@@ -33,7 +33,7 @@ class SelectableCategories {
 		foreach ($cats as $index => $category) {
 			$option = '<option';
 			if ($category == $book_cat) {
-				$option .= ' selected';
+				$option .= ' selected="selected"';
 			}
 			$option .= '>';
 			$option .= $category;

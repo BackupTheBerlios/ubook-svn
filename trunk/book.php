@@ -103,8 +103,8 @@ include 'header.php';
   <h2>Das will ich haben!</h2>
   <form action="book.php?id=<?php echo $book['id']; ?>" method="post">
    <fieldset>
-    <label for="name">Meine E-Mailadresse:</label><input type="text" name="name" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" size="25" /><!-- placeholder for robots -->
-    <label for="user_text">Nachricht an den Anbieter:</label><textarea name="user_text" cols="25" rows="7"><?php if (isset($_POST['user_text'])) echo $_POST['user_text']; ?></textarea>
+    <label for="name">Meine E-Mailadresse:</label><input type="text" id="name" name="name" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" size="25" /><!-- placeholder for robots -->
+    <label for="user_text">Nachricht an den Anbieter:</label><textarea id="user_text" name="user_text" cols="25" rows="7"><?php if (isset($_POST['user_text'])) echo $_POST['user_text']; ?></textarea>
     <p><input type="submit" value="Dem Anbieter senden" /></p>
    </fieldset>
   </form>

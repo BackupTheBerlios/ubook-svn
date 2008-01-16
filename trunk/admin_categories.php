@@ -75,7 +75,7 @@ require 'header.php';
   <?php if (isset($rename_cat)) { ?>
    <form action="admin_categories.php" method="get">
     <input type="hidden" name="rename" value="<?php echo $rename_cat; ?>" />
-    <p><input type="text" name="new_name" size="16" maxsize="32" value="<?php echo $rename_cat; ?>" /> <input type="submit" value="Umbenennen" /></p>
+    <p><input type="text" name="new_name" size="16" maxlength="32" value="<?php echo $rename_cat; ?>" /> <input type="submit" value="Umbenennen" /></p>
    </form>
   <?php } ?>
 
@@ -92,7 +92,7 @@ require 'header.php';
   </ol>
   
   <form action="admin_categories.php" method="get">
-   <p><input type="text" name="new_category" size="16" maxsize="32" /> <input type="submit" value="Hinzufügen" /></p>
+   <p><input type="text" name="new_category" size="16" maxlength="32" /> <input type="submit" value="Hinzufügen" /></p>
   </form>
   
  </body> 

@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2007 Maikel Linke
+ * Copyright (C) 2008 Maikel Linke
  */
  
 $books = '';
@@ -11,11 +11,11 @@ $query = 'select id, auth_key, author, title from books order by author, title, 
 $result = mysql_query($query);
 while ($book = mysql_fetch_array($result)) {
 	$books.= '<li>';
-	$books.= '<a href="book.php?id='.$book['id'].'&key='.$book['auth_key'].'">';
+	$books.= '<a href="book.php?id='.$book['id'].'&amp;key='.$book['auth_key'].'">';
 	$books.= $book['author'];
 	$books.= ': ';
 	$books.= $book['title'];
-	$books.= '<a>';
+	$books.= '</a>';
 	$books.= '</li>'."\n";
 }
 
