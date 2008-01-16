@@ -1,16 +1,18 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2007 Maikel Linke
+ * Copyright (C) 2008 Maikel Linke
  */
 
 require_once 'func_book.php';
+require_once 'Parser.php';
 
 /* creates a html table of books from a mysql result */
 function format_books($mysql_result) {
 	$books_string = '';
 	$class = 0;
 	while ($book = fetch_book(&$mysql_result)) {
+		Parser::htmlbook($book);
 		$books_string .= '<tr class="bookrow'.$class.'"><td>';
 		$books_string .= '<a href="book.php?id='.$book['id'].'">';
 		if ($book['author']) {

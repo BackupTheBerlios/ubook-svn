@@ -23,7 +23,7 @@ class Parser {
 
 	function htmlbook(&$book) {
 		$book['author'] = self::text2html($book['author']);
-		$book['titel'] = self::text2html($book['title']);
+		$book['title'] = self::text2html($book['title']);
 		$book['description'] = self::text2html($book['description']);
 		return $book;
 	}
