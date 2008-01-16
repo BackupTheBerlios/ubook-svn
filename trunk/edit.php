@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2007 Maikel Linke
+ * Copyright (C) 2008 Maikel Linke
  */
 
 function format_categories_of(&$book) {
@@ -12,6 +12,7 @@ function format_categories_of(&$book) {
 require_once 'mysql_conn.php';
 require_once 'func_book.php';
 require_once 'SelectableCategories.php';
+require_once 'Parser.php';
 
 if (!isset($_GET['id'])) exit;
 if (!isset($_GET['key'])) exit;
@@ -45,8 +46,8 @@ if (mysql_num_rows($result) == 0) {
 		require 'renew.php';
 	}
 
-	$book = mysql_fetch_array($result);
-	format_book($book);
+	$book = fetch_book($result);
+	Parser::htmlbook($book);
 }
 
 include 'header.php';

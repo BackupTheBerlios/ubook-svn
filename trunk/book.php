@@ -4,12 +4,19 @@
  * Copyright (C) 2008 Maikel Linke
  */
 
-include_once 'mysql_conn.php';
-include_once 'func_book.php';
+require_once 'mysql_conn.php';
+require_once 'func_book.php';
+require_once 'Parser.php';
 
-// send mail
+/*
+ * Checks POST data and sends E-Mail, if everything is correct.
+ */
 function send($book) {
-	if (!isset($_POST['name'])) return false; // placeholder for robots
+	/*
+	 * $_POST['name'] should contain a mail address.
+	 * It is named 'name' to trick robots.
+	 */
+	if (!isset($_POST['name'])) return false;
 	$user_mail = stripslashes($_POST['name']);
 	if (!strstr($user_mail,'@')) return true;
 	include_once 'func_mail.php';
@@ -28,19 +35,23 @@ function send($book) {
 if (!isset($_GET['id'])) exit;
 $book_id = (int) $_GET['id'];
 $result = mysql_query('select id,author,title,year,price,description,auth_key,mail from books where id="'.$book_id.'"');
-if (mysql_num_rows($result) == 0) exit;
-$book = mysql_fetch_array($result);
-$result = mysql_query('select category from book_cat_rel where book_id="'.$book_id.'"');
+$book = fetch_book($result); // null, if no book was found
+if ($book === null) exit;
+
+/* checks mail sending, no returning on success */
+$mail_error = send($book);
+
+Parser::htmlbook($book);
+
 $category_string = '';
 $cat_seperator = '';
+$result = mysql_query('select category from book_cat_rel where book_id="'.$book_id.'"');
 while ($row = mysql_fetch_array($result)) {
 	$category_string .= $cat_seperator;
 	$category_string .= $row['category'];
 	$cat_seperator = ', ';
 }
-format_book($book);
 
-$mail_error = send($book);
 
 $user_key = '';
 if (isset($_GET['key'])) {
