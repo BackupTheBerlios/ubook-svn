@@ -29,7 +29,7 @@ header('Content-Type: text/html;charset=utf-8');
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="content-language" content="de" />
   <meta name="description" content="uBook - a website to buy and sell books" />
-  <meta name="keywords" content="uBook, u, book, books, buy, sell, market, exchange, Buch, Bücher, Börse, Bücherbörse, Buchbörse, Verkaufen, anbieten, kaufen, AStA, Bielefeld" />
+  <meta name="keywords" content="uBook, u, book, u-book, books, buy, sell, market, exchange, free, Buch, Bücher, Börse, Bücherbörse, Buchbörse, Verkaufen, anbieten, kaufen, AStA, Bielefeld" />
   <meta name="robots" content="index,follow" />
   <link rel="stylesheet" type="text/css" href="style.css" />
   <link rel="shortcut icon" type="image/x-icon" href="uBook_icon.png" />
