@@ -19,14 +19,14 @@ function send($book) {
 	if (!isset($_POST['name'])) return false;
 	$user_mail = stripslashes($_POST['name']);
 	if (!strstr($user_mail,'@')) return true;
-	include_once 'func_mail.php';
+	include_once 'Mailer.php';
 	$subject = 'Anfrage: ';
-	$message = 'Es hat jemand mit der E-Mailadresse "'.$user_mail.'" Interesse für unten stehendes Buch bekundet.';
+	$message = 'Es hat jemand mit der E-Mailadresse "'.$user_mail.'" Interesse für das unten stehende Buch bekundet.';
 	if (isset($_POST['user_text']) && $_POST['user_text']) {
 		$message .= ' Folgende Nachricht wurde mitgesandt:'."\n\n";
 		$message .= stripslashes($_POST['user_text'])."\n";
 	}
-	$booked = bookmail($book,$subject,$message);
+	$booked = Mailer::send($book['id'],$subject,$message,$user_mail);
 	header('Location: book.php?id='.$book['id'].'&booked='.$booked);
 	return false;
 }

@@ -10,7 +10,7 @@ require_once 'mysql_conn.php';
 
 if (isset($_POST['subject'])) {
 	require_once 'func_book.php';
-	require_once 'func_mail.php';
+	require_once 'Mailer.php';
 	$subject = stripslashes($_POST['subject']);
 	$text = stripslashes($_POST['text']);
 	$query = 'select distinct mail from books';
@@ -32,7 +32,7 @@ if (isset($_POST['subject'])) {
 			$books .= edit_link($book['id'], $book['auth_key'])."\n";
 		}
 		$mail_text = $text.$books;
-		$success = ubookmail($mail,$subject,$mail_text);
+		$success = Mailer::mail($mail,$subject,$mail_text);
 		if ($success) $sent_mails++;
 	}
 	header('Location: admin_mail.php?sent_mails='.$sent_mails.'&user_number='.$user_number);

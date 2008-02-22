@@ -8,7 +8,6 @@
 if (isset($_POST['name']) && $_POST['name'] != '') exit;
 
 include_once 'mysql_conn.php';
-include_once 'func_mail.php';
 include_once 'SelectableCategories.php';
 
 // creates a random string with certain length
@@ -50,16 +49,9 @@ if (isset($_POST['author'])) {
 		$title = stripslashes($_POST['title']);
 		$to = stripslashes($mail);
 		$subject = '';
-		$message = 'Mit deiner E-Mailadresse wurde folgendes Buch angeboten:';
-		$book['id'] = $book_id;
-		$book['auth_key'] = $key;
-		$book['mail'] = $mail;
-		$book['author'] = $author;
-		$book['title'] = $title;
-		$book['year'] = $_POST['year'];
-		$book['price'] = $_POST['price'];
-		$book['description'] = $_POST['description'];
-		bookmail($book,$subject,$message);
+		$message = 'Mit deiner E-Mailadresse wurde das unten stehende Buch angeboten. Hebe diese E-Mail auf, um das Angebot später änder und löschen zu können.';
+		require_once 'Mailer.php';
+		Mailer::send($book_id, $subject, $message);
 		header('Location: book.php?id='.$book_id.'&key='.$key.'&new=1');
 	}
 }
