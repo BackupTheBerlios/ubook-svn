@@ -4,7 +4,7 @@
  * Copyright (C) 2008 Maikel Linke
  */
 
-/*
+/**
  * Prints navigation links defined in the global var $navigation_links.
  * You can define 'next', 'prev', 'first' and 'last'.
  */
@@ -25,8 +25,12 @@ header('Content-Type: text/html;charset=utf-8');
  <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
+  <?php if (isset($http_equiv_expires)) { ?>
+  <meta http-equiv="expires" content="<? echo $http_equiv_expires; ?>" />
+  <?php } else { ?>
   <meta http-equiv="expires" content="0" />
   <meta http-equiv="pragma" content="no-cache" />
+  <?php } ?>
   <meta http-equiv="content-language" content="de" />
   <meta name="description" content="uBook - a website to buy and sell books" />
   <meta name="keywords" content="uBook, u, book, u-book, books, buy, sell, market, exchange, free, Buch, Bücher, Börse, Bücherbörse, Buchbörse, Verkaufen, anbieten, kaufen, AStA, Bielefeld" />

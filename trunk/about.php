@@ -4,7 +4,8 @@
  * Copyright (C) 2008 Maikel Linke
  */
 
- include 'header.php';
+$http_equiv_expires = 43200;
+include 'header.php';
 ?>
  <div class="menu">
    <span><a href="./">Buch suchen</a></span>

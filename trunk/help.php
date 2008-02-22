@@ -1,10 +1,11 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2007 Maikel Linke
+ * Copyright (C) 2008 Maikel Linke
  */
 
- include 'header.php';
+$http_equiv_expires = 43200;
+include 'header.php';
 ?>
  <div class="menu">
    <span><a href="./">Buch suchen</a></span>

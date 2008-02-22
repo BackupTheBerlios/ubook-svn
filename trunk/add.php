@@ -56,6 +56,7 @@ if (isset($_POST['author'])) {
 	}
 }
 
+$http_equiv_expires = 43200;
 $navigation_links['first'] = array('Erste','add.php');
 include 'header.php';
 ?>

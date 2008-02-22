@@ -52,6 +52,9 @@ if ($search_key) {
 	$books = format_books(&$result);
 }
 
+if (trim($search_key) == '') {
+	$http_equiv_expires = 43200;
+}
 $navigation_links['first'] = array('Erste','./');
 include 'header.php';
 
