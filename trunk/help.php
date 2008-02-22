@@ -30,6 +30,6 @@
  </div>
  <h2>Du hast noch Fragen?</h2>
  <div class="text">
-  Dann frag uns: <a href="mailto:ubook@asta-bielefeld.de">ubook@asta-bielefeld.de</a>. Aber auch andere Kommentare und Kritik zur Bücherbörse sind willkommen.
+  Dann frag uns: <a href="mailto:ubook-info@lists.berlios.de">ubook-info@lists.berlios.de</a>. Aber auch andere Kommentare und Kritik zur Bücherbörse sind willkommen.
  </div>
 <?php include 'footer.php'; ?>
