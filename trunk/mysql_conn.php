@@ -4,7 +4,7 @@
  * Copyright (C) 2008 Maikel Linke
  */
 
-require_once 'func_webdir.php';
+require_once 'WEBDIR.php';
 require_once 'mysql_conn_only.php';
 require_once 'Mailer.php';
 
@@ -21,7 +21,7 @@ function check_old() {
 	while ($book = mysql_fetch_array($result)) {
 		$subject = 'Warnung: ';
 		$message = 'Anscheinend hat sich in letzter Zeit niemand für dein unten stehendes Buch interessiert. In zehn Tagen wird das Angebot automatisch gelöscht. Um das zu verhindern, kannst du mit dem folgenden Link das Angebot erneuern:'."\n";
-		$message .= webdir().'renew.php?id='.$book['id'].'&key='.$book['auth_key'];
+		$message .= WEBDIR.'renew.php?id='.$book['id'].'&key='.$book['auth_key'];
 		Mailer::send($book['id'],$subject,$message);
 		$query = 'update books set expired = date_add(now(), interval 10 day) where id="'.$book['id'].'"';
 		mysql_query($query);

@@ -72,12 +72,11 @@ class Mailer {
 	}
 
 	function book_link($book_id) {
-		include_once 'func_webdir.php';
-		return webdir().'book.php?id='.$book_id;
+		require_once 'WEBDIR.php';
+		return WEBDIR.'book.php?id='.$book_id;
 	}
 
 	function edit_link($book_id, $auth_key) {
-		include_once 'func_webdir.php';
 		return Mailer::book_link($book_id).'&key='.$auth_key;
 	}
 
