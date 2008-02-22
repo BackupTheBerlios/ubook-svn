@@ -45,7 +45,7 @@ class Mailer {
 			$content .= Mailer::book_link($book['id'],$book['auth_key'])."\n";
 		}
 
-		return Mailer::mail($book['mail'],$subject,$content);
+		return Mailer::mail($book['mail'], $subject, $content, $reply_to);
 	}
 
 	/**
