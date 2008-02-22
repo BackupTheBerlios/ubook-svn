@@ -25,7 +25,7 @@
  <h2>Ich habe keine Mail bekommen. Was nun?</h2>
  <div class="text">
   <p>1. Wenn du es noch nicht getan hast, dann schau mal in deinen Spamordner. Viele Filter sind falsch eingestellt.</p>
-  <p>2. Du kannst bei deinem Angebot versuchen, dir selbst eine E-Mail zuzuschicken. Wenn das auch nicht funktioniert, dann ist die eingetragene E-Mailadresse wohl falsch.</p>
+  <p>2. Du kannst bei deinem Angebot versuchen, dir selbst eine E-Mail zuzuschicken. Du musst jedoch die vorher eingetragene E-Mailadresse auch dort angeben, um den Änderungslink für dein Angebot zu bekommen. Wenn das auch nicht funktioniert, dann ist die eingetragene E-Mailadresse wohl falsch.</p>
   <p>3. Wenn die Adresse falsch ist, dann erstelle einfach ein neues Angebot. Das alte wird nach einer Weile automatisch gelöscht.</p>
  </div>
  <h2>Du hast noch Fragen?</h2>
