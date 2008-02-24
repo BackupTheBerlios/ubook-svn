@@ -30,7 +30,7 @@ include 'header.php';
    <span><a href="help.php">Hilfe</a></span>
    <span><a href="about.php">Impressum</a></span>
   </div>
-  <div><?php $image->echo_img_tag(); ?></div>
+  <div><?php echo $image->imgTag($id); ?></div>
   <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post" enctype="multipart/form-data">
    <input name="image" type="file" size="50" accept="image/gif, image/jpeg, image/png" />
    <input type="submit" value="Hochladen" />
