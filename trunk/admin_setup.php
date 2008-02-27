@@ -16,6 +16,7 @@ if (!is_file('mysql.php')) { // no config file
 			fwrite($fp,$filedata,strlen($filedata));
 			fclose($fp);
 			chmod('mysql.php',0400);
+			mkdir('upload', 0755);
 			$error = '';
 		}
 		else {
@@ -81,7 +82,7 @@ require 'header.php';
   
   
   <?php if ($error == 'not writeable') {?>
-   In diesem Verzeichnis muss die Konfigurationsdatei "mysql.php" geschrieben werden. Dazu braucht der Webserver das Schreibrecht für dieses Verzeichnis. Vergib das Schreibrecht und es geht weiter.
+   In diesem Verzeichnis muss die Konfigurationsdatei "mysql.php" geschrieben und ein Verzeichnis zum Bilderupload erstellt werden. Dazu braucht der Webserver das Schreibrecht für dieses Verzeichnis. Vergib das Schreibrecht und es geht weiter.
    <p><form action="admin_setup.php" method="get"><input type="submit" value="Weiter" /></form></p>
   <?php } ?>
   
