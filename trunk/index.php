@@ -49,7 +49,10 @@ if ($search_key) {
 	require_once 'func_book.php';
 	require_once 'func_format_books.php';
 	$result = mysql_query(search_query($search_key));
+	$numberOfRows = mysql_num_rows($result);
 	$books = format_books(&$result);
+	$countResult = mysql_query('select count(id) from books;');
+	list($null, $numberOfAllBooks) = each(mysql_fetch_row($countResult));
 }
 
 if (trim($search_key) == '') {
@@ -82,6 +85,7 @@ include 'header.php';
   <br clear="all" />
   <?php if (trim($search_key) != '') { ?>
    <h2>Suchergebnisse:</h2>
+   <div>Es wurden <?php echo $numberOfRows; ?> Bücher von insgesamt <?php echo $numberOfAllBooks; ?> Angeboten gefunden.</div>
    <?php if ($books == '') { ?>
    <div>
 	Es wurden keine Bücher gefunden.
