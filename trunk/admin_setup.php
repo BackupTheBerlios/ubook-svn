@@ -16,7 +16,7 @@ if (!is_file('mysql.php')) { // no config file
 			fwrite($fp,$filedata,strlen($filedata));
 			fclose($fp);
 			chmod('mysql.php',0400);
-			mkdir('upload', 0755);
+			mkdir('img', 0755);
 			$error = '';
 		}
 		else {
