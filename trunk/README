@@ -19,7 +19,8 @@ This is uBook. To run it on a server you need
    named 'mysql.php'. The best way to do this is to give the 
    webserver write access to this directory for a short time 
    (chmod 777 ./). Then you call admin_setup.php through your 
-   webbrowser and let this script write the config file.
+   webbrowser and let this script write the config file. This script 
+   also creates the directory img for image uploads.
  - After this you should change the rights for others (chmod 755 ./).
  - Now we have a mysql.php file, which is owned by the server and
    nobody else can read or write it.

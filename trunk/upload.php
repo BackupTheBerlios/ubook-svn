@@ -20,7 +20,9 @@ if (mysql_num_rows($result) != 1) exit;
 // now we have valid access
 
 $image = new Image($id);
-$image->moveUploaded();
+if ($image->moveUploaded()) {
+	header('Location: book.php?id='.$id.'&key='.$key);
+}
 
 include 'header.php';
 ?>
@@ -32,7 +34,7 @@ include 'header.php';
   </div>
   <div><?php echo $image->imgTag($id); ?></div>
   <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post" enctype="multipart/form-data">
-   <input name="image" type="file" size="50" accept="image/gif, image/jpeg, image/png" />
+   <input name="image" type="file" size="50" accept="image/gif, image/jpeg, image/png" style="border: 0;" /><br />
    <input type="submit" value="Hochladen" />
   </form>
  </body>

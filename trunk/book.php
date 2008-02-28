@@ -7,6 +7,7 @@
 require_once 'mysql_conn.php';
 require_once 'func_book.php';
 require_once 'Parser.php';
+require_once 'Image.php';
 
 /*
  * Checks POST data and sends E-Mail, if everything is correct.
@@ -87,6 +88,7 @@ include 'header.php';
     echo $book['title'];
     ?>
    </h2>
+   <?php echo Image::imgTag($book_id); ?>
    <table align="center">
     <tr><td>Autor:</td><td><?php echo $book['author']; ?></td></tr>
     <tr><td>Titel:</td><td><?php echo $book['title']; ?></td></tr>
@@ -104,6 +106,11 @@ include 'header.php';
    <?php } ?>
   <?php } else { ?>
   <?php if ($user_key) { ?>
+  <?php if (is_writable('img/')) { ?>
+  <form action="upload.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
+    <input type="submit" value="Bild hochladen" />
+  </form>
+  <?php } ?>
   <form action="edit.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
     <input type="submit" value="Angebot ändern" />
   </form>

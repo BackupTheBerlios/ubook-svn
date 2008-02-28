@@ -48,8 +48,8 @@ class Image {
 		}
 		$this->delete();
 		imagepng($image, 'img/'.$this->id.'.png');
-		$max_thumb_width = 320;
-		$max_thumb_height = 320; 
+		$max_thumb_width = 250;
+		$max_thumb_height = 250; 
 		$img_width = imagesx($image);
 		$img_height = imagesy($image);
 		if ($img_width > $max_thumb_width || $img_height > $max_thumb_height) {
@@ -64,7 +64,10 @@ class Image {
 			 $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 			 imagecopyresized($thumb, $image, 0, 0, 0, 0, $thumb_width, $thumb_height, $img_width, $img_height);
 			 imagepng($thumb, 'img/'.$this->id.'_thumb.png');
+			 imagedestroy($thumb);
 		}
+		imagedestroy($image);
+		return true;
 	}
 	
 	function delete() {
@@ -89,8 +92,9 @@ class Image {
 		if (!is_file($imgURL)) return '';
 		$thumbURL = 'img/'.$id.'_thumb.png';
 		if (is_file($thumbURL)) {
-			$tag = '<img src="'.$thumbURL.'" class="bookImage" />';
-			$tag = '<a href="'.$imgURL.'" target="_blank">'.$tag.'</a>';
+			$thumbSize = getimagesize($thumbURL);
+			$tag = '<img src="'.$thumbURL.'" '.$thumbSize[3].' class="bookImage" />';
+			$tag = '<a href="'.$imgURL.'" target="_blank" title="Bild in Originalgröße">'.$tag.'</a>';
 		}
 		else {
 			$tag = '<img src="'.$imgURL.'" class="bookImage" />';

@@ -149,6 +149,12 @@ input[type="submit"]:hover
   width:18em;
 }
 
+img.bookImage
+{
+	margin-bottom: 0.5em;
+	border: 1px solid black;
+}
+
 input.boogy {
  position:absolute;
  top: -100%;
