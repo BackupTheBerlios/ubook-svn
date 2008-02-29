@@ -29,7 +29,7 @@ if (isset($_POST['subject'])) {
 		while ($book = fetch_book($book_result)) {
 			$books .= "\n";
 			$books .= $book['author'].': '.$book['title']."\n";
-			$books .= edit_link($book['id'], $book['auth_key'])."\n";
+			$books .= Mailer::edit_link($book['id'], $book['auth_key'])."\n";
 		}
 		$mail_text = $text.$books;
 		$success = Mailer::mail($mail,$subject,$mail_text);
