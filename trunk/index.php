@@ -85,8 +85,7 @@ include 'header.php';
   <br clear="all" />
   <?php if (trim($search_key) != '') { ?>
    <h2>Suchergebnisse:</h2>
-   <div>Es wurden <?php echo $numberOfRows; ?> Bücher von insgesamt <?php echo $numberOfAllBooks; ?> Angeboten gefunden.</div>
-   <?php if ($books == '') { ?>
+   <?php if ($numberOfRows == 0) { ?>
    <div>
 	Es wurden keine Bücher gefunden.
    </div>
@@ -95,6 +94,9 @@ include 'header.php';
     <table align="center" style="text-align:left">
      <?php echo $books; ?>
     </table>
+   </div>
+   <div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">
+   <?php echo $numberOfRows; ?> / <?php echo $numberOfAllBooks; ?>
    </div>
    <?php } ?>
   <?php } ?>
