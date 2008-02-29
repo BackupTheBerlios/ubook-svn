@@ -24,6 +24,13 @@ if ($image->moveUploaded()) {
 	header('Location: book.php?id='.$id.'&key='.$key.'&uploaded=true');
 }
 
+if (isset($_GET['delete'])) {
+	$delete = (bool) $_GET['delete'];
+	if ($delete == true) {
+		$image->delete();
+	}
+}
+
 include 'header.php';
 ?>
   <div class="menu">
@@ -33,9 +40,22 @@ include 'header.php';
    <span><a href="about.php">Impressum</a></span>
   </div>
   <div><?php echo $image->imgTag($id); ?></div>
+  <?php if (isset($delete) && $delete == false) { ?>
+  <div class="infobox">Soll das Bild komplett entfernt werden?</div>
+  <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>&amp;delete=1" method="post">
+   <input type="submit" value="Löschen" />
+  </form>
+  <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post">
+   <input type="submit" value="Abbrechen" />
+  </form>
+  <?php } else { ?>
   <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post" enctype="multipart/form-data">
    <input name="image" type="file" size="50" accept="image/gif, image/jpeg, image/png" style="border: 0;" /><br />
    <input type="submit" value="Hochladen" />
   </form>
+  <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>&amp;delete=0" method="post">
+   <input type="submit" value="Löschen" />
+  </form>
+  <?php } ?>
  </body>
 </html>
