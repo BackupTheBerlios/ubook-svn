@@ -21,7 +21,7 @@ if (mysql_num_rows($result) != 1) exit;
 
 $image = new Image($id);
 if ($image->moveUploaded()) {
-	header('Location: book.php?id='.$id.'&key='.$key);
+	header('Location: book.php?id='.$id.'&key='.$key.'&uploaded=true');
 }
 
 include 'header.php';

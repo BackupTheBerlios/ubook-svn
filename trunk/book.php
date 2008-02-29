@@ -82,6 +82,9 @@ include 'header.php';
   erneuert.
   </div>
   <?php } ?>
+  <?php if (isset($_GET['uploaded'])) { ?>
+  <div class="infobox"><h2>Das Bild wurde erfolgreich gespeichert!</h2>Wenn immernoch das alte Bild zu sehen ist, kommt das aus einem Zwischenspeicher und muss neu geladen werden.</div>
+  <?php } ?>
   <div class="book">
    <h2>
     <?php
