@@ -49,6 +49,9 @@ include 'header.php';
    <input type="submit" value="Abbrechen" />
   </form>
   <?php } else { ?>
+  <?php if (isset($delete) && $delete == true) { ?>
+  <div class="infobox">Das Bild wurde entfernt.</div>
+  <?php } ?>
   <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post" enctype="multipart/form-data">
    <input name="image" type="file" size="50" accept="image/gif, image/jpeg, image/png" style="border: 0;" /><br />
    <input type="submit" value="Hochladen" />
