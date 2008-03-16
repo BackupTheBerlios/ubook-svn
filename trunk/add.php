@@ -49,7 +49,7 @@ if (isset($_POST['author'])) {
 		$title = stripslashes($_POST['title']);
 		$to = stripslashes($mail);
 		$subject = '';
-		$message = 'Mit deiner E-Mailadresse wurde das unten stehende Buch angeboten. Hebe diese E-Mail auf, um das Angebot später änder und löschen zu können.';
+		$message = 'Mit deiner E-Mailadresse wurde das unten stehende Buch angeboten. Hebe diese E-Mail auf, um das Angebot später ändern und löschen zu können.';
 		require_once 'Mailer.php';
 		Mailer::send($book_id, $subject, $message);
 		header('Location: book.php?id='.$book_id.'&key='.$key.'&new=1');
