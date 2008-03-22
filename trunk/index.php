@@ -70,7 +70,7 @@ include 'header.php';
  </div>
    <form action="./" method="get" name="books">
     <input type="hidden" name="option" value="<?php echo $_GET['option']; ?>" />
-    <input type="text" name="search" size="20" style="width:20em; margin-bottom:0.4em;" value="<?php echo text2html(stripslashes($search_key)); ?>" />
+    <input type="text" name="search" size="20" alt="Suchworte" style="width:20em; margin-bottom:0.4em;" value="<?php echo text2html(stripslashes($search_key)); ?>" />
     <script language="javascript" type="text/javascript">
      setFocus();
     </script>
