@@ -66,7 +66,7 @@ include 'header.php';
    <span><a href="help.php">Hilfe</a></span>
    <span><a href="about.php">Impressum</a></span>
   </div>
-  <fieldset>
+  <fieldset class="fullsize">
   <legend>Buch anbieten...&nbsp;</legend>
   <form action="add.php" method="post">
     <input type="text" name="name" value="" class="boogy" />
@@ -85,7 +85,7 @@ include 'header.php';
       </label>
     </div>
 
-    <div style="float:right; margin-bottom:0.5em;">
+    <div style="margin-bottom:0.5em;">
       <label>Dein Preis<br/>
       <input type="text" name="price" value="" size="6" /> &euro;</label>
     </div>
