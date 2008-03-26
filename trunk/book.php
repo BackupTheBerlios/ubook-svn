@@ -32,10 +32,38 @@ function send($book) {
 	return false;
 }
 
+function monat($monthNumber) {
+	switch ($monthNumber) {
+		case 1:
+			return 'Januar';
+		case 2:
+			return 'Februar';
+		case 3:
+			return 'März';
+		case 4:
+			return 'April';
+		case 5:
+			return 'Mai';
+		case 6:
+			return 'Juni';
+		case 7:
+			return 'Juli';
+		case 8:
+			return 'August';
+		case 9:
+			return 'September';
+		case 10:
+			return 'Oktober';
+		case 11:
+			return 'November';
+		case 12:
+			return 'Dezember';
+	}
+}
 
 if (!isset($_GET['id'])) exit;
 $book_id = (int) $_GET['id'];
-$result = mysql_query('select id,author,title,year,price,description,auth_key,mail from books where id="'.$book_id.'"');
+$result = mysql_query('select id,author,title,year, created,year(created) created_year, month(created) created_month,price,description,auth_key,mail from books where id="'.$book_id.'"');
 $book = fetch_book($result); // null, if no book was found
 if ($book === null) exit;
 
@@ -97,6 +125,7 @@ include 'header.php';
     <tr><td>Titel:</td><td><?php echo $book['title']; ?></td></tr>
     <tr><td>Preis:</td><td><?php echo $book['price']; ?> &euro;</td></tr>
     <tr><td>Erscheinungsjahr:</td><td><?php echo $book['year']; ?></td></tr>
+    <tr><td>Online seit:</td><td title="<?php echo $book['created']; ?>"><?php echo monat($book['created_month']).' '.$book['created_year']; ?></td></tr>
     <tr><td>Kategorie:</td><td><?php echo $category_string; ?></td></tr>
     <tr><td colspan="2" style="max-width:35em;"><?php echo nl2br($book['description']); ?></td></tr>
    </table>
