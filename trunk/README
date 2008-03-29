@@ -12,7 +12,7 @@ This is uBook. To run it on a server you need
  - Place this directory with all files in some webspace. Don't forget
    the hidden files .htaccess and .htusers. The .htaccess file will 
    protect the admin scripts.
- - Configure these two files.
+ - Configure these two files. !!!Your server may not run before this!!!
  - Now uBook needs MySQL access. Create a user in the database (e.g.
    phpMyAdmin).
  - The username, password and database has to be stored in a file
