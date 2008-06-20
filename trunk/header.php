@@ -54,4 +54,3 @@ header('Content-Type: text/html;charset=utf-8');
    <img src="ubook_small.gif" border="0" alt="uBook-Logo" />
   </a>
   </div>
-  <br clear="all"/>
