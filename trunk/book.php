@@ -93,9 +93,9 @@ include 'header.php';
    </h2>
    <?php echo Image::imgTag($book_id); ?>
    <table align="center">
-    <tr><td>Autor:</td><td><?php echo $book['author']; ?></td></tr>
+    <tr><td>Autorin / Autor:</td><td><?php echo $book['author']; ?></td></tr>
     <tr><td>Titel:</td><td><?php echo $book['title']; ?></td></tr>
-    <tr><td>Preis:</td><td><?php echo $book['price']; ?> &euro;</td></tr>
+    <tr title="Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen."><td>Preis:</td><td><?php echo $book['price']; ?> &euro;</td></tr>
     <tr><td>Erscheinungsjahr:</td><td><?php echo $book['year']; ?></td></tr>
     <tr><td>Kategorie:</td><td><?php echo $category_string; ?></td></tr>
     <tr><td colspan="2" style="max-width:35em;"><?php echo nl2br($book['description']); ?></td></tr>
@@ -125,7 +125,7 @@ include 'header.php';
   <form action="book.php?id=<?php echo $book['id']; ?>" method="post">
    <fieldset>
     <label for="name">Meine E-Mailadresse:</label><input type="text" id="name" name="name" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" size="25" /><!-- placeholder for robots -->
-    <label for="user_text">Nachricht an den Anbieter:</label><textarea id="user_text" name="user_text" cols="25" rows="7"><?php if (isset($_POST['user_text'])) echo $_POST['user_text']; ?></textarea>
+    <label for="user_text">Nachricht an die / den Anbieter/in:</label><textarea id="user_text" name="user_text" cols="25" rows="7"><?php if (isset($_POST['user_text'])) echo $_POST['user_text']; ?></textarea>
     <p><input type="submit" value="Dem Anbieter senden" /></p>
    </fieldset>
   </form>

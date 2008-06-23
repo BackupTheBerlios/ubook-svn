@@ -71,11 +71,11 @@ include 'header.php';
   <form action="add.php" method="post">
     <input type="text" name="name" value="" class="boogy" />
     
-    <label>Autorin / Autor<br/>
+    <label>Nachname, Vorname der Autorin / des Autor<br/>
     <input type="text" name="mail" value="" class="fullsize" />
     </label>
 
-    <label>Titel<br/>
+    <label>Titel des Buches<br/>
     <input type="text" name="title" value="" class="fullsize" />
     </label>
 
