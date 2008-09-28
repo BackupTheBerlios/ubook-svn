@@ -61,7 +61,7 @@ include 'header.php';
  </div>
    <form action="edit.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post">
     <table style="width:20em; border:gray;solid;1px; margin-top:1em;" align="center">
-     <tr><td>Autor:</td><td><input type="text" name="author" value="<?php echo $book['author']; ?>" /></td></tr>
+     <tr><td>Autorin / Autor:</td><td><input type="text" name="author" value="<?php echo $book['author']; ?>" /></td></tr>
      <tr><td>Titel:</td><td><input type="text" name="title" value="<?php echo $book['title']; ?>" /></td></tr>
      <tr><td>Preis:</td><td><input type="text" name="price" value="<?php echo $book['price']; ?>" size="5" /> Euro</td></tr>
      <tr><td>Erscheinungsjahr:</td><td><input type="text" name="year" value="<?php echo $book['year']; ?>" size="4" /></td></tr>
