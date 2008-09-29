@@ -24,6 +24,13 @@ function random_key($l=32) {
 	return addslashes($s);
 }
 
+// generates output with select fields
+function echoSelectableCategories($selectableCategories) {
+	foreach ($selectableCategories as $i => $selCat) {
+		echo ' '.$selCat;
+	}
+}
+
 $selectableCategories = new SelectableCategories();
 
 if (isset($_POST['author'])) {
@@ -91,7 +98,7 @@ include 'header.php';
     </div>
 
     <label style="clear:both;">Kategorien<br/>
-    <?php echo $selectableCategories->createSelect(0); ?> <?php echo $selectableCategories->createSelect(1); ?></label>
+    <?php echoSelectableCategories($selectableCategories); ?></label>
 
     <label style="clear:both;">Deine E-Mailadresse<br/>
     <input type="text" name="author" value="" class="fullsize" /></label>
