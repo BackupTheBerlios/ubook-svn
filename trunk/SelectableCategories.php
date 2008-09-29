@@ -59,7 +59,7 @@ class SelectableCategories {
 	function update() {
 		if (!isset($_POST['categories'])) return;
 		$new_cats = $_POST['categories'];
-		if (count($new_cats) != 2) return;
+		if (count($new_cats) != $this->numberOfSelectableCategories()) return;
 		$old_cats = $this->book_cats;
 		$to_delete = array_diff($old_cats,$new_cats);
 		$to_add = array_diff($new_cats,$old_cats);
