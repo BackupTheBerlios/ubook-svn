@@ -75,8 +75,7 @@ include 'header.php';
      <tr><td>Titel:</td><td><input type="text" name="title" value="<?php echo $book['title']; ?>" /></td></tr>
      <tr><td>Preis:</td><td><input type="text" name="price" value="<?php echo $book['price']; ?>" size="5" /> Euro</td></tr>
      <tr><td>Erscheinungsjahr:</td><td><input type="text" name="year" value="<?php echo $book['year']; ?>" size="4" /></td></tr>
-     <tr><td>Kategorien:</td><td><?php echo $selectableCategories->createSelect(0); ?></td></tr>
-     <tr><td>&nbsp;</td><td><?php echo $selectableCategories->createSelect(1); ?></td></tr>
+     <?php echoSelectableCategories(); ?>
      <tr><td colspan="2">Weiteres:<br /><textarea name="description" cols="25" rows="10"><?php echo $book['description']; ?></textarea></td></tr>
     </table>
     <p><input type="submit" value="Speichern" /></p>
