@@ -47,7 +47,7 @@ class SelectableCategories {
 	// started a method for a number of selects depending on the number of categories
 
 	function createSelectArray() {
-		$size = numberOfSelectableCategories();
+		$size = $this->numberOfSelectableCategories();
 		$selectArray = array();
 		for ($i=0; $i<$size; $i++) {
 			$selectArray[] = $this->createSelect($i);
