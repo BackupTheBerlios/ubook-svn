@@ -9,6 +9,15 @@ function format_categories_of(&$book) {
 	$q = 'select category from book_cat_rel where book_id="'.$id.'"';
 }
 
+// generates output with select fields
+function echoSelectableCategories($selectableCategories) {
+	if (sizeOf($selectableCategories) < 1) return "";
+	echo '<tr><td>Kategorien:</td><td>'.$selectableCategories[0].'</td></tr>'."\n";
+	for ($i=1; i<sizeOf($selectableCategories); $i++) {
+		echo '<tr><td>&nbsp;</td><td>'.$selectableCategories[0].'</td></tr>'."\n";
+	}
+}
+
 require_once 'mysql_conn.php';
 require_once 'func_book.php';
 require_once 'SelectableCategories.php';
