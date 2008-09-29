@@ -11,10 +11,11 @@ function format_categories_of(&$book) {
 
 // generates output with select fields
 function echoSelectableCategories($selectableCategories) {
-	if (sizeOf($selectableCategories) < 1) return "";
-	echo '<tr><td>Kategorien:</td><td>'.$selectableCategories[0].'</td></tr>'."\n";
-	for ($i=1; i<sizeOf($selectableCategories); $i++) {
-		echo '<tr><td>&nbsp;</td><td>'.$selectableCategories[0].'</td></tr>'."\n";
+	$selCatArray = $selectableCategories.createSelectArray();
+	if (sizeOf($selCatArray) < 1) return "";
+	echo '<tr><td>Kategorien:</td><td>'.$selCatArray[0].'</td></tr>'."\n";
+	for ($i=1; i<sizeOf($selCatArray); $i++) {
+		echo '<tr><td>&nbsp;</td><td>'.$selCatArray[$i].'</td></tr>'."\n";
 	}
 }
 
