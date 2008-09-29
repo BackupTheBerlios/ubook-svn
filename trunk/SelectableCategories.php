@@ -45,11 +45,16 @@ class SelectableCategories {
 	}
 	
 	// started a method for a number of selects depending on the number of categories
-	/*
+
 	function createSelectArray() {
 		$size = 2;
+		$selectArray = array();
+		for ($i=0; $i<$size; $i++) {
+			$selectArray[] = createSelect($i);
+		}
+		return $selectArray;
 	}
-*/
+
 	/* update the database from POST form data */
 	function update() {
 		if (!isset($_POST['categories'])) return;
