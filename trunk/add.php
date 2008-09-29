@@ -26,7 +26,7 @@ function random_key($l=32) {
 
 // generates output with select fields
 function echoSelectableCategories($selectableCategories) {
-	$selCatArray = $selectableCategories.createSelectArray();
+	$selCatArray = $selectableCategories->createSelectArray();
 	foreach ($selCatArray as $i => $selCat) {
 		echo ' '.$selCat;
 	}
