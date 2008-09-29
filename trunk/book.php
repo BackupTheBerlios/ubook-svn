@@ -127,8 +127,8 @@ include 'header.php';
     <label for="name">Meine E-Mailadresse:</label><input type="text" id="name" name="name" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" size="25" /><!-- placeholder for robots -->
     <label for="user_text">Nachricht an die / den Anbieter/in:</label><textarea id="user_text" name="user_text" cols="25" rows="7"><?php if (isset($_POST['user_text'])) echo $_POST['user_text']; ?></textarea>
     <p><input type="submit" value="Dem Anbieter senden" /></p>
-    <p style="width:25em;"><em><small>Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen. Oft gibt die Preisangabe jedoch die Verhandlungsbasis an.</small></em></p>
    </fieldset>
+   <p style="width:25em;"><em><small>Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen. Oft gibt die Preisangabe jedoch die Verhandlungsbasis an.</small></em></p>
   </form>
   <?php } ?>
   <?php } ?>
