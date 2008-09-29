@@ -50,7 +50,7 @@ class SelectableCategories {
 		$size = 2;
 		$selectArray = array();
 		for ($i=0; $i<$size; $i++) {
-			$selectArray[] = createSelect($i);
+			$selectArray[] = $this->createSelect($i);
 		}
 		return $selectArray;
 	}
