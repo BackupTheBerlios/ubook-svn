@@ -92,7 +92,7 @@ class SelectableCategories {
 	}
 	
 	function numberOfSelectableCategories() {
-		$numCats = count($this->book_cats);
+		$numCats = count($this->categories->getArray());
 		$numSelCats = floor(log($numCats));
 		if ($numSelCats < 1) return 1;
 		return $numSelCats;
