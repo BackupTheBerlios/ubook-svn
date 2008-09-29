@@ -47,7 +47,7 @@ class SelectableCategories {
 	// started a method for a number of selects depending on the number of categories
 
 	function createSelectArray() {
-		$size = 2;
+		$size = numberOfSelectableCategories();
 		$selectArray = array();
 		for ($i=0; $i<$size; $i++) {
 			$selectArray[] = $this->createSelect($i);
@@ -89,6 +89,13 @@ class SelectableCategories {
 		while ($row = mysql_fetch_array($result)) {
 			$this->book_cats[] = $row['category'];
 		}
+	}
+	
+	function numberOfSelectableCategories() {
+		$numCats = count($this->book_cats);
+		$numSelCats = floor(log($numCats));
+		if ($numSelCats < 1) return 1;
+		return $numSelCats;
 	}
 	
 }
