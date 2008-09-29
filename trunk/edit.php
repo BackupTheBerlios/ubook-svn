@@ -14,7 +14,7 @@ function echoSelectableCategories($selectableCategories) {
 	$selCatArray = $selectableCategories->createSelectArray();
 	if (sizeOf($selCatArray) < 1) return "";
 	echo '<tr><td>Kategorien:</td><td>'.$selCatArray[0].'</td></tr>'."\n";
-	for ($i=1; i<sizeOf($selCatArray); $i++) {
+	for ($i=1; $i<sizeOf($selCatArray); $i++) {
 		echo '<tr><td>&nbsp;</td><td>'.$selCatArray[$i].'</td></tr>'."\n";
 	}
 }
