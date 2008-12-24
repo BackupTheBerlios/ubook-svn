@@ -49,25 +49,34 @@ div.results {
 }
 
 div.results table {
- border: 1px solid gray;
+ border: 0px solid #6c2c13;
  font-size:12pt;
  border-spacing: 0px;
+ border-collapse: collapse;
 }
 
 div.results td {
  padding:0.4em;
 }
 
-tr.bookrow0 td {
- background-color:#f0f0f0;
+div.results td
+{
+    border-top: 1px solid #ff7038;
+    border-bottom: 1px solid #ff7038;
 }
 
-tr.bookrow1 td {
- background-color:#e0e0e0;
+div.results a {
+    text-decoration: none;
+}
+
+div.results tr:hover td {
+    background-color: #fff;
 }
 
 div.results td+td {
- text-align:right;
+    /* price column */
+    text-align:right;
+    font-style: italic;
 }
 
 div.book {
