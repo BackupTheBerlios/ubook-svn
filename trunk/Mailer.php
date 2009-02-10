@@ -90,6 +90,15 @@ class Mailer {
 	function isValidAddress($mailAddress) {
 		return (boolean) ereg('^[[:print:]]+$', $mailAddress);
 	}
+	
+	function mailFromUser($postIndex) {
+		if (!isset($_POST[$postIndex])) return null;
+		$mail = $_POST[$postIndex];
+		if (Mailer::isValidAddress($mail)) {
+			return $mail;
+		}
+		return null;
+	}
 
 }
 

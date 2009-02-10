@@ -8,11 +8,8 @@ require_once 'UsersBooks.php';
 require_once 'Mailer.php';
 
 function sendSummary() {
-	if (!isset($_POST['mail'])) {
-		return false;
-	}
-	$userMail = $_POST['mail'];
-	if (!Mailer::isValidAddress($userMail)) {
+	$userMail = Mailer::mailFromUser('mail');
+	if (!$userMail) {
 		return false;
 	}
 	$mailText = 'Hallo,'."\n".'hier eine Zusammenfassung aller Bücher, die mit deiner E-Mailadresse angeboten werden.';
