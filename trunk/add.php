@@ -36,7 +36,7 @@ $selectableCategories = new SelectableCategories();
 
 if (isset($_POST['author'])) {
 	$mail = $_POST['author'];
-	if ($mail && strstr($mail,'@')) {
+	if ($mail && strstr($mail,'@') && Mailer::isValidAddress($mail)) {
 		$key = random_key();
 		$query = 'insert into books (author,title,year,price,description,mail,auth_key,created,expires) values (
    		"'.$_POST['mail'].'",
