@@ -78,7 +78,8 @@ class Mailer {
 	}
 
 	function edit_link($book_id, $auth_key) {
-		return self::book_link($book_id).'&key='.$auth_key;
+		// self does not work with PHP4
+		return Mailer::book_link($book_id).'&key='.$auth_key;
 	}
 	
 	/**
