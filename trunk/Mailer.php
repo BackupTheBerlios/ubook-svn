@@ -80,6 +80,15 @@ class Mailer {
 	function edit_link($book_id, $auth_key) {
 		return self::book_link($book_id).'&key='.$auth_key;
 	}
+	
+	/**
+	 * Checks for valid chars, but not for an address defined in RFC 2822.
+	 * @param $mailAddress address to check
+	 * @return boolean seems to be valid or not
+	 */
+	function isValidAddress($mailAddress) {
+		return (boolean) ereg('^[[:print:]]+$', $mailAddress);
+	}
 
 }
 

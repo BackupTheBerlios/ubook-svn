@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2008 Maikel Linke
+ * Copyright (C) 2009 Maikel Linke
  */
 
 $http_equiv_expires = 43200;
@@ -29,6 +29,14 @@ include 'header.php';
   <p>2. Du kannst bei deinem Angebot versuchen, dir selbst eine E-Mail zuzuschicken. Du musst jedoch die vorher eingetragene E-Mailadresse auch dort angeben, um den Änderungslink für dein Angebot zu bekommen. Wenn das auch nicht funktioniert, dann ist die eingetragene E-Mailadresse wohl falsch.</p>
   <p>3. Wenn die Adresse falsch ist, dann erstelle einfach ein neues Angebot. Das alte wird nach einer Weile automatisch gelöscht.</p>
  </div>
+ <h2>Welche Bücher biete ich eigentlich an?</h2>
+ <div class="text">
+   Wenn du vergessen hast, welche Bücher du hier anbietest oder nochmal eine Zusammenfassung zugeschickt bekommen möchtest, dann trage deine E-Mailadresse in dieses Formular ein:<br />
+ </div>
+   <form action="summary.php" method="post">
+    <input name="mail" type="text" class="fullsize" /><br />
+    <input type="submit" value="Zusammenfassung schicken" />
+   </form>
  <h2>Du hast noch Fragen?</h2>
  <div class="text">
   Dann frag uns: <a href="mailto:ubook-info@lists.berlios.de">ubook-info@lists.berlios.de</a>. Aber auch andere Kommentare und Kritik zur Bücherbörse sind willkommen.
