@@ -82,12 +82,12 @@ require 'header.php';
   
   
   <?php if ($error == 'not writeable') {?>
-   In diesem Verzeichnis muss die Konfigurationsdatei "mysql.php" geschrieben und ein Verzeichnis zum Bilderupload erstellt werden. Dazu braucht der Webserver das Schreibrecht für dieses Verzeichnis. Vergib das Schreibrecht und es geht weiter.
+   <p>In diesem Verzeichnis muss die Konfigurationsdatei "mysql.php" geschrieben und ein Verzeichnis zum Bilderupload erstellt werden. Dazu braucht der Webserver das Schreibrecht für dieses Verzeichnis. Vergib das Schreibrecht und es geht weiter.</p>
    <p><form action="admin_setup.php" method="get"><input type="submit" value="Weiter" /></form></p>
   <?php } ?>
   
   <?php if ($error == 'no file') {?>
-  Dieses Programm braucht Zugang zu einer MySQL-Datenbank.
+  <p>Dieses Programm braucht Zugang zu einer MySQL-Datenbank.</p>
   <form action="admin_setup.php" method="post">
    <table align="center" style="width:35em;">
     <tr><td>MySQL-Server</td><td><input type="text" name="server" value="localhost" /></td></tr>
