@@ -9,6 +9,7 @@ $books = '';
 require_once 'mysql_conn.php';
 
 if (isset($_POST['subject'])) {
+	require_once 'UsersBooks.php';
 	require_once 'func_book.php';
 	require_once 'Mailer.php';
 	$subject = stripslashes($_POST['subject']);
@@ -19,18 +20,8 @@ if (isset($_POST['subject'])) {
 	$sent_mails = 0;
 	while ($mail_row = mysql_fetch_row($result)) {
 		$mail = $mail_row[0];
-		$query = 
-		'select
-		 id, author, title, price, year, description, auth_key
-		 from books where mail="'.$mail.'" 
-		 order by author, title, price';
-		$book_result = mysql_query($query);
-		$books = "\n";
-		while ($book = fetch_book($book_result)) {
-			$books .= "\n";
-			$books .= $book['author'].': '.$book['title']."\n";
-			$books .= Mailer::edit_link($book['id'], $book['auth_key'])."\n";
-		}
+		$bookList = new UsersBooks($mail);
+		$books = $bookList->toString();
 		$mail_text = $text.$books;
 		$success = Mailer::mail($mail,$subject,$mail_text);
 		if ($success) $sent_mails++;

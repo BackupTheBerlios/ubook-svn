@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2008 Maikel Linke
+ * Copyright (C) 2009 Maikel Linke
  */
 
 class Mailer {
@@ -50,13 +50,14 @@ class Mailer {
 
 	/**
 	 * public
+	 * Simply sends an mail from uBook, without further content.
 	 *
 	 * @param string $to
 	 * @param string $subject
 	 * @param string $content
 	 * @return bool false on failure
 	 */
-	function mail($to,$subject,$content, $reply_to = null) {
+	function mail($to, $subject, $content, $reply_to = null) {
 		$header = 'From: "uBook" <noreply>'."\n";
 		if (isset($reply_to)) {
 			$header .= 'Reply-To: '.$reply_to."\n";
@@ -77,7 +78,7 @@ class Mailer {
 	}
 
 	function edit_link($book_id, $auth_key) {
-		return Mailer::book_link($book_id).'&key='.$auth_key;
+		return self::book_link($book_id).'&key='.$auth_key;
 	}
 
 }
