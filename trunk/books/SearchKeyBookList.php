@@ -12,7 +12,7 @@ require_once 'func_format_books.php';
 class SearchKeyBookList extends AbstractBookList {
 	
 	public function __construct($searchKey) {
-		$searchQuery = self::searchQuery($searchKey);
+		$searchQuery = self::searchQuery($searchKey->asText(), $searchKey->getOption());
 		$result = mysql_query($searchQuery);
 		parent::setSize(mysql_num_rows($result));
 		$books = format_books(&$result);
@@ -25,14 +25,9 @@ class SearchKeyBookList extends AbstractBookList {
 	 * @param string $search_key user given search key
 	 * @return MySQL select statement
 	 */
-	private static function searchQuery($search_key) {
-		$option = false;
-		if (isset($_GET['new'])) $option = 'new';
-		if (isset($_GET['random'])) $option = 'random';
-		//$data_fields = array('author','title','description');
+	private static function searchQuery($search_key, $option) {
 		$fields = 'concat(author," ",title," ",description) ';
 		$keys = explode(' ',$search_key);
-		//$or = '(';
 		$and = ' ';
 		$query = 'select id, author, title, price from books where ';
 		foreach ($keys as $i => $k) {

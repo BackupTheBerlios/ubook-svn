@@ -25,9 +25,44 @@ function categoryMenu() {
 	return $menu;
 }
 
+class SearchKey {
+
+	private $key = null;
+
+	public function __construct() {
+		$this->get();
+	}
+
+	public function isGiven() {
+		if ($this->key === null) return false;
+		else return true;
+	}
+
+	public function asText() {
+		return $this->key;
+	}
+
+	public function asHtml() {
+		return text2html(stripslashes($this->key));
+	}
+
+	public function getOption() {
+		if (isset($_GET['new'])) return 'new';
+		if (isset($_GET['random'])) return 'random';
+		return false;
+	}
+
+	private function get() {
+		if (isset($_GET['search'])) {
+			$this->key = trim($_GET['search']);
+		}
+	}
+
+}
+
 /* basic variables */
-$search_key = null;
 $category = '';
+$searchKey = new SearchKey();
 
 
 if (sizeof($_GET) == 0) {
@@ -36,27 +71,17 @@ if (sizeof($_GET) == 0) {
 else {
 	/* Okay, dealing user input */
 	/* requirements */
-	
-	function search_key() {
-		if (!isset($_GET['search'])) return null;
-		$key = trim($_GET['search']);
-		return $key;
-	}
 
-	
-	$search_key = search_key();
-	
-	if ($search_key !== null) {
+	if ($searchKey->isGiven()) {
 		require_once 'books/SearchKeyBookList.php';
-		$bookList = new SearchKeyBookList($search_key);
+		$bookList = new SearchKeyBookList($searchKey);
 	}
 
 	if (isset($_GET['cat'])) {
+		require_once 'books/CategoryBookList.php';
 		$category = trim($_GET['cat']);
+		$catBookList = new CategoryBookList($category);
 	}
-
-	require_once 'books/CategoryBookList.php';
-	$catBookList = new CategoryBookList($category);	
 
 }
 
@@ -65,52 +90,43 @@ $navigation_links['first'] = array('Erste','./');
 include 'header.php';
 
 ?>
-<div class="menu">
-   <span><b>Buch suchen</b></span>
-   <span><a href="add.php">Buch anbieten</a></span>
-   <span><a href="help.php">Hilfe</a></span>
-   <span><a href="about.php">Impressum</a></span>
- </div>
- 
+<div class="menu"><span><b>Buch suchen</b></span> <span><a
+	href="add.php">Buch anbieten</a></span> <span><a href="help.php">Hilfe</a></span>
+<span><a href="about.php">Impressum</a></span></div>
 
-   <form action="./" method="get" name="books">
-    <input type="text" name="search" size="20" alt="Suchworte" style="width:20em; margin-bottom:0.4em;" value="<?php echo text2html(stripslashes($search_key)); ?>" />
-    <script language="javascript" type="text/javascript">
+
+<form action="./" method="get" name="books"><input type="text"
+	name="search" size="20" alt="Suchworte"
+	style="width: 20em; margin-bottom: 0.4em;"
+	value="<?php echo $searchKey->asHtml(); ?>" /> <script
+	language="javascript" type="text/javascript">
      setFocus();
-    </script>
-    <br/>
-    <input type="submit" value="Suchen" />
-    <input type="submit" name="new" value="Neues" />
-    <input type="submit" name="random" value="Zufälliges" />
-  </form>
-  <?php if ($search_key !== null) { ?>
-   <h2>Suchergebnisse:</h2>
-   <?php if ($bookList->size() == 0) { ?>
-   <div>
-	Es wurden keine Bücher gefunden.
-   </div>
-   <?php } else { ?>
-    <?php echo $bookList->toHTML(); ?>
-   <?php } ?>
-  <?php } ?>
+    </script> <br />
+<input type="submit" value="Suchen" /> <input type="submit" name="new"
+	value="Neues" /> <input type="submit" name="random" value="Zufälliges" />
+</form>
 
 
+<?php if ($searchKey->isGiven()) { ?>
+<h2>Suchergebnisse:</h2>
+<?php if ($bookList->size() == 0) { ?>
+<div>Es wurden keine Bücher gefunden.</div>
+<?php } else { ?>
+<?php echo $bookList->toHTML(); ?>
+<?php } ?>
+<?php } ?>
 
 
 <?php echo categoryMenu(); ?>
- 
-  <?php if ($category != '') { ?>
-   <h2><?php echo $category ?></h2>
-   <?php if ($catBookList->size() == 0) { ?>
-   <div>
-	In dieser Kategorie gibt es zur Zeit keine Bücher.
-   </div>
-   <?php } else { ?>
-    <?php echo $catBookList->toHTML(); ?>
-   <?php } ?>
-  <?php } ?>
- 
- 
- 
- 
+
+<?php if ($category != '') { ?>
+<h2><?php echo $category ?></h2>
+<?php if ($catBookList->size() == 0) { ?>
+<div>In dieser Kategorie gibt es zur Zeit keine Bücher.</div>
+<?php } else { ?>
+<?php echo $catBookList->toHTML(); ?>
+<?php } ?>
+<?php } ?>
+
+
 <?php include 'footer.php'; ?>
