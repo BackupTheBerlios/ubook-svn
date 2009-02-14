@@ -9,6 +9,7 @@ if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 include_once 'magic_quotes.php';
 require_once 'func_text2html.php';
 require_once 'Categories.php';
+require_once 'books/SearchKey.php';
 
 function categoryMenu() {
 	$categories = new Categories();
@@ -23,41 +24,6 @@ function categoryMenu() {
 	}
 	$menu .= '</div>';
 	return $menu;
-}
-
-class SearchKey {
-
-	private $key = null;
-
-	public function __construct() {
-		$this->get();
-	}
-
-	public function isGiven() {
-		if ($this->key === null) return false;
-		else return true;
-	}
-
-	public function asText() {
-		return $this->key;
-	}
-
-	public function asHtml() {
-		return text2html(stripslashes($this->key));
-	}
-
-	public function getOption() {
-		if (isset($_GET['new'])) return 'new';
-		if (isset($_GET['random'])) return 'random';
-		return false;
-	}
-
-	private function get() {
-		if (isset($_GET['search'])) {
-			$this->key = trim($_GET['search']);
-		}
-	}
-
 }
 
 /* basic variables */
