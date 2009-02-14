@@ -1,13 +1,12 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2008 Maikel Linke
+ * Copyright (C) 2009 Maikel Linke
  */
 
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
-require_once 'mysql_conn.php';
 require_once 'func_text2html.php';
 require_once 'Categories.php';
 
@@ -37,42 +36,7 @@ if (sizeof($_GET) == 0) {
 else {
 	/* Okay, dealing user input */
 	/* requirements */
-	require_once 'func_book.php';
-	require_once 'func_format_books.php';
 	
-	/**
-	 * Generates a MySQL select statement
-	 *
-	 * @param string $search_key user given search key
-	 * @return MySQL select statement
-	 */
-	function search_query($search_key) {
-		$option = false;
-		if (isset($_GET['new'])) $option = 'new';
-		if (isset($_GET['random'])) $option = 'random';
-		//$data_fields = array('author','title','description');
-		$fields = 'concat(author," ",title," ",description) ';
-		$keys = explode(' ',$search_key);
-		//$or = '(';
-		$and = ' ';
-		$query = 'select id, author, title, price from books where ';
-		foreach ($keys as $i => $k) {
-			$query .= $and.$fields.'like "%'.$k.'%"';
-			$and = ' and ';
-		}
-		if ($option == 'new') {
-			$query .= ' order by created desc limit 7';
-		}
-		else if ($option == 'random') {
-			$query .= ' order by rand() limit 7';
-		}
-		else {
-			$query .= ' order by author, title, price';
-		}
-		return $query;
-	}
-
-
 	function search_key() {
 		if (!isset($_GET['search'])) return null;
 		$key = trim($_GET['search']);
@@ -80,62 +44,20 @@ else {
 	}
 
 	
-	function booksInCat($category) {
-		global $numberOfRows;
-		$books = '';
-		if ($category) {
-			$q = 'select books.id, books.author, books.title, books.price from books';
-			if ($category == 'Sonstiges') {
-				$q .= ' left join book_cat_rel
-		 on books.id=book_cat_rel.book_id 
-		 where book_cat_rel.category="'.$category.'" 
-		 or book_cat_rel.category is null';
-			}
-			else {
-				$q .= ' join book_cat_rel
-		 on books.id=book_cat_rel.book_id 
-		 where book_cat_rel.category="'.$category.'"';
-			}
-			$q .= ' order by books.author, books.title, books.price;';
-			$result_books = mysql_query($q);
-			$numberOfRows = mysql_num_rows($result_books);
-			$books = format_books(&$result_books);
-		}
-		return $books;
-	}
-
-	function bookTable($bookRows) {
-		global $numberOfRows;
-		global $numberOfAllBooks;
-		$t = '<div class="results">
-    			<table align="center" style="text-align:left">';
-     	$t .= $bookRows;
-    	$t .= '</table>
-   			</div>
-		   	<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">';
-   		$t .= $numberOfRows.' / '.$numberOfAllBooks;
-   		$t .= '</div>';
-   		return $t;
-	}
-	
 	$search_key = search_key();
 	
-	$books = '';
-
 	if ($search_key !== null) {
-		$result = mysql_query(search_query($search_key));
-		$numberOfRows = mysql_num_rows($result);
-		$books = format_books(&$result);
+		require_once 'books/SearchKeyBookList.php';
+		$bookList = new SearchKeyBookList($search_key);
 	}
 
 	if (isset($_GET['cat'])) {
 		$category = trim($_GET['cat']);
 	}
 
-	$catBooks = booksInCat($category);
+	require_once 'books/CategoryBookList.php';
+	$catBookList = new CategoryBookList($category);	
 
-	$countResult = mysql_query('select count(id) from books;');
-	list($null, $numberOfAllBooks) = each(mysql_fetch_row($countResult));
 }
 
 
@@ -152,7 +74,6 @@ include 'header.php';
  
 
    <form action="./" method="get" name="books">
-    <!-- input type="hidden" name="option" value="<?php echo $_GET['option']; ?>" /> -->
     <input type="text" name="search" size="20" alt="Suchworte" style="width:20em; margin-bottom:0.4em;" value="<?php echo text2html(stripslashes($search_key)); ?>" />
     <script language="javascript" type="text/javascript">
      setFocus();
@@ -164,12 +85,12 @@ include 'header.php';
   </form>
   <?php if ($search_key !== null) { ?>
    <h2>Suchergebnisse:</h2>
-   <?php if ($numberOfRows == 0) { ?>
+   <?php if ($bookList->size() == 0) { ?>
    <div>
 	Es wurden keine Bücher gefunden.
    </div>
    <?php } else { ?>
-    <?php echo bookTable($books); ?>
+    <?php echo $bookList->toHTML(); ?>
    <?php } ?>
   <?php } ?>
 
@@ -180,12 +101,12 @@ include 'header.php';
  
   <?php if ($category != '') { ?>
    <h2><?php echo $category ?></h2>
-   <?php if ($catBooks == '') { ?>
+   <?php if ($catBookList->size() == 0) { ?>
    <div>
 	In dieser Kategorie gibt es zur Zeit keine Bücher.
    </div>
    <?php } else { ?>
-    <?php echo bookTable($catBooks); ?>
+    <?php echo $catBookList->toHTML(); ?>
    <?php } ?>
   <?php } ?>
  
