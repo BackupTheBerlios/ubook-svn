@@ -14,6 +14,6 @@ require_once 'books/SearchKeyBookList.php';
 $bookList = new SearchKeyBookList($searchKey, true);
 
 echo $bookList->size()."\n";
-echo $bookList->toHTML();
+echo $bookList->toHtmlRows();
 
 ?>

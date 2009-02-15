@@ -11,14 +11,18 @@ abstract class AbstractBookList implements BookList {
 	private static $numberOfAllBooks = null;
 
 	private $numberOfRows;
-	private $booksAsHTML;
+	private $booksAsHtmlRows;
 	
 	public function size() {
 		return $this->numberOfRows;
 	}
 	
-	public function toHTML() {
-		return $this->booksAsHTML;
+	public function toHtmlRows() {
+		return $this->booksAsHtmlRows;
+	}
+	
+	public function toHtmlTable() {
+		return $this->bookTable();
 	}
 
 	protected function setSize($size) {
@@ -26,13 +30,13 @@ abstract class AbstractBookList implements BookList {
 	}
 
 	protected function setHtmlRows($htmlRows) {
-		$this->booksAsHTML = $this->bookTable($htmlRows);
+		$this->booksAsHtmlRows = $htmlRows;
 	}
 
-	protected function bookTable($bookRows) {
+	protected function bookTable() {
 		$t = '<div class="results">
     			<table align="center" style="text-align:left">'."\n";
-		$t .= $bookRows;
+		$t .= $this->booksAsHtmlRows;
 		$t .= '</table>
    			</div>
 		   	<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">';

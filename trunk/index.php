@@ -80,14 +80,15 @@ include 'header.php';
 
 <?php if ($searchKey->isGiven()) { ?>
  <?php if ($bookList->size() == 0) { ?>
-  <h2>Keine Bücher gefunden:Suchergebnisse:</h2>
+  <h2>Keine Bücher gefunden.</h2>
   <p>Hier in der Datenbank konnten keine Bücher gefunden werden, auf die alle Stichworte zutreffen.</p> 
   <?php if ($externalBookList->size() > 0) { ?>
-   <h2>Suchergebnisse aus anderen Orten</h2>
-   <?php echo $externalBookList->toHTML(); ?>
+   <h2>Suchergebnisse aus anderen Orten:</h2>
+   <?php echo $externalBookList->toHtmlTable(); ?>
   <?php } ?>
  <?php } else { ?>
- <?php echo $bookList->toHTML(); ?>
+  <h2>Suchergebnisse:</h2>
+  <?php echo $bookList->toHtmlTable(); ?>
  <?php } ?>
 <?php } ?>
 
@@ -95,12 +96,12 @@ include 'header.php';
 <?php echo categoryMenu(); ?>
 
 <?php if ($category != '') { ?>
-<h2><?php echo $category ?></h2>
-<?php if ($catBookList->size() == 0) { ?>
-<div>In dieser Kategorie gibt es zur Zeit keine Bücher.</div>
-<?php } else { ?>
-<?php echo $catBookList->toHTML(); ?>
-<?php } ?>
+ <h2><?php echo $category ?></h2>
+ <?php if ($catBookList->size() == 0) { ?>
+  <div>In dieser Kategorie gibt es zur Zeit keine Bücher.</div>
+ <?php } else { ?>
+  <?php echo $catBookList->toHtmlTable(); ?>
+ <?php } ?>
 <?php } ?>
 
 
