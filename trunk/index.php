@@ -41,6 +41,11 @@ else {
 	if ($searchKey->isGiven()) {
 		require_once 'books/SearchKeyBookList.php';
 		$bookList = new SearchKeyBookList($searchKey);
+		
+		if ($bookList->size() == 0) {
+			require_once 'books/ExternalBookList.php';
+			$externalBookList = new ExternalBookList($searchKey, 'http://ubook.asta-bielefeld.de/');
+		}
 	}
 
 	if (isset($_GET['cat'])) {
@@ -74,12 +79,16 @@ include 'header.php';
 
 
 <?php if ($searchKey->isGiven()) { ?>
-<h2>Suchergebnisse:</h2>
-<?php if ($bookList->size() == 0) { ?>
-<div>Es wurden keine Bücher gefunden.</div>
-<?php } else { ?>
-<?php echo $bookList->toHTML(); ?>
-<?php } ?>
+ <?php if ($bookList->size() == 0) { ?>
+  <h2>Keine Bücher gefunden:Suchergebnisse:</h2>
+  <p>Hier in der Datenbank konnten keine Bücher gefunden werden, auf die alle Stichworte zutreffen.</p> 
+  <?php if ($externalBookList->size() > 0) { ?>
+   <h2>Suchergebnisse aus anderen Orten</h2>
+   <?php echo $externalBookList->toHTML(); ?>
+  <?php } ?>
+ <?php } else { ?>
+ <?php echo $bookList->toHTML(); ?>
+ <?php } ?>
 <?php } ?>
 
 

@@ -31,7 +31,7 @@ abstract class AbstractBookList implements BookList {
 
 	protected function bookTable($bookRows) {
 		$t = '<div class="results">
-    			<table align="center" style="text-align:left">';
+    			<table align="center" style="text-align:left">'."\n";
 		$t .= $bookRows;
 		$t .= '</table>
    			</div>
