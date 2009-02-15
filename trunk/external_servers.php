@@ -4,12 +4,10 @@
  * Copyright (C) 2009 Maikel Linke
  */
 
-interface BookList {
-	
-	public function size();
-	
-	public function toHtmlTable();
-	
-}
+$external_servers = array(
+
+	'Bielefeld' => 'http://ubook.asta-bielefeld.de/'
+
+);
 
 ?>

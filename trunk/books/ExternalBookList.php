@@ -11,6 +11,7 @@ class ExternalBookList extends AbstractBookList {
 	private $searchKey;
 	private $server;
 	private $location;
+	private $booksAsHtmlTable;
 
 	public function __construct($searchKey, $externalServer) {
 		$this->searchKey = $searchKey;
@@ -40,8 +41,12 @@ class ExternalBookList extends AbstractBookList {
 		while ($i++ < $numberOfLines) {
 			$booksAsHtml .= $lineArray[$i];
 		}
-		parent::setHtmlRows($booksAsHtml);
+		$this->booksAsHtmlTable = $booksAsHtml;
 
+	}
+	
+	public function toHtmlTable() {
+		return $this->booksAsHtmlTable;
 	}
 	
 	private function parseUrl($serverUrl) {

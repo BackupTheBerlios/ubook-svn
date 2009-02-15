@@ -3,7 +3,9 @@
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2009 Maikel Linke
  */
-
+/*
+ * TODO: Konfiguration mit mehreren Servern.
+ */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
@@ -43,8 +45,18 @@ else {
 		$bookList = new SearchKeyBookList($searchKey);
 		
 		if ($bookList->size() == 0) {
+			
 			require_once 'books/ExternalBookList.php';
-			$externalBookList = new ExternalBookList($searchKey, 'http://ubook.asta-bielefeld.de/');
+			function load_externalBookList($searchKey) {
+				include 'external_servers.php';
+				foreach ($external_servers as $location => $serverUrl) {
+					$bookList = new ExternalBookList($searchKey, 'http://ubook.asta-bielefeld.de/');
+					if ($bookList->size() > 0) return $bookList;
+					
+				}
+				return null;
+			}
+			$externalBookList = load_externalBookList($searchKey);
 		}
 	}
 
@@ -82,7 +94,7 @@ include 'header.php';
  <?php if ($bookList->size() == 0) { ?>
   <h2>Keine Bücher gefunden.</h2>
   <p>Hier in der Datenbank konnten keine Bücher gefunden werden, auf die alle Stichworte zutreffen.</p> 
-  <?php if ($externalBookList->size() > 0) { ?>
+  <?php if ($externalBookList && $externalBookList->size() > 0) { ?>
    <h2>Suchergebnisse aus anderen Orten:</h2>
    <?php echo $externalBookList->toHtmlTable(); ?>
   <?php } ?>

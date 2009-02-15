@@ -17,10 +17,6 @@ abstract class AbstractBookList implements BookList {
 		return $this->numberOfRows;
 	}
 	
-	public function toHtmlRows() {
-		return $this->booksAsHtmlRows;
-	}
-	
 	public function toHtmlTable() {
 		return $this->bookTable();
 	}
