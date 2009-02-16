@@ -47,16 +47,19 @@ else {
 		if ($bookList->size() == 0) {
 			
 			require_once 'books/ExternalBookList.php';
-			function load_externalBookList($searchKey) {
+			
+			function load_externalBookListArray($searchKey) {
 				include 'external_servers.php';
-				foreach ($external_servers as $location => $serverUrl) {
-					$bookList = new ExternalBookList($searchKey, 'http://ubook.asta-bielefeld.de/');
-					if ($bookList->size() > 0) return $bookList;
+				foreach ($external_servers as $i => $server) {
+					$bookList = new ExternalBookList($searchKey, $server);
+					if ($bookList->size() > 0) {
+						$bookListArray[] = $bookList;
+					}
 					
 				}
-				return null;
+				return $bookListArray;
 			}
-			$externalBookList = load_externalBookList($searchKey);
+			$externalBookListArray = load_externalBookListArray($searchKey);
 		}
 	}
 
@@ -92,11 +95,16 @@ include 'header.php';
 
 <?php if ($searchKey->isGiven()) { ?>
  <?php if ($bookList->size() == 0) { ?>
-  <h2>Keine Bücher gefunden.</h2>
-  <p>Hier in der Datenbank konnten keine Bücher gefunden werden, auf die alle Stichworte zutreffen.</p> 
-  <?php if ($externalBookList && $externalBookList->size() > 0) { ?>
+  <?php if (sizeof($externalBookListArray) > 0) { ?>
    <h2>Suchergebnisse aus anderen Orten:</h2>
-   <?php echo $externalBookList->toHtmlTable(); ?>
+   <p>Hier wurden keine Bücher gefunden. Stattdessen werden Suchergebnisse von anderen Standorten angezeigt.</p>
+   <?php foreach ($externalBookListArray as $i => $externalBookList) { ?>
+    <h3><?php echo $externalBookList->locationName(); ?></h3>
+    <?php echo $externalBookList->toHtmlTable(); ?>
+   <?php } ?>
+  <?php } else { ?>
+   <h2>Keine Bücher gefunden.</h2>
+   <p>Es wurden keine Bücher gefunden.</p> 
   <?php } ?>
  <?php } else { ?>
   <h2>Suchergebnisse:</h2>

@@ -5,19 +5,20 @@
  */
 
 require_once 'AbstractBookList.php';
+require_once 'ExternalServer.php';
 
 class ExternalBookList extends AbstractBookList {
 	
 	private $searchKey;
 	private $server;
-	private $location;
 	private $booksAsHtmlTable;
 
 	public function __construct($searchKey, $externalServer) {
 		$this->searchKey = $searchKey;
-		if (!$this->parseUrl($externalServer)) return;
+		$this->server = $externalServer;
+		//if (!$this->parseUrl($externalServer)) return;
 		$request = self::createRequest($externalServer);
-		$filePointer = fsockopen($this->server, 80);
+		$filePointer = fsockopen($this->server->getServerDomain(), 80);
 		if ($filePointer == null) return;
 		fputs($filePointer, $request);
 		$answer = '';
@@ -45,34 +46,24 @@ class ExternalBookList extends AbstractBookList {
 
 	}
 	
+	public function locationName() {
+		return $this->server->getLocationName();
+	}
+	
 	public function toHtmlTable() {
 		return $this->booksAsHtmlTable;
 	}
 	
-	private function parseUrl($serverUrl) {
-		$protocol = 'http://';
-		if (!self::stringHasPrefix($serverUrl, $protocol)) return;
-		$serverAndLocation = substr($serverUrl, strlen($protocol));
-		$this->location = strstr($serverAndLocation, '/');
-		$this->server = substr($serverAndLocation, 0, -(strlen($this->location)));
-		return true;
-	}
-
 	private function createRequest() {
-		$request = 'GET '.$this->location;
+		$host = $this->server->getServerDomain();
+		$dir = $this->server->getServerDirectory();
+		$request = 'GET '.$dir;
 		$request .= 'query.php?search='.$this->searchKey->asText().' HTTP/1.0'."\n";
-		$request .= 'Host: '.$this->server."\n";
+		$request .= 'Host: '.$host."\n";
 		$request .= 'Connection: close'."\n\n";
 		return $request;
 	}
 	
-	private static function stringHasPrefix($string, $prefix) {
-		if (substr($string, 0, strlen($prefix)) == $prefix) {
-			return true;
-		}
-		return false;
-	}
-
 }
 
 ?>

@@ -4,10 +4,9 @@
  * Copyright (C) 2009 Maikel Linke
  */
 
-$external_servers = array(
+require_once 'books/ExternalServer.php';
 
-	'Bielefeld' => 'http://ubook.asta-bielefeld.de/'
-
-);
+$external_servers = array();
+$external_servers[] = new ExternalServer('Bielefeld', 'http://ubook.asta-bielefeld.de/');
 
 ?>
