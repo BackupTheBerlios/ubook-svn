@@ -55,6 +55,9 @@ else {
 					if ($bookList->size() > 0) {
 						$bookListArray[] = $bookList;
 					}
+					else {
+						//echo $bookList->getNewServers();
+					}
 					
 				}
 				return $bookListArray;

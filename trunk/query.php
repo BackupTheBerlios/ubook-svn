@@ -16,4 +16,11 @@ $bookList = new SearchKeyBookList($searchKey, true);
 echo $bookList->size()."\n";
 echo $bookList->toHtmlTable();
 
+if ($bookList->size() == 0) {
+	include 'external_servers.php';
+	foreach ($external_servers as $i => $server) {
+		echo $server->toXml()."\n";
+	}
+}
+
 ?>

@@ -8,10 +8,11 @@ require_once 'AbstractBookList.php';
 require_once 'ExternalServer.php';
 
 class ExternalBookList extends AbstractBookList {
-	
+
 	private $searchKey;
 	private $server;
 	private $booksAsHtmlTable;
+	private $newServers;
 
 	public function __construct($searchKey, $externalServer) {
 		$this->searchKey = $searchKey;
@@ -38,22 +39,31 @@ class ExternalBookList extends AbstractBookList {
 		}
 		if (!isset($lineArray[++$i])) return;
 		parent::setSize(trim($lineArray[$i]));
-		$booksAsHtml = '';
+		$restLines = '';
 		while ($i++ < $numberOfLines) {
-			$booksAsHtml .= $lineArray[$i];
+			$restLines .= $lineArray[$i];
 		}
-		$this->booksAsHtmlTable = $booksAsHtml;
+		if ($this->size() > 0) {
+			$this->booksAsHtmlTable = $restLines;
+		}
+		else {
+			$this->newServers = $restLines;
+		}
 
 	}
-	
+
 	public function locationName() {
 		return $this->server->getLocationName();
 	}
-	
+
 	public function toHtmlTable() {
 		return $this->booksAsHtmlTable;
 	}
 	
+	public function getNewServers() {
+		return $this->newServers;
+	}
+
 	private function createRequest() {
 		$host = $this->server->getServerDomain();
 		$dir = $this->server->getServerDirectory();
@@ -63,7 +73,7 @@ class ExternalBookList extends AbstractBookList {
 		$request .= 'Connection: close'."\n\n";
 		return $request;
 	}
-	
+
 }
 
 ?>

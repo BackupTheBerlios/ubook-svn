@@ -6,12 +6,14 @@
 
 class ExternalServer {
 	
+	private $url;
 	private $locationName;
 	private $serverName;
 	private $serverDirectory;
 
 	public function __construct($locationName, $url) {
 		$this->locationName = $locationName;
+		$this->url = $url;
 		$this->parseUrl($url);
 	}
 	
@@ -25,6 +27,13 @@ class ExternalServer {
 	
 	public function getServerDirectory() {
 		return $this->serverDirectory;
+	}
+	
+	public function toXml() {
+		$xml = '<ubookServer name="'.$this->locationName.'">';
+		$xml = $this->url;
+		$xml .= '</ubookServer>';
+		return $xml;
 	}
 	
 	private function parseUrl($serverUrl) {
