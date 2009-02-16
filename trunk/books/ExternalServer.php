@@ -10,6 +10,14 @@ class ExternalServer {
 	private $locationName;
 	private $serverName;
 	private $serverDirectory;
+	
+	public static function newFromXml($xml) {
+		$found = array();
+		eregi('<ubookServer name="([[:print:]]+)">([[:graph:]]+)</ubookServer>', $xml, $found);
+		if (sizeof($found) == 3) {
+			return new ExternalServer($found[1], $found[2]);
+		}
+	}
 
 	public function __construct($locationName, $url) {
 		$this->locationName = $locationName;

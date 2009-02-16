@@ -17,7 +17,6 @@ class ExternalBookList extends AbstractBookList {
 	public function __construct($searchKey, $externalServer) {
 		$this->searchKey = $searchKey;
 		$this->server = $externalServer;
-		//if (!$this->parseUrl($externalServer)) return;
 		$request = self::createRequest($externalServer);
 		$filePointer = fsockopen($this->server->getServerDomain(), 80);
 		if ($filePointer == null) return;

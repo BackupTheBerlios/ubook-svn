@@ -43,25 +43,28 @@ else {
 	if ($searchKey->isGiven()) {
 		require_once 'books/SearchKeyBookList.php';
 		$bookList = new SearchKeyBookList($searchKey);
-		
+
 		if ($bookList->size() == 0) {
-			
+				
+			require_once 'books/ExternalServer.php';
+			require_once 'books/ExternalServerPool.php';
 			require_once 'books/ExternalBookList.php';
-			
+				
 			function load_externalBookListArray($searchKey) {
-				include 'external_servers.php';
-				foreach ($external_servers as $i => $server) {
+				$bookListArray = array();
+				$serverPool = new ExternalServerPool();
+				while ($server = $serverPool->next()) {
 					$bookList = new ExternalBookList($searchKey, $server);
 					if ($bookList->size() > 0) {
 						$bookListArray[] = $bookList;
 					}
 					else {
-						//echo $bookList->getNewServers();
+						$serverPool->append($bookList->getNewServers());
 					}
-					
 				}
 				return $bookListArray;
 			}
+
 			$externalBookListArray = load_externalBookListArray($searchKey);
 		}
 	}
@@ -97,34 +100,35 @@ include 'header.php';
 
 
 <?php if ($searchKey->isGiven()) { ?>
- <?php if ($bookList->size() == 0) { ?>
-  <?php if (sizeof($externalBookListArray) > 0) { ?>
-   <h2>Suchergebnisse aus anderen Orten:</h2>
-   <p>Hier wurden keine Bücher gefunden. Stattdessen werden Suchergebnisse von anderen Standorten angezeigt.</p>
-   <?php foreach ($externalBookListArray as $i => $externalBookList) { ?>
-    <h3><?php echo $externalBookList->locationName(); ?></h3>
-    <?php echo $externalBookList->toHtmlTable(); ?>
-   <?php } ?>
-  <?php } else { ?>
-   <h2>Keine Bücher gefunden.</h2>
-   <p>Es wurden keine Bücher gefunden.</p> 
-  <?php } ?>
- <?php } else { ?>
-  <h2>Suchergebnisse:</h2>
-  <?php echo $bookList->toHtmlTable(); ?>
- <?php } ?>
+<?php if ($bookList->size() == 0) { ?>
+<?php if (sizeof($externalBookListArray) > 0) { ?>
+<h2>Suchergebnisse aus anderen Orten:</h2>
+<p>Hier wurden keine Bücher gefunden. Stattdessen werden Suchergebnisse
+von anderen Standorten angezeigt.</p>
+<?php foreach ($externalBookListArray as $i => $externalBookList) { ?>
+<h3><?php echo $externalBookList->locationName(); ?></h3>
+<?php echo $externalBookList->toHtmlTable(); ?>
+<?php } ?>
+<?php } else { ?>
+<h2>Keine Bücher gefunden</h2>
+<p>Es wurden keine Bücher gefunden.</p>
+<?php } ?>
+<?php } else { ?>
+<h2>Suchergebnisse:</h2>
+<?php echo $bookList->toHtmlTable(); ?>
+<?php } ?>
 <?php } ?>
 
 
 <?php echo categoryMenu(); ?>
 
 <?php if ($category != '') { ?>
- <h2><?php echo $category ?></h2>
- <?php if ($catBookList->size() == 0) { ?>
-  <div>In dieser Kategorie gibt es zur Zeit keine Bücher.</div>
- <?php } else { ?>
-  <?php echo $catBookList->toHtmlTable(); ?>
- <?php } ?>
+<h2><?php echo $category ?></h2>
+<?php if ($catBookList->size() == 0) { ?>
+<div>In dieser Kategorie gibt es zur Zeit keine Bücher.</div>
+<?php } else { ?>
+<?php echo $catBookList->toHtmlTable(); ?>
+<?php } ?>
 <?php } ?>
 
 
