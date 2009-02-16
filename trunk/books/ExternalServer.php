@@ -31,7 +31,7 @@ class ExternalServer {
 	
 	public function toXml() {
 		$xml = '<ubookServer name="'.$this->locationName.'">';
-		$xml = $this->url;
+		$xml .= $this->url;
 		$xml .= '</ubookServer>';
 		return $xml;
 	}
