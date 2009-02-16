@@ -14,9 +14,11 @@ require_once 'books/SearchKeyBookList.php';
 $bookList = new SearchKeyBookList($searchKey, true);
 
 echo $bookList->size()."\n";
-echo $bookList->toHtmlTable();
 
-if ($bookList->size() == 0) {
+if ($bookList->size() > 0) {
+	echo $bookList->toHtmlTable();
+}
+else {
 	include 'external_servers.php';
 	foreach ($external_servers as $i => $server) {
 		echo $server->toXml()."\n";
