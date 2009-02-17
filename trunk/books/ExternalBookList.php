@@ -38,15 +38,15 @@ class ExternalBookList extends AbstractBookList {
 		}
 		if (!isset($lineArray[++$i])) return;
 		parent::setSize(trim($lineArray[$i]));
-		$restLines = '';
-		while ($i++ < $numberOfLines) {
-			$restLines .= $lineArray[$i];
-		}
 		if ($this->size() > 0) {
+			$restLines = '';
+			while ($i++ < $numberOfLines) {
+				$restLines .= $lineArray[$i];
+			}
 			$this->booksAsHtmlTable = $restLines;
 		}
 		else {
-			$this->newServers = $restLines;
+			$this->newServers = array_slice($lineArray, $i+1);
 		}
 
 	}
@@ -58,7 +58,7 @@ class ExternalBookList extends AbstractBookList {
 	public function toHtmlTable() {
 		return $this->booksAsHtmlTable;
 	}
-	
+
 	public function getNewServers() {
 		return $this->newServers;
 	}

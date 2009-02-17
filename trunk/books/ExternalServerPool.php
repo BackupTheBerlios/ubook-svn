@@ -10,10 +10,12 @@ class ExternalServerPool {
 
 	private $index = 0;
 	private $servers = array();
+	private $startSize = 0;
 
 	public function __construct() {
 		include 'external_servers.php';
 		$this->servers = $external_servers;
+		$this->startSize = sizeof($external_servers);
 	}
 
 	public function next() {
@@ -22,14 +24,31 @@ class ExternalServerPool {
 		}
 		else return null;
 	}
-	
+
 	public function append($lineArray) {
 		foreach ($lineArray as $i => $xml) {
 			$server = ExternalServer::newFromXml($xml);
-			if ($server) {
+			if ($server && !$this->isInList($server)) {
 				$this->servers[] = $server;
 			}
 		}
+	}
+
+	public function saveInDb() {
+		for ($i = $this->startSize; $i < sizeof($this->servers); $i++) {
+			$newServer = $this->servers[$i];
+			$newServer->dbInsert();
+		}
+	}
+
+	private function isInList($newServer) {
+		$serverArray = $this->servers;
+		foreach ($serverArray as $i => $server) {
+			if ($server->equals($newServer)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
