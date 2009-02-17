@@ -7,14 +7,13 @@
 require_once 'ExternalServer.php';
 
 class ExternalServerPool {
-
+	
 	private $index = 0;
 	private $servers = array();
 	private $startSize = 0;
 
-	public function __construct() {
-		include 'external_servers.php';
-		$this->servers = $external_servers;
+	public function __construct($loadBlacklisted = false) {
+		$this->loadFromDb($loadBlacklisted);
 		$this->startSize = sizeof($external_servers);
 	}
 
@@ -40,7 +39,33 @@ class ExternalServerPool {
 			$newServer->dbInsert();
 		}
 	}
+	
+	public function size() {
+		return sizeof($this->servers);
+	}
+	
+	public function resetDb() {
+		mysql_query('delete from servers where url != "";');
+		include 'external_servers.php';
+		foreach ($external_servers as $i => $server) {
+			$server->dbInsert();
+		}
+		$this->servers = $external_servers;
+	}
 
+	private function loadFromDb($loadBlacklisted) {
+		$query = 'select url, name, fails, next_try from servers where url != ""';
+		if (!$loadBlacklisted) {
+			$query .= ' and next_try <= curdate()';
+		}
+		$query .= ';';
+		$result = mysql_query($query);
+		if (!$result) return;
+		while ($serverArray = mysql_fetch_array($result)) {
+			$this->servers[] = ExternalServer::newFromArray($serverArray);
+		}
+	}
+	
 	private function isInList($newServer) {
 		$serverArray = $this->servers;
 		foreach ($serverArray as $i => $server) {

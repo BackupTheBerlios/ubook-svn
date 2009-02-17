@@ -9,10 +9,10 @@ require_once 'ExternalServer.php';
 
 class ExternalBookList extends AbstractBookList {
 
-	private $searchKey;
-	private $server;
-	private $booksAsHtmlTable;
-	private $newServers;
+	private $searchKey = null;
+	private $server = null;
+	private $booksAsHtmlTable = '';
+	private $newServers = array();
 
 	public function __construct($searchKey, $externalServer) {
 		$this->searchKey = $searchKey;
@@ -26,29 +26,11 @@ class ExternalBookList extends AbstractBookList {
 			$answer.= fread($filePointer, 1024);
 		}
 		fclose($filePointer);
-		$lineArray = split("\n", $answer);
-		$numberOfLines = sizeof($lineArray);
-		$statusArray = split(' ', $lineArray[0]);
-		if ($statusArray[1] != '200') {
-			return;
-		}
-		$i = 1;
-		while ($i < $numberOfLines && trim($lineArray[$i])) {
-			$i++;
-		}
-		if (!isset($lineArray[++$i])) return;
-		parent::setSize(trim($lineArray[$i]));
-		if ($this->size() > 0) {
-			$restLines = '';
-			while ($i++ < $numberOfLines) {
-				$restLines .= $lineArray[$i];
-			}
-			$this->booksAsHtmlTable = $restLines;
-		}
-		else {
-			$this->newServers = array_slice($lineArray, $i+1);
-		}
-
+		$sectionArray = split('<!-- section -->', $answer);
+		if (sizeof($sectionArray) != 4) return;
+		$this->rememberName($sectionArray[1]);
+		$this->setSizeString($sectionArray[2]);
+		$this->parseList($sectionArray[3]);
 	}
 
 	public function locationName() {
@@ -71,6 +53,23 @@ class ExternalBookList extends AbstractBookList {
 		$request .= 'Host: '.$host."\n";
 		$request .= 'Connection: close'."\n\n";
 		return $request;
+	}
+
+	private function rememberName() {
+
+	}
+
+	private function setSizeString($sizeString) {
+		parent::setSize(trim($sizeString));
+	}
+
+	private function parseList($listString) {
+		if ($this->size() > 0) {
+			$this->booksAsHtmlTable = $listString;
+		}
+		else {
+			$this->newServers = split("\n", $listString);
+		}
 	}
 
 }

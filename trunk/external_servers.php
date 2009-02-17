@@ -6,6 +6,9 @@
 
 require_once 'books/ExternalServer.php';
 
+/*
+ * This list is only to initialize the list in the database.
+ */
 $external_servers = array(
 
 	new ExternalServer('Bielefeld', 'http://ubook.asta-bielefeld.de/')

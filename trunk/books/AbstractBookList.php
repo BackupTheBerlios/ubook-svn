@@ -5,6 +5,7 @@
  */
 
 require_once 'BookList.php';
+require_once 'mysql_conn.php';
 
 abstract class AbstractBookList implements BookList {
 
@@ -41,7 +42,7 @@ abstract class AbstractBookList implements BookList {
 		return $t;
 	}
 
-	private static function numberOfAllBooks() {
+	public static function numberOfAllBooks() {
 		if (self::$numberOfAllBooks === null) {
 			$countResult = mysql_query('select count(id) from books;');
 			list($null, self::$numberOfAllBooks) = each(mysql_fetch_row($countResult));

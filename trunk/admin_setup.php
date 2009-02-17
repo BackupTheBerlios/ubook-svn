@@ -65,19 +65,27 @@ if ($error == '') {
 		$new_table .= ')';
 		mysql_query($new_table);
 	}
+	$table_servers = mysql_query('describe servers;');
+	if ($table_servers == null) {
+		$new_table = 'CREATE TABLE `servers` (';
+		$new_table .= '`url` varchar(128) NOT NULL,';
+		$new_table .= '`name` varchar(128) NOT NULL,';
+		$new_table .= '`fails` tinyint(3) unsigned NOT NULL,';
+		$new_table .= '`next_try` date NOT NULL,';
+		$new_table .= 'PRIMARY KEY  (`url`)';
+		$new_table .= ')';
+		mysql_query($new_table);
+	}
 }
 
 require 'header.php';
 ?>
 
-<?php if ($error == '') {?>
-  <div class="menu">
-   <span><a href="./">Buch suchen</a></span>
-   <span><a href="add.php">Buch anbieten</a></span>
-   <span><a href="help.php">Hilfe</a></span>
-   <span><a href="about.php">Impressum</a></span>
-  </div>
+  <?php if ($error == '') {?>
   <div class="infobox">Das Setup ist fertig.</div>
+  <div class="menu">
+   <span><a href="admin.php">Zur Administrationsübersicht &rarr;</a></span>
+  </div>
   <?php } ?>
   
   

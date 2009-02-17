@@ -3,9 +3,6 @@
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2009 Maikel Linke
  */
-/*
- * TODO: Konfiguration mit mehreren Servern.
- */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
