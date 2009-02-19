@@ -92,6 +92,5 @@ require 'header.php';
    <p><input type="text" name="new_category" size="16" maxlength="32" /> <input type="submit" value="Hinzufügen" /></p>
   </form>
   
- </body> 
-</html>
+<?php include 'footer.php'; ?>
 

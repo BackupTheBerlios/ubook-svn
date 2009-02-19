@@ -132,5 +132,4 @@ include 'header.php';
   </form>
   <?php } ?>
   <?php } ?>
- </body>
-</html>
+<?php include 'footer.php'; ?>

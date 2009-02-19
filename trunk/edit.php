@@ -80,5 +80,4 @@ include 'header.php';
     </table>
     <p><input type="submit" value="Speichern" /></p>
    </form>
- </body>
-</html>
+<?php include 'footer.php'; ?>

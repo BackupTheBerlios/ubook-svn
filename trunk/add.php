@@ -114,5 +114,4 @@ include 'header.php';
       <input type="submit" value="Abbrechen" />
   </form>
   </fieldset>
- </body>
-</html>
+<?php include 'footer.php'; ?>

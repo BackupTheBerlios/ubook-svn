@@ -41,5 +41,4 @@
    nicht gefunden.
   <?php } ?>
   </p>
- </body>
-</html>
+<?php include 'footer.php'; ?>

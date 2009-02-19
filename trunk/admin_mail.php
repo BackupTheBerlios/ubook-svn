@@ -56,6 +56,4 @@ Administrationsübersicht</a></span></div>
       <input type="submit" value="Verschicken" />
   </form>
   </fieldset>
- </body> 
-</html>
-
+<?php include 'footer.php'; ?>

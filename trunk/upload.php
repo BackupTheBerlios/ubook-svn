@@ -60,5 +60,4 @@ include 'header.php';
    <input type="submit" value="Löschen" />
   </form>
   <?php } ?>
- </body>
-</html>
+<?php include 'footer.php'; ?>
