@@ -29,7 +29,7 @@ class ExternalServer {
 		$server->dataFromDatabase = true;
 		return $server;
 	}
-	
+
 	public static function newFromUrlString($urlString) {
 		if (strlen($urlString) <= 7) return;
 		if (self::containsSpecialChar($urlString)) return;
@@ -128,18 +128,20 @@ class ExternalServer {
 	public function failed() {
 		$this->fails++;
 		if ($this->dataFromDatabase) {
+			if ($this->locationName == '') {
+				self::delete(($this->url));
+				return;
+			}
 			if ($this->fails > 8) {
 				self::delete($this->url);
 				return;
 			}
-			else {
-				require_once 'mysql_conn.php';
-				$query = 'update servers set'
-				. ' fails = fails + 1'
-				. ' , next_try = adddate(curdate(), fails * fails'
-				. ' where url = "' . $this->url . '";';
-				mysql_query($query);
-			}
+			require_once 'mysql_conn.php';
+			$query = 'update servers set'
+			. ' fails = fails + 1'
+			. ' , next_try = adddate(curdate(), fails * fails'
+			. ' where url = "' . $this->url . '";';
+			mysql_query($query);
 		}
 	}
 

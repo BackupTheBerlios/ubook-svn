@@ -13,6 +13,9 @@ if (!$searchKey->isGiven()) exit;
 if (isset($_GET['from'])) {
 	require_once 'books/ExternalServer.php';
 	$requestingServer = ExternalServer::newFromUrlString($_GET['from']);
+	if ($requestingServer) {
+		$requestingServer->dbInsert();
+	}
 }
 
 require_once 'LocalServerName.php';

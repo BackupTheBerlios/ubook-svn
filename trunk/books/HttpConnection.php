@@ -19,7 +19,7 @@ class HttpConnection {
 	
 	public function read() {
 		$request = self::createRequest($externalServer);
-		$filePointer = fsockopen($this->url->getDomainName(), 80);
+		$filePointer = @fsockopen($this->url->getDomainName(), 80);
 		if ($filePointer === false) return null;
 		fputs($filePointer, $request);
 		$response = '';
