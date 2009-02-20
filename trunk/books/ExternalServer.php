@@ -8,26 +8,36 @@ class ExternalServer {
 
 	private $url;
 	private $locationName;
-	private $serverName;
-	private $serverDirectory;
 	private $fails = 0;
 	private $nextTry = '0000-01-01';
+	private $dataFromDatabase = false;
 
 	public static function newFromXml($xml) {
 		$found = array();
 		eregi('<ubookServer name="([[:print:]]+)">([[:graph:]]+)</ubookServer>', $xml, $found);
 		if (sizeof($found) == 3) {
+			if (self::containsSpecialChar($found[1])) return;
+			if (self::containsSpecialChar($found[2])) return;
 			return new ExternalServer($found[1], $found[2]);
 		}
 	}
 
-	public static function newFromArray($array) {
+	public static function newFromDbArray($array) {
 		$server = new ExternalServer($array['name'], $array['url']);
 		$server->fails = $array['fails'];
 		$server->nextTry = $array['next_try'];
+		$server->dataFromDatabase = true;
 		return $server;
 	}
 	
+	public static function newFromUrlString($urlString) {
+		if (strlen($urlString) <= 7) return;
+		if (self::containsSpecialChar($urlString)) return;
+		$url = new HttpUrl($urlString);
+		if ($url->getDomainName() == 'localhost') return;
+		return new self('', $urlString);
+	}
+
 	public static function blacklist($url) {
 		require_once 'mysql_conn.php';
 		mysql_query('update servers set next_try="9999-12-31" where url="'.$url.'";');
@@ -38,24 +48,34 @@ class ExternalServer {
 		mysql_query('update servers set next_try=curdate() where url="'.$url.'";');
 	}
 
+	public static function delete($url) {
+		require_once 'mysql_conn.php';
+		mysql_query('delete from servers where url="'.$url.'";');
+	}
+
 	public function __construct($locationName, $url) {
 		$this->locationName = $locationName;
 		$this->url = $url;
-		$this->parseUrl($url);
 	}
 
 	public function getLocationName() {
 		return $this->locationName;
 	}
 
-	public function getServerDomain() {
-		return $this->serverName;
+	public function setLocationName($name) {
+		if (self::containsSpecialChar($name)) return;
+		if ($name == $this->locationName) return;
+		$this->locationName = $name;
+		if ($this->dataFromDatabase) {
+			require_once 'mysql_conn.php';
+			$query = 'update servers set'
+			. ' name = "' . $this->locationName . '"'
+			. ' , fails = 0'
+			. ' where url = "' . $this->url . '";';
+			mysql_query($query);
+		}
 	}
 
-	public function getServerDirectory() {
-		return $this->serverDirectory;
-	}
-	
 	public function getUrl() {
 		return $this->url;
 	}
@@ -64,8 +84,10 @@ class ExternalServer {
 		if ($this->url == $otherServer->url) {
 			return true;
 		}
-		if ($this->locationName == $otherServer->locationName) {
-			return true;
+		if ($otherServer->locationName) {
+			if ($this->locationName == $otherServer->locationName) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -76,39 +98,55 @@ class ExternalServer {
 		$xml .= '</ubookServer>';
 		return $xml;
 	}
-	
+
 	public function toHtmlLink() {
+		if ($this->locationName) {
+			$linkName = $this->locationName;
+		}
+		else {
+			$linkName = $this->url;
+		}
 		$link = '<a href="' . $this->url . '" target="_blank">'
-		. $this->locationName . '</a>';
+		. $linkName . '</a>';
 		return $link;
 	}
 
 	public function dbInsert() {
+		if ($this->fails) return;
 		require_once 'mysql_conn.php';
 		$query = 'insert into servers (url, name) values ('
-		. '"'.addslashes($this->url).'", '
-		. '"'.addslashes($this->locationName).'");';
+		. '"'.$this->url.'", '
+		. '"'.$this->locationName.'");';
 		mysql_query($query);
 	}
-	
+
 	public function isBlacklisted() {
 		return ($this->nextTry == '9999-12-31');
 	}
 
-	private function parseUrl($serverUrl) {
-		$protocol = 'http://';
-		if (!self::stringHasPrefix($serverUrl, $protocol)) return;
-		$serverAndDirectory = substr($serverUrl, strlen($protocol));
-		$directory = strstr($serverAndDirectory, '/');
-		$serverName = substr($serverAndDirectory, 0, -(strlen($directory)));
-		$this->serverName = $serverName;
-		$this->serverDirectory = $directory;
+	public function failed() {
+		$this->fails++;
+		if ($this->dataFromDatabase) {
+			if ($this->fails > 8) {
+				self::delete($this->url);
+				return;
+			}
+			else {
+				require_once 'mysql_conn.php';
+				$query = 'update servers set'
+				. ' fails = fails + 1'
+				. ' , next_try = adddate(curdate(), fails * fails'
+				. ' where url = "' . $this->url . '";';
+				mysql_query($query);
+			}
+		}
 	}
 
-	private static function stringHasPrefix($string, $prefix) {
-		if (substr($string, 0, strlen($prefix)) == $prefix) {
-			return true;
-		}
+	private static function containsSpecialChar($string) {
+		if (strpos($string, '"') !== false) return true;
+		if (strpos($string, "'") !== false) return true;
+		if (strpos($string, '\\') !== false) return true;
+		if (strpos($string, "\0") !== false) return true;
 		return false;
 	}
 

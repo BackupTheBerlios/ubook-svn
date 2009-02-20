@@ -7,13 +7,15 @@
 require_once 'ExternalServer.php';
 
 class ExternalServerPool {
-	
+
 	private $index = 0;
 	private $servers = array();
 	private $startSize = 0;
+	private $acceptMoreServers = false;
 
-	public function __construct($loadBlacklisted = false) {
-		$this->loadFromDb($loadBlacklisted);
+	public function __construct($loadNew = false, $loadBlacklisted = false) {
+		$this->loadAcceptMoreServersOption();
+		$this->loadFromDb($loadNew, $loadBlacklisted);
 		$this->startSize = sizeof($external_servers);
 	}
 
@@ -24,26 +26,31 @@ class ExternalServerPool {
 		else return null;
 	}
 
-	public function append($lineArray) {
+	public function append($xmlServerList) {
+		if (!$this->acceptMoreServers) return;
+		$lineArray = split("\n", $xmlServerList);
 		foreach ($lineArray as $i => $xml) {
 			$server = ExternalServer::newFromXml($xml);
-			if ($server && !$this->isInList($server)) {
-				$this->servers[] = $server;
-			}
+			$this->add($server);
 		}
+	}
+
+	public function addUrl($urlString) {
+		$server = ExternalServer::newFromUrlString($urlString);
+		$this->add($server);
+		$this->saveInDb();
 	}
 
 	public function saveInDb() {
 		for ($i = $this->startSize; $i < sizeof($this->servers); $i++) {
-			$newServer = $this->servers[$i];
-			$newServer->dbInsert();
+			$this->servers[$i]->dbInsert();
 		}
 	}
-	
+
 	public function size() {
 		return sizeof($this->servers);
 	}
-	
+
 	public function resetDb() {
 		mysql_query('delete from servers where url != "";');
 		include 'external_servers.php';
@@ -53,8 +60,25 @@ class ExternalServerPool {
 		$this->servers = $external_servers;
 	}
 
-	private function loadFromDb($loadBlacklisted) {
+	public function acceptMoreServers() {
+		return $this->acceptMoreServers;
+	}
+
+	public function enableAcceptingServers() {
+		mysql_query('update servers set fails = 0 where url = "";');
+		$this->acceptMoreServers = true;
+	}
+
+	public function disableAcceptingServers() {
+		mysql_query('update servers set fails = 1 where url = "";');
+		$this->acceptMoreServers = false;
+	}
+
+	private function loadFromDb($loadNew, $loadBlacklisted) {
 		$query = 'select url, name, fails, next_try from servers where url != ""';
+		if (!$loadNew) {
+			$query .= ' and name != ""';
+		}
 		if (!$loadBlacklisted) {
 			$query .= ' and next_try <= curdate()';
 		}
@@ -62,10 +86,27 @@ class ExternalServerPool {
 		$result = mysql_query($query);
 		if (!$result) return;
 		while ($serverArray = mysql_fetch_array($result)) {
-			$this->servers[] = ExternalServer::newFromArray($serverArray);
+			$this->servers[] = ExternalServer::newFromDbArray($serverArray);
 		}
 	}
-	
+
+	private function loadAcceptMoreServersOption() {
+		$query = 'select fails from servers where url="";';
+		$result = mysql_query($query);
+		if (!$result) return;
+		if ($row = mysql_fetch_row($result)) {
+			if ($row[0] == '0') {
+				$this->acceptMoreServers = true;
+			}
+		}
+	}
+
+	private function add($newServer) {
+		if ($newServer && !$this->isInList($newServer)) {
+			$this->servers[] = $newServer;
+		}
+	}
+
 	private function isInList($newServer) {
 		$serverArray = $this->servers;
 		foreach ($serverArray as $i => $server) {

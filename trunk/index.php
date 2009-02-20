@@ -49,7 +49,7 @@ else {
 				
 			function load_externalBookListArray($searchKey) {
 				$bookListArray = array();
-				$serverPool = new ExternalServerPool();
+				$serverPool = new ExternalServerPool(true);
 				while ($server = $serverPool->next()) {
 					$bookList = new ExternalBookList($searchKey, $server);
 					if ($bookList->size() > 0) {

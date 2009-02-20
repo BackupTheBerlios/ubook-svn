@@ -15,7 +15,6 @@ class ExternalServerTest extends PHPUnit_Framework_TestCase {
 		$result = ExternalServer::newFromXml($xml);
 		$this->assertNotNull($result);
 		$this->assertEquals($result->getLocationName(), 'Bielefeld');
-		$this->assertEquals($result->getServerDomain(), 'ubook.asta-bielefeld.de');
 	}
 	
 }

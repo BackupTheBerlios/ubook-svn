@@ -10,6 +10,11 @@ $searchKey = new SearchKey();
 
 if (!$searchKey->isGiven()) exit;
 
+if (isset($_GET['from'])) {
+	require_once 'books/ExternalServer.php';
+	$requestingServer = ExternalServer::newFromUrlString($_GET['from']);
+}
+
 require_once 'LocalServerName.php';
 $serverName = new LocalServerName();
 echo '<!-- section -->'."\n";

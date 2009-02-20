@@ -17,10 +17,25 @@ if (isset($_POST['local_name'])) {
 }
 
 if (!$localServerName->isEmpty()) {
-	$serverPool = new ExternalServerPool(true);
+	$serverPool = new ExternalServerPool(true, true);
 
 	if (isset($_GET['reset_servers'])) {
 		$serverPool->resetDb();
+		Header('Location: admin_servers.php');
+	}
+
+	if (isset($_GET['set_manual'])) {
+		$serverPool->disableAcceptingServers();
+		Header('Location: admin_servers.php');
+	}
+
+	if (isset($_GET['set_automatic'])) {
+		$serverPool->enableAcceptingServers();
+		Header('Location: admin_servers.php');
+	}
+
+	if (isset($_POST['new_url'])) {
+		$serverPool->addUrl($_POST['new_url']);
 		Header('Location: admin_servers.php');
 	}
 
@@ -31,6 +46,11 @@ if (!$localServerName->isEmpty()) {
 
 	if (isset($_GET['activate'])) {
 		ExternalServer::activate($_GET['activate']);
+		Header('Location: admin_servers.php');
+	}
+
+	if (isset($_GET['delete'])) {
+		ExternalServer::delete($_GET['delete']);
 		Header('Location: admin_servers.php');
 	}
 
@@ -75,6 +95,13 @@ Name:</label> <input type="text" name="local_name"
 <h2>Standort <?php echo $localServerName->name(); ?></h2>
 <div class="menu"><span><a href="admin_servers.php?edit_name=1">Namen
 des Standorts ändern.</a></span></div>
+<?php if ($serverPool->acceptMoreServers()) { ?>
+<h2>Automatisches Hinzufügen von anderen Standorten aktiv</h2>
+<div class="menu"><span><a href="admin_servers.php?set_manual=1">Das automatische Hinzufügen von Standorten deaktivieren</a></span></div>
+<?php } else { ?>
+<h2>Manuelle Verwaltung der Standortliste</h2>
+<div class="menu"><span><a href="admin_servers.php?set_automatic=1">Das automatische Hinzufügen von Standorten aktivieren</a></span></div>
+<?php } ?>
 <h2>Bekannte Standorte: <?php echo $serverPool->size(); ?></h2>
 <?php if ($serverPool->size() == 0) { ?>
 <div class="menu"><span><a href="admin_servers.php?reset_servers=1">Alle
@@ -82,6 +109,7 @@ Standorteinträge zurücksetzen.</a></span></div>
 <?php } else { ?>
 <ul class="text">
 <?php echo $htmlList; ?>
+<li><form action="admin_servers.php" method="post"><input type="text" name="new_url" value="http://" class="fullsize" /><input type="submit" value="Eintragen" /></form></li>
 </ul>
 <?php } ?>
 

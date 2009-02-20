@@ -8,13 +8,14 @@ require_once 'AbstractBookList.php';
 require_once 'ExternalServer.php';
 require_once 'HttpUrl.php';
 require_once 'HttpConnection.php';
+require_once 'WEBDIR.php';
 
 class ExternalBookList extends AbstractBookList {
 
 	private $searchKey = null;
 	private $server = null;
 	private $booksAsHtmlTable = '';
-	private $newServers = array();
+	private $newServers = '';
 
 	public function __construct($searchKey, $externalServer) {
 		$this->searchKey = $searchKey;
@@ -37,7 +38,10 @@ class ExternalBookList extends AbstractBookList {
 	private function read() {
 		$answer = $this->request();
 		$sectionArray = split('<!-- section -->', $answer);
-		if (sizeof($sectionArray) != 4) return;
+		if (sizeof($sectionArray) != 4) {
+			$this->server->failed();
+			return;
+		}
 		$this->rememberName($sectionArray[1]);
 		$this->setSizeString($sectionArray[2]);
 		$this->parseList($sectionArray[3]);
@@ -45,14 +49,15 @@ class ExternalBookList extends AbstractBookList {
 
 	private function request() {
 		$requestUrlString = $this->server->getUrl()
-		. 'query.php?search=' . $this->searchKey->asText();
+		. 'query.php?search=' . $this->searchKey->asText()
+		. '&from=' . WEBDIR;
 		$httpUrl = new HttpUrl($requestUrlString);
 		$connection = new HttpConnection($httpUrl);
 		return $connection->read();
 	}
 
-	private function rememberName() {
-
+	private function rememberName($serverName) {
+		$this->server->setLocationName(trim($serverName));
 	}
 
 	private function setSizeString($sizeString) {
@@ -64,7 +69,7 @@ class ExternalBookList extends AbstractBookList {
 			$this->booksAsHtmlTable = $listString;
 		}
 		else {
-			$this->newServers = split("\n", $listString);
+			$this->newServers = $listString;
 		}
 	}
 

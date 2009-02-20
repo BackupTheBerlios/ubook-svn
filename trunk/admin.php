@@ -14,7 +14,7 @@ $categories = new Categories();
 $numberOfCategories = sizeof($categories->getArray());
 
 require_once 'books/ExternalServerPool.php';
-$serverPool = new ExternalServerPool();
+$serverPool = new ExternalServerPool(true);
 $numberOfServers = $serverPool->size();
 
 /*
