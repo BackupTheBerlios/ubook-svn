@@ -33,6 +33,7 @@ class ExternalServer {
 	public static function newFromUrlString($urlString) {
 		if (strlen($urlString) <= 7) return;
 		if (self::containsSpecialChar($urlString)) return;
+		require_once 'books/HttpUrl.php';
 		$url = new HttpUrl($urlString);
 		if ($url->getDomainName() == 'localhost') return;
 		return new self('', $urlString);
