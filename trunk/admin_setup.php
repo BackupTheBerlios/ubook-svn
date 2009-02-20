@@ -91,7 +91,7 @@ require 'header.php';
   
   <?php if ($error == 'not writeable') {?>
    <p>In diesem Verzeichnis muss die Konfigurationsdatei "mysql.php" geschrieben und ein Verzeichnis zum Bilderupload erstellt werden. Dazu braucht der Webserver das Schreibrecht für dieses Verzeichnis. Vergib das Schreibrecht und es geht weiter.</p>
-   <p><form action="admin_setup.php" method="get"><input type="submit" value="Weiter" /></form></p>
+   <form action="admin_setup.php" method="get"><p><input type="submit" value="Weiter" /></p></form>
   <?php } ?>
   
   <?php if ($error == 'no file') {?>

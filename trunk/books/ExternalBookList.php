@@ -6,6 +6,8 @@
 
 require_once 'AbstractBookList.php';
 require_once 'ExternalServer.php';
+require_once 'HttpUrl.php';
+require_once 'HttpConnection.php';
 
 class ExternalBookList extends AbstractBookList {
 
@@ -17,20 +19,7 @@ class ExternalBookList extends AbstractBookList {
 	public function __construct($searchKey, $externalServer) {
 		$this->searchKey = $searchKey;
 		$this->server = $externalServer;
-		$request = self::createRequest($externalServer);
-		$filePointer = fsockopen($this->server->getServerDomain(), 80);
-		if ($filePointer == null) return;
-		fputs($filePointer, $request);
-		$answer = '';
-		while (!feof($filePointer)) {
-			$answer.= fread($filePointer, 1024);
-		}
-		fclose($filePointer);
-		$sectionArray = split('<!-- section -->', $answer);
-		if (sizeof($sectionArray) != 4) return;
-		$this->rememberName($sectionArray[1]);
-		$this->setSizeString($sectionArray[2]);
-		$this->parseList($sectionArray[3]);
+		$this->read();
 	}
 
 	public function locationName() {
@@ -44,15 +33,22 @@ class ExternalBookList extends AbstractBookList {
 	public function getNewServers() {
 		return $this->newServers;
 	}
+	
+	private function read() {
+		$answer = $this->request();
+		$sectionArray = split('<!-- section -->', $answer);
+		if (sizeof($sectionArray) != 4) return;
+		$this->rememberName($sectionArray[1]);
+		$this->setSizeString($sectionArray[2]);
+		$this->parseList($sectionArray[3]);
+	}
 
-	private function createRequest() {
-		$host = $this->server->getServerDomain();
-		$dir = $this->server->getServerDirectory();
-		$request = 'GET '.$dir;
-		$request .= 'query.php?search='.$this->searchKey->asText().' HTTP/1.0'."\n";
-		$request .= 'Host: '.$host."\n";
-		$request .= 'Connection: close'."\n\n";
-		return $request;
+	private function request() {
+		$requestUrlString = $externalServer->getUrl()
+		. 'query.php?search=' . $this->searchKey->asText();
+		$httpUrl = new HttpUrl($requestUrlString);
+		$connection = new HttpConnection($httpUrl);
+		return $connection->read();
 	}
 
 	private function rememberName() {

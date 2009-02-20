@@ -31,5 +31,4 @@ require 'header.php';
  <?php echo $books; ?>
 </ol>
   
- </body> 
-</html>
+<?php include 'footer.php'; ?>

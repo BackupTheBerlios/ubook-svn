@@ -48,5 +48,4 @@ include 'header.php';
    </form>
 <?php } ?>
   
- </body>
-</html>
+<?php include 'footer.php'; ?>
