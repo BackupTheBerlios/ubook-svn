@@ -44,7 +44,7 @@ class ExternalBookList extends AbstractBookList {
 	}
 
 	private function request() {
-		$requestUrlString = $externalServer->getUrl()
+		$requestUrlString = $this->server->getUrl()
 		. 'query.php?search=' . $this->searchKey->asText();
 		$httpUrl = new HttpUrl($requestUrlString);
 		$connection = new HttpConnection($httpUrl);

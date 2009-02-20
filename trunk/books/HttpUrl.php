@@ -11,7 +11,7 @@ class HttpUrl {
 	private $directory = '';
 
 	public function __construct($urlString) {
-		$this->parseUrl($url);
+		$this->parseUrl($urlString);
 	}
 
 	public function toString() {

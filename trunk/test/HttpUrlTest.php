@@ -13,8 +13,8 @@ class HttpUrlTest extends PHPUnit_Framework_TestCase {
 	function testHttpUrl() {
 		$urlString = 'http://localhost/ubook/';
 		$url = new HttpUrl($urlString);
-		$this->assertEquals($url->getDomainName(), 'localhost');
-		$this->assertEquals($url->getDirectory(), '/ubook/');
+		$this->assertEquals('localhost', $url->getDomainName());
+		$this->assertEquals('/ubook/', $url->getDirectory());
 	}
 	
 }

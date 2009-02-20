@@ -15,7 +15,7 @@ class HttpConnectionTest extends PHPUnit_Framework_TestCase {
 		$url = new HttpUrl('http://localhost/');
 		$connection = new HttpConnection($url);
 		$answer = $connection->read();
-		if ($anwser === null) {
+		if ($answer === null) {
 			$this->fail('Could not test: could not reach http server on localhost.');
 		}
 		$this->assertFalse($answer == '');

@@ -7,6 +7,9 @@
 require_once 'HttpUrl.php';
 
 class HttpConnection {
+	
+	const newline = "\r\n";
+	const emptyline = "\r\n\r\n";
 
 	private $url = null;
 
@@ -16,21 +19,34 @@ class HttpConnection {
 	
 	public function read() {
 		$request = self::createRequest($externalServer);
-		$filePointer = fsockopen($this->url->getDomain(), 80);
-		if ($filePointer == null) return;
+		$filePointer = fsockopen($this->url->getDomainName(), 80);
+		if ($filePointer === false) return null;
 		fputs($filePointer, $request);
-		$answer = '';
+		$response = '';
 		while (!feof($filePointer)) {
-			$answer .= fread($filePointer, 1024);
+			$response .= fread($filePointer, 1024);
 		}
 		fclose($filePointer);
-		return $answer;
+		$body = $this->splitBody($response);
+		return $body;
+	}
+	
+	private function splitBody($response) {
+		list($header, $body) = split(self::emptyline, $response, 2);
+		/*
+		 * The Status-Code is not used at the moment.
+		 * 
+		list($statusLine, $generalHeader) = split(self::newline, $header, 2);
+		$statusCode = substr($statusLine, 9, 3);
+		$this->statusCode = $statusCode;
+		 */
+		return $body;
 	}
 
 	private function createRequest() {
-		$request = 'GET ' . $this->url->getDirectory() . ' HTTP/1.0'."\n"
-		. 'Host: ' . $this->url->getDomain() . "\n"
-		. 'Connection: close' . "\n\n";
+		$request = 'GET ' . $this->url->getDirectory() . ' HTTP/1.0' . self::newline
+		. 'Host: ' . $this->url->getDomainName() . self::newline
+		. 'Connection: close' . self::emptyline;
 		return $request;
 	}
 
