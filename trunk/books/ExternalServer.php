@@ -141,7 +141,7 @@ class ExternalServer {
 			require_once 'mysql_conn.php';
 			$query = 'update servers set'
 			. ' fails = fails + 1'
-			. ' , next_try = adddate(curdate(), fails * fails'
+			. ' , next_try = adddate(curdate(), fails * fails)'
 			. ' where url = "' . $this->url . '";';
 			mysql_query($query);
 		}

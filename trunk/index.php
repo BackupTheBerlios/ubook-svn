@@ -9,6 +9,7 @@ include_once 'magic_quotes.php';
 require_once 'func_text2html.php';
 require_once 'Categories.php';
 require_once 'books/SearchKey.php';
+require_once 'books/BookList.php';
 
 function categoryMenu() {
 	$categories = new Categories();
@@ -35,31 +36,21 @@ if (sizeof($_GET) == 0) {
 }
 else {
 	/* Okay, dealing user input */
-	/* requirements */
 
 	if ($searchKey->isGiven()) {
 		require_once 'books/SearchKeyBookList.php';
 		$bookList = new SearchKeyBookList($searchKey);
 
 		if ($bookList->size() == 0) {
-				
-			require_once 'books/ExternalServer.php';
-			require_once 'books/ExternalServerPool.php';
+			/* Nothing found here, ask other servers. */
 			require_once 'books/ExternalBookList.php';
+			require_once 'books/ExternalServerPool.php';
+			require_once 'books/ThreadedBookListReader.php';
 				
 			function load_externalBookListArray($searchKey) {
-				$bookListArray = array();
 				$serverPool = new ExternalServerPool(true);
-				while ($server = $serverPool->next()) {
-					$bookList = new ExternalBookList($searchKey, $server);
-					if ($bookList->size() > 0) {
-						$bookListArray[] = $bookList;
-					}
-					else {
-						$serverPool->append($bookList->getNewServers());
-					}
-				}
-				return $bookListArray;
+				$reader = new ThreadedBookListReader($serverPool, $searchKey);
+				return $reader->read();
 			}
 
 			$externalBookListArray = load_externalBookListArray($searchKey);

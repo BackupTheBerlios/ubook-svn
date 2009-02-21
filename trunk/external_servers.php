@@ -11,7 +11,7 @@ require_once 'books/ExternalServer.php';
  */
 $external_servers = array(
 
-	new ExternalServer('Bielefeld', 'http://ubook.asta-bielefeld.de/')
+new ExternalServer('Bielefeld', 'http://ubook.asta-bielefeld.de/')
 
 );
 

@@ -7,7 +7,7 @@
 require_once 'HttpUrl.php';
 
 class HttpConnection {
-	
+
 	const newline = "\r\n";
 	const emptyline = "\r\n\r\n";
 
@@ -17,28 +17,27 @@ class HttpConnection {
 		$this->url = $httpUrl;
 	}
 	
-	public function read() {
-		$request = self::createRequest($externalServer);
+	/**
+	 * Opens a non-blocking socket connection, puts a http request and returns the pointer.
+	 * @return file-pointer
+	 */
+	public function open() {
+		$request = self::createRequest();
 		$filePointer = @fsockopen($this->url->getDomainName(), 80);
 		if ($filePointer === false) return null;
+		stream_set_blocking($filePointer, 0);
 		fputs($filePointer, $request);
-		$response = '';
-		while (!feof($filePointer)) {
-			$response .= fread($filePointer, 1024);
-		}
-		fclose($filePointer);
-		$body = $this->splitBody($response);
-		return $body;
+		return $filePointer;
 	}
-	
+
 	private function splitBody($response) {
 		list($header, $body) = split(self::emptyline, $response, 2);
 		/*
 		 * The Status-Code is not used at the moment.
-		 * 
-		list($statusLine, $generalHeader) = split(self::newline, $header, 2);
-		$statusCode = substr($statusLine, 9, 3);
-		$this->statusCode = $statusCode;
+		 *
+		 list($statusLine, $generalHeader) = split(self::newline, $header, 2);
+		 $statusCode = substr($statusLine, 9, 3);
+		 $this->statusCode = $statusCode;
 		 */
 		return $body;
 	}
