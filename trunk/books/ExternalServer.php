@@ -12,16 +12,6 @@ class ExternalServer {
 	private $nextTry = '0000-01-01';
 	private $dataFromDatabase = false;
 
-	public static function newFromXml($xml) {
-		$found = array();
-		eregi('<ubookServer name="([[:print:]]+)">([[:graph:]]+)</ubookServer>', $xml, $found);
-		if (sizeof($found) == 3) {
-			if (self::containsSpecialChar($found[1])) return;
-			if (self::containsSpecialChar($found[2])) return;
-			return new ExternalServer($found[1], $found[2]);
-		}
-	}
-
 	public static function newFromDbArray($array) {
 		$server = new ExternalServer($array['name'], $array['url']);
 		$server->fails = $array['fails'];

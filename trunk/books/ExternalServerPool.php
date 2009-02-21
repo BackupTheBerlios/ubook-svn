@@ -34,11 +34,11 @@ class ExternalServerPool {
 		return $list;
 	}
 
-	public function append($xmlServerList) {
+	public function append($erverList) {
 		if (!$this->acceptMoreServers) return;
-		$lineArray = split("\n", $xmlServerList);
-		foreach ($lineArray as $i => $xml) {
-			$server = ExternalServer::newFromXml($xml);
+		$lineArray = split("\n", $serverList);
+		foreach ($lineArray as $i => $urlString) {
+			$server = ExternalServer::newFromUrlString($urlString);
 			$this->add($server);
 		}
 	}
