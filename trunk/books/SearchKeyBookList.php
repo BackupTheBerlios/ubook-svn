@@ -25,7 +25,7 @@ class SearchKeyBookList extends AbstractBookList {
 	 * @param string $search_key user given search key
 	 * @return MySQL select statement
 	 */
-	private static function searchQuery($search_key, $option) {
+	protected static function searchQuery($search_key, $option) {
 		$fields = 'concat(author," ",title," ",description) ';
 		$keys = explode(' ',$search_key);
 		$and = ' ';

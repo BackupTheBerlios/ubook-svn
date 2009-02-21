@@ -42,11 +42,12 @@ class ThreadedBookListReader {
 				// end of file, remove from pool and create bookList
 				unset($connectionArray[$i]);
 				$bookList = $connData->createBookList();
+				if (!$bookList) continue;
 				if ($bookList->size() > 0) {
 					$bookListArray[] = $bookList;
 				}
 				else {
-					$this->serverPool->append($bookList->getNewServers());
+					$this->serverPool->append($connData->getNewServers());
 				}
 				continue;
 			}
@@ -80,6 +81,7 @@ class ConnectionData {
 	private $server = null;
 	private $pointer = null;
 	private $body = '';
+	private $newServers = '';
 
 	public function __construct($server, $pointer) {
 		$this->server = $server;
@@ -99,7 +101,19 @@ class ConnectionData {
 	}
 
 	public function createBookList() {
-		return new ExternalBookList($this->server, $this->body);
+		$message = Message::parseString($this->body);
+		if (!$message) {
+			$this->server->failed();
+			return;
+		}
+		$this->server->setLocationName($message->fromServer());
+		$this->newServers = $message->getNewServers();
+		return new ExternalBookList($message->fromServer(), $message->bookTextList());
+		
+	}
+	
+	public function getNewServers() {
+		return $this->newServers;
 	}
 
 }

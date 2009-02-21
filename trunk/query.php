@@ -5,6 +5,7 @@
  */
 
 require_once 'books/SearchKey.php';
+require_once 'books/Message.php';
 
 $searchKey = new SearchKey();
 
@@ -20,26 +21,23 @@ if (isset($_GET['from'])) {
 
 require_once 'LocalServerName.php';
 $serverName = new LocalServerName();
-echo '<!-- section -->'."\n";
-echo $serverName->name()."\n";
 
-require_once 'books/SearchKeyBookList.php';
-$bookList = new SearchKeyBookList($searchKey, true);
+require_once 'books/SearchKeyExportBookList.php';
+$bookList = new SearchKeyExportBookList($searchKey);
 
-echo '<!-- section -->'."\n";
-echo $bookList->size()."\n";
+$bookListString = '';
+$serverTextList = '';
 
-echo '<!-- section -->'."\n";
 if ($bookList->size() > 0) {
-	echo $bookList->toHtmlTable();
+	$bookListString = $bookList->toTextList();
 }
 else {
-	require_once 'books/ExternalServer.php';
 	require_once 'books/ExternalServerPool.php';
 	$serverPool = new ExternalServerPool();
-	while ($server = $serverPool->next()) {
-		echo $server->toXml()."\n";
-	}
+	$serverTextList = $serverPool->toTextList(); 
 }
+
+$message = new Message($serverName->name(), $bookList->size(), $bookListString, $serverTextList);
+echo $message->toString();
 
 ?>

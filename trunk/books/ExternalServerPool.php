@@ -25,6 +25,14 @@ class ExternalServerPool {
 		}
 		else return null;
 	}
+	
+	public function toTextList() {
+		$list = '';
+		foreach ($this->servers as $i => $server) {
+			$list .= $server->getUrl() . "\n";
+		}
+		return $list;
+	}
 
 	public function append($xmlServerList) {
 		if (!$this->acceptMoreServers) return;

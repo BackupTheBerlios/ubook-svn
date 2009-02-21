@@ -95,13 +95,14 @@ class ExternalServer {
 		return false;
 	}
 
+	/*
 	public function toXml() {
 		$xml = '<ubookServer name="'.$this->locationName.'">';
 		$xml .= $this->url;
 		$xml .= '</ubookServer>';
 		return $xml;
 	}
-
+*/
 	public function toHtmlLink() {
 		if ($this->locationName) {
 			$linkName = $this->locationName;

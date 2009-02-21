@@ -52,7 +52,7 @@ else {
 				$reader = new ThreadedBookListReader($serverPool, $searchKey);
 				return $reader->read();
 			}
-
+			
 			$externalBookListArray = load_externalBookListArray($searchKey);
 		}
 	}

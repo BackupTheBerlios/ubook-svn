@@ -6,16 +6,12 @@
 
 require_once 'func_book.php';
 require_once 'Parser.php';
-require_once 'WEBDIR.php';
 
 /* creates a html table of books from a mysql result */
-function format_books($mysql_result, $absoluteLink = false) {
+function format_books($mysql_result) {
 	$books_string = '';
 	$class = 0;
 	$bookScriptUrl = 'book.php';
-	if ($absoluteLink) {
-		$bookScriptUrl = WEBDIR.$bookScriptUrl;
-	}
 	while ($book = fetch_book(&$mysql_result)) {
 		Parser::htmlbook($book);
 		$books_string .= '<tr class="bookrow'.$class.'"><td>';

@@ -5,58 +5,64 @@
  */
 
 require_once 'AbstractBookList.php';
-require_once 'ExternalServer.php';
+require_once 'Message.php';
 
 class ExternalBookList extends AbstractBookList {
 
-	private $searchKey = null;
-	private $server = null;
-	private $booksAsHtmlTable = '';
-	private $newServers = '';
-
-	public function __construct($server, $stringFromServer) {
-		$this->server = $server;
-		$this->parseString($stringFromServer);
+	private $from = '';
+	
+	public function __construct($from, $textList) {
+		$this->from = $from;
+		$this->parseList($textList);
 	}
 
 	public function locationName() {
-		return $this->server->getLocationName();
+		return $this->from;
 	}
 
-	public function toHtmlTable() {
-		return $this->booksAsHtmlTable;
-	}
-
-	public function getNewServers() {
-		return $this->newServers;
-	}
-	
-	private function parseString($string) {
-		$sectionArray = split('<!-- section -->', $string);
-		if (sizeof($sectionArray) != 4) {
-			$this->server->failed();
-			return;
+	private function parseList($textList) {
+		$books = array();
+		$lineArray = split("\n", $textList);
+		foreach ($lineArray as $i => $bookLine) {
+			$bookArray = split('<p>', $bookLine);
+			if (sizeof($bookArray) != 4) {
+				continue;
+			}
+			if (self::hasBadCharacters($bookArray)) {
+				continue;
+			}
+			$books[] = $bookArray;
 		}
-		$this->rememberName($sectionArray[1]);
-		$this->setSizeString($sectionArray[2]);
-		$this->parseList($sectionArray[3]);
+		parent::setSize(sizeof($books));
+		$this->formatBooks($books);
 	}
 
-	private function rememberName($serverName) {
-		$this->server->setLocationName(trim($serverName));
-	}
-
-	private function setSizeString($sizeString) {
-		parent::setSize(trim($sizeString));
-	}
-
-	private function parseList($listString) {
-		if ($this->size() > 0) {
-			$this->booksAsHtmlTable = $listString;
+	private function formatBooks($books) {
+		$books_string = '';
+		$class = 0;
+		foreach ($books as $i => $book) {
+			$books_string .= '<tr class="bookrow'.$class.'"><td>';
+			$books_string .= '<a href="'.$book[0].'" target="_blank">';
+			if ($book[1]) {
+				$books_string .= $book[1];
+				$books_string .= ': ';
+			}
+			$books_string .= $book[2];
+			$books_string .= '</a>';
+			$books_string .= '</td><td>'.$book[3].' &euro;</td></tr>'."\n";
+			$class = (int) !$class;
 		}
-		else {
-			$this->newServers = $listString;
+		parent::setHtmlRows($books_string);
+
+	}
+
+	private static function hasBadCharacters($stringArray) {
+		foreach ($stringArray as $i => $s) {
+			if (Message::hasBadChar($s)) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 }
