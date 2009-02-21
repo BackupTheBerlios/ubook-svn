@@ -10,6 +10,7 @@ require_once 'Message.php';
 class ExternalBookList extends AbstractBookList {
 
 	private $from = '';
+	private $booksAsHtmlRows = '';
 	
 	public function __construct($from, $textList) {
 		$this->from = $from;
@@ -52,8 +53,20 @@ class ExternalBookList extends AbstractBookList {
 			$books_string .= '</td><td>'.$book[3].' &euro;</td></tr>'."\n";
 			$class = (int) !$class;
 		}
-		parent::setHtmlRows($books_string);
+		$this->booksAsHtmlRows = $books_string;
 
+	}
+
+	protected function bookTable() {
+		$t = '<div class="results">
+    			<table align="center" style="text-align:left">'."\n";
+		$t .= $this->booksAsHtmlRows;
+		$t .= '</table>
+   			</div>
+		   	<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">';
+		//$t .= $this->size().' / '.self::numberOfAllBooks();
+		$t .= '</div>';
+		return $t;
 	}
 
 	private static function hasBadCharacters($stringArray) {

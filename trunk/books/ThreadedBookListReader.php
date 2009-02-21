@@ -26,7 +26,15 @@ class ThreadedBookListReader {
 		do {
 			if ($server = $this->serverPool->next()) {
 				// unsused server available, use it
-				$connData = self::newConnectionData($server, $scriptRequest);
+				$urlString = $server->getUrl() . $scriptRequest;
+				$httpUrl = new HttpUrl($urlString);
+				$connection = new HttpConnection($httpUrl);
+				$pointer = $connection->open();
+				if (!$pointer) {
+					$server->failed();
+					continue;
+				}
+				$connData = new ConnectionData($server, $pointer);
 				$i = sizeof($connectionArray);
 				$connectionArray[] = $connData;
 			}
@@ -66,14 +74,6 @@ class ThreadedBookListReader {
 		return $requestUrlString;
 	}
 
-	private static function newConnectionData($server, $scriptRequest) {
-		$urlString = $server->getUrl() . $scriptRequest;
-		$httpUrl = new HttpUrl($urlString);
-		$connection = new HttpConnection($httpUrl);
-		$connData = new ConnectionData($server, $connection->open());
-		return $connData;
-	}
-
 }
 
 class ConnectionData {
@@ -109,9 +109,9 @@ class ConnectionData {
 		$this->server->setLocationName($message->fromServer());
 		$this->newServers = $message->getNewServers();
 		return new ExternalBookList($message->fromServer(), $message->bookTextList());
-		
+
 	}
-	
+
 	public function getNewServers() {
 		return $this->newServers;
 	}
