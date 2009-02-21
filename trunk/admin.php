@@ -13,8 +13,11 @@ require_once 'Categories.php';
 $categories = new Categories();
 $numberOfCategories = sizeof($categories->getArray());
 
+require_once 'LocalServerName.php';
+$serverName = new LocalServerName();
+
 require_once 'books/ExternalServerPool.php';
-$serverPool = new ExternalServerPool(true);
+$serverPool = new ExternalServerPool(true, true);
 $numberOfServers = $serverPool->size();
 
 /*
@@ -28,7 +31,7 @@ require 'header.php';
 <table align="center">
 <tr><td>Buchangebote</td><td><?php echo $numberOfBooks; ?></td><td><a href="admin_view.php">alle einsehen</a></td></tr>
 <tr><td>Kategorien</td><td><?php echo $numberOfCategories; ?></td><td><a href="admin_categories.php">verwalten</a></td></tr>
-<?php if ($numberOfServers == 0) { ?>
+<?php if ($serverName->isEmpty()) { ?>
 <tr><td colspan="3"><a href="admin_servers.php">Suche an anderen Standorten aktivieren</a></td></tr>
 <?php } else { ?>
 <tr><td>Bekannte Standorte</td><td><?php echo $numberOfServers; ?></td><td><a href="admin_servers.php">einsehen</a></td></tr>
