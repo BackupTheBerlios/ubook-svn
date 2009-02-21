@@ -42,7 +42,9 @@ class ThreadedBookListReader {
 				// nothing new, iterate in connection pool
 				list($i, $connData) = each($connectionArray);
 				if (!next($connectionArray)) {
-					reset($connectionArray);
+					if (reset($connectionArray) === false) {
+						break;
+					}
 				}
 			}
 			if (!$connData) break; // if both lists are empty
@@ -63,7 +65,7 @@ class ThreadedBookListReader {
 			$bodyPart = fread($connData->pointer(), 1024);
 			$connData->append($bodyPart);
 		}
-		while (sizeof($connectionArray) > 0);
+		while (true);
 		return $bookListArray;
 	}
 

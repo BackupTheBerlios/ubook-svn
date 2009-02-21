@@ -34,7 +34,7 @@ class ExternalServerPool {
 		return $list;
 	}
 
-	public function append($erverList) {
+	public function append($serverList) {
 		if (!$this->acceptMoreServers) return;
 		$lineArray = split("\n", $serverList);
 		foreach ($lineArray as $i => $urlString) {

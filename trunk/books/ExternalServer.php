@@ -28,6 +28,7 @@ class ExternalServer {
 		require_once 'books/HttpUrl.php';
 		$url = new HttpUrl($urlString);
 		if ($url->getDomainName() == 'localhost') return;
+		return new ExternalServer('', $urlString);
 		return new self('', $urlString);
 	}
 
@@ -66,6 +67,9 @@ class ExternalServer {
 			. ' , fails = 0'
 			. ' where url = "' . $this->url . '";';
 			mysql_query($query);
+		}
+		else {
+			$this->dbInsert();
 		}
 	}
 
@@ -112,6 +116,7 @@ class ExternalServer {
 		. '"'.$this->url.'", '
 		. '"'.$this->locationName.'");';
 		mysql_query($query);
+		$this->dataFromDatabase = true;
 	}
 
 	public function isBlacklisted() {

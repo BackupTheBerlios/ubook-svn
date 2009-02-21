@@ -59,7 +59,7 @@ class Message {
 	}
 	
 	public function getNewServers() {
-		$this->servers;
+		return $this->servers;
 	}
 
 	public function toString() {
@@ -71,19 +71,19 @@ class Message {
 	}
 
 	private function setFrom($from) {
-		$this->from = trim($from);
+		$this->from = $from;
 	}
 
 	private function setSize($sizeLine) {
-		$this->resultSize = (int) trim($sizeLine);
+		$this->resultSize = (int) $sizeLine;
 	}
 
 	private function setBooks($bookString) {
-		$this->bookList = trim($bookString);
+		$this->bookList = $bookString;
 	}
 
 	private function setServers($serverString) {
-		$this->servers = trim($serverString);
+		$this->servers = $serverString;
 	}
 
 }

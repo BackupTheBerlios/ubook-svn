@@ -12,8 +12,15 @@ require_once 'LocalServerName.php';
 $localServerName = new LocalServerName();
 
 if (isset($_POST['local_name'])) {
+	$reset = false;
+	if ($localServerName->isEmpty()) $reset = true;
 	$localServerName->update($_POST['local_name']);
-	header('Location: admin_servers.php?reset_servers=1');
+	if ($reset) {
+		header('Location: admin_servers.php?reset_servers=1');
+	}
+	else {
+		header('Location: admin_servers.php');
+	}
 }
 
 if (!$localServerName->isEmpty()) {
