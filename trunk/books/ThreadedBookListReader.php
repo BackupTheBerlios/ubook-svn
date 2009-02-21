@@ -37,6 +37,7 @@ class ThreadedBookListReader {
 					reset($connectionArray);
 				}
 			}
+			if (!$connData) break; // if both lists are empty
 			if ($connData->end()) {
 				// end of file, remove from pool and create bookList
 				unset($connectionArray[$i]);
