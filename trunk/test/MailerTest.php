@@ -5,7 +5,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once '../Mailer.php';
+require_once 'Mailer.php';
 
 
 class MailerTest extends PHPUnit_Framework_TestCase {

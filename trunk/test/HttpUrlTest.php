@@ -5,7 +5,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once '../net/HttpUrl.php';
+require_once 'net/HttpUrl.php';
 
 
 class HttpUrlTest extends PHPUnit_Framework_TestCase {
