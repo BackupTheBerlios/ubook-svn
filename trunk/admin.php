@@ -13,8 +13,8 @@ require_once 'Categories.php';
 $categories = new Categories();
 $numberOfCategories = sizeof($categories->getArray());
 
-require_once 'net/LocalServerName.php';
-$serverName = new LocalServerName();
+require_once 'net/LocalServer.php';
+$serverName = new LocalServer();
 
 require_once 'net/ExternalServerPool.php';
 $serverPool = new ExternalServerPool(true, true);

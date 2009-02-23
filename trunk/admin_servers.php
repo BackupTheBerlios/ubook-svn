@@ -7,14 +7,14 @@
 require_once 'mysql_conn.php';
 require_once 'net/ExternalServer.php';
 require_once 'net/ExternalServerPool.php';
-require_once 'net/LocalServerName.php';
+require_once 'net/LocalServer.php';
 
-$localServerName = new LocalServerName();
+$localServer = new LocalServer();
 
 if (isset($_POST['local_name'])) {
 	$reset = false;
-	if ($localServerName->isEmpty()) $reset = true;
-	$localServerName->update($_POST['local_name']);
+	if ($localServer->isEmpty()) $reset = true;
+	$localServer->update($_POST['local_name']);
 	if ($reset) {
 		header('Location: admin_servers.php?reset_servers=1');
 	}
@@ -23,7 +23,7 @@ if (isset($_POST['local_name'])) {
 	}
 }
 
-if (!$localServerName->isEmpty()) {
+if (!$localServer->isEmpty()) {
 	$serverPool = new ExternalServerPool(true, true);
 
 	if (isset($_GET['reset_servers'])) {
@@ -42,7 +42,8 @@ if (!$localServerName->isEmpty()) {
 	}
 
 	if (isset($_POST['new_url'])) {
-		$serverPool->addUrl($_POST['new_url']);
+		$server = ExternalServer::newFromUrlString($_POST['new_url']);
+		$server->dbInsert();
 		Header('Location: admin_servers.php');
 	}
 
@@ -86,7 +87,7 @@ require 'header.php';
 <div class="menu"><span><a href="admin.php">&larr; Zurück zur
 Administrationsübersicht</a></span></div>
 
-<?php if ($localServerName->isEmpty() || isset($_GET['edit_name'])) { ?>
+<?php if ($localServer->isEmpty() || isset($_GET['edit_name'])) { ?>
 <h2>Namen des Standorts festlegen</h2>
 <div class="text">Falls die Suche in der lokalen Datenbank keine Treffer
 ermittelt, können andere uBook-Webseiten abgefragt werden. Im Gegenzug
@@ -95,11 +96,11 @@ wird ein eindeutige Bezeichnung des Standorts gebraucht, zum Biespiel
 den Namen der Stadt.<br />
 <form action="admin_servers.php" method="post"><label for="local_name">Eindeutiger
 Name:</label> <input type="text" name="local_name"
-	value="<?php echo $localServerName->name(); ?>" /> <input type="submit"
+	value="<?php echo $localServer->name(); ?>" /> <input type="submit"
 	value="Eintragen" /></form>
 </div>
 <?php } else { ?>
-<h2>Standort <?php echo $localServerName->name(); ?></h2>
+<h2>Standort <?php echo $localServer->name(); ?></h2>
 <div class="menu"><span><a href="admin_servers.php?edit_name=1">Namen
 des Standorts ändern.</a></span></div>
 <?php if ($serverPool->acceptMoreServers()) { ?>

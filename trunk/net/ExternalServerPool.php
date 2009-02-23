@@ -25,7 +25,7 @@ class ExternalServerPool {
 		}
 		else return null;
 	}
-	
+
 	public function toTextList() {
 		$list = '';
 		foreach ($this->servers as $i => $server) {
@@ -39,14 +39,10 @@ class ExternalServerPool {
 		$lineArray = split("\n", $serverList);
 		foreach ($lineArray as $i => $urlString) {
 			$server = ExternalServer::newFromUrlString($urlString);
-			$this->add($server);
+			if ($server->isNew()) {
+				$this->add($server);
+			}
 		}
-	}
-
-	public function addUrl($urlString) {
-		$server = ExternalServer::newFromUrlString($urlString);
-		$this->add($server);
-		$this->saveInDb();
 	}
 
 	public function saveInDb() {
@@ -110,8 +106,10 @@ class ExternalServerPool {
 	}
 
 	private function add($newServer) {
-		if ($newServer && !$this->isInList($newServer)) {
-			$this->servers[] = $newServer;
+		if ($newServer) {
+			if (!$this->isInList($newServer)) {
+				$this->servers[] = $newServer;
+			}
 		}
 	}
 

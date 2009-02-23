@@ -34,6 +34,7 @@ class ExternalServer {
 
 	public static function blacklist($url) {
 		require_once 'mysql_conn.php';
+		mysql_query('update servers set name="'.$url.'" where url="'.$url.'" and name="";');
 		mysql_query('update servers set next_try="9999-12-31" where url="'.$url.'";');
 	}
 
@@ -110,9 +111,46 @@ class ExternalServer {
 		mysql_query($query);
 		$this->dataFromDatabase = true;
 	}
+	
+	private function dbSelect() {
+		require_once 'mysql_conn.php';
+		$query = 'select name, url, fails, next_try from servers'
+		. ' where url = "' . $this->url . '";';
+		$result = mysql_query($query);
+		if ($array = mysql_fetch_array($result)) {
+			$this->locationName = $array['name'];
+			$this->fails = $array['fails'];
+			$this->nextTry = $array['next_try'];
+			$this->dataFromDatabase = true;
+		}
+	}
+	
+	public function isValid() {
+		if ($this->nextTry == '9999-12-31') {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 
 	public function isBlacklisted() {
-		return ($this->nextTry == '9999-12-31');
+		if ($this->locationName) {
+			if ($this->isValid() == false) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public function isNew() {
+		$this->dbSelect();
+		if ($this->dataFromDatabase) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	public function failed() {

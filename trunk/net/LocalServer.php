@@ -6,19 +6,21 @@
 
 require_once 'mysql_conn.php';
 
-class LocalServerName {
+class LocalServer {
 
 	private $name = '';
+	private $trustLevel = 0;
 
 	public function __construct() {
-		$q = 'select name from servers where url="";';
+		$q = 'select name, fails as trust_level from servers where url="";';
 		$r = mysql_query($q);
 		if (!$r) return;
-		if ($arr = mysql_fetch_row($r)) {
-			$this->name = $arr[0];
+		if ($arr = mysql_fetch_array($r)) {
+			$this->name = $arr['name'];
+			$this->trustLevel = $arr['trust_level'];
 		}
 	}
-
+	
 	public function isEmpty() {
 		if ($this->name) {
 			return false;
@@ -43,6 +45,14 @@ class LocalServerName {
 			. 'where url = "";';
 		}
 		mysql_query($query);
+	}
+	
+	public function acceptAllServers() {
+		return ($this->trustLevel == 2);
+	}
+
+	public function acceptSuggestedServers() {
+		return ($this->trustLevel >= 1);
 	}
 
 }

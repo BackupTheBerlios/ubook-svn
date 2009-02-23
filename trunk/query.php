@@ -6,12 +6,17 @@
 
 require_once 'books/SearchKey.php';
 require_once 'net/Message.php';
+require_once 'net/LocalServer.php';
+require_once 'books/SearchKeyExportBookList.php';
 
 $searchKey = new SearchKey();
 
 if (!$searchKey->isGiven()) exit;
 
-if (isset($_GET['from'])) {
+$localServer = new LocalServer();
+
+if (isset($_GET['from']) && $localServer->acceptAllServers()) {
+	// TODO: abfragen, ob überhaupt server hinzugefügt werden dürfen
 	require_once 'net/ExternalServer.php';
 	$requestingServer = ExternalServer::newFromUrlString($_GET['from']);
 	if ($requestingServer) {
@@ -19,10 +24,6 @@ if (isset($_GET['from'])) {
 	}
 }
 
-require_once 'net/LocalServerName.php';
-$serverName = new LocalServerName();
-
-require_once 'books/SearchKeyExportBookList.php';
 $bookList = new SearchKeyExportBookList($searchKey);
 
 $bookListString = '';
@@ -37,7 +38,7 @@ else {
 	$serverTextList = $serverPool->toTextList(); 
 }
 
-$message = new Message($serverName->name(), $bookList->size(), $bookListString, $serverTextList);
+$message = new Message($localServer->name(), $bookList->size(), $bookListString, $serverTextList);
 echo $message->toString();
 
 ?>
