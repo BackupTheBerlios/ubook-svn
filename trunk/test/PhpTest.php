@@ -23,5 +23,13 @@ class PhpTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('a', $v);
 	}
 	
+	function testIncompleteUnitTest() {
+		$this->markTestIncomplete('PHP is not tested completely.');
+	}
+	
+	function testSkip() {
+		$this->markTestSkipped('This test does nothing.');
+	}
+	
 }
 ?>
