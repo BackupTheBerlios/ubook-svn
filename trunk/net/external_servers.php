@@ -4,7 +4,7 @@
  * Copyright (C) 2009 Maikel Linke
  */
 
-require_once 'books/ExternalServer.php';
+require_once 'ExternalServer.php';
 
 /*
  * This list is only to initialize the list in the database.

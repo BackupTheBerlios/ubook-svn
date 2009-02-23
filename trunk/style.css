@@ -4,6 +4,11 @@ body {
  background:#ffc;
 }
 
+body, a, a:visited, a:link, div.menu a
+{
+  color: #ac0001;
+}
+
 div.head {
  text-decoration:none;
  color:black;
@@ -12,7 +17,7 @@ div.head {
 }
 
 div.head div
-{
+{/* TODO: what does this? */
   margin-top:0.5em;
   font-size:large;
   font-weight:bold;
@@ -44,30 +49,37 @@ td {
  text-align: left;
 }
 
-div.results {
- margin-top: 1em;
-}
-
 div.results table {
- border: 0px solid #6c2c13;
- font-size:12pt;
+ border-width: 0px;
+ font-size:120%;
  border-spacing: 0px;
  border-collapse: collapse;
 }
 
+div.results th {
+	text-align: center;
+	padding-top: 1em;
+}
+
 div.results td
 {
+    text-align:left;
 	padding:0.4em;
-	border-top: 1px solid #800;
-    border-bottom: 1px solid #800;
+	border: 1px solid #e74;
     border-left-width: 0px;
     border-right-width: 0px;
 }
 
+div.external_results td {
+	border-color: #c86;
+}
+
+div.external_results table, div.external_results a, div.external_results h3 {
+	color: #a55;
+}
+
 div.results a {
     text-decoration: none;
-/*    color: #ff7038;*/
-    color: #800;
 }
 
 div.results tr:hover td {
@@ -126,11 +138,6 @@ div.infobox {
  background-color:#f0f0ff;
  padding:1em;
  margin:1em;
-}
-
-body, a, a:visited, a:link, div.menu a
-{
-  color: #ac0001;
 }
 
 input, textarea

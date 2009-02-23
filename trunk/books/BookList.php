@@ -8,7 +8,7 @@ interface BookList {
 	
 	public function size();
 	
-	public function toHtmlTable();
+	public function toHtmlRows();
 	
 }
 

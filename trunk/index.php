@@ -91,19 +91,30 @@ include 'header.php';
 <?php if ($bookList->size() == 0) { ?>
 <?php if (sizeof($externalBookListArray) > 0) { ?>
 <h2>Suchergebnisse aus anderen Orten:</h2>
-<p>Hier wurden keine Bücher gefunden. Stattdessen werden Suchergebnisse
-von anderen Standorten angezeigt.</p>
+<div>Hier wurden keine Bücher gefunden. Stattdessen werden Suchergebnisse
+von anderen Standorten angezeigt.</div>
+<div class="results"><div class="external_results">
+<table align="center">
 <?php foreach ($externalBookListArray as $i => $externalBookList) { ?>
-<h3><?php echo $externalBookList->locationName(); ?></h3>
-<?php echo $externalBookList->toHtmlTable(); ?>
+<tr><th colspan="2"><?php echo $externalBookList->locationName(); ?></th></tr>
+<?php echo $externalBookList->toHtmlRows(); ?>
 <?php } ?>
+</table>
+</div></div>
 <?php } else { ?>
 <h2>Keine Bücher gefunden</h2>
 <p>Es wurden keine Bücher gefunden.</p>
 <?php } ?>
 <?php } else { ?>
 <h2>Suchergebnisse:</h2>
-<?php echo $bookList->toHtmlTable(); ?>
+<div class="results">
+<table align="center">
+<?php echo $bookList->toHtmlRows(); ?>
+</table>
+<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt"> 
+<?php echo $bookList->size(); ?> / <?php echo AbstractBookList::numberOfAllBooks(); ?>
+</div>
+</div>
 <?php } ?>
 <?php } ?>
 
@@ -115,7 +126,14 @@ von anderen Standorten angezeigt.</p>
 <?php if ($catBookList->size() == 0) { ?>
 <div>In dieser Kategorie gibt es zur Zeit keine Bücher.</div>
 <?php } else { ?>
-<?php echo $catBookList->toHtmlTable(); ?>
+<div class="results">
+<table align="center">
+<?php echo $catBookList->toHtmlRows(); ?>
+</table>
+<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt"> 
+<?php echo $catBookList->size(); ?> / <?php echo AbstractBookList::numberOfAllBooks(); ?>
+</div>
+</div>
 <?php } ?>
 <?php } ?>
 
