@@ -34,7 +34,7 @@ class CategoryBookList extends AbstractBookList {
 			$q .= ' order by books.author, books.title, books.price;';
 			$result_books = mysql_query($q);
 			parent::setSize(mysql_num_rows($result_books));
-			$books = format_books(&$result_books);
+			$books = parent::mysqlResultToHtml(&$result_books);
 		}
 		return $books;
 	}

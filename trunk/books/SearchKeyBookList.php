@@ -11,11 +11,11 @@ require_once 'func_format_books.php';
 
 class SearchKeyBookList extends AbstractBookList {
 	
-	public function __construct($searchKey, $absoluteUrl = false) {
+	public function __construct($searchKey) {
 		$searchQuery = self::searchQuery($searchKey->asText(), $searchKey->getOption());
 		$result = mysql_query($searchQuery);
 		parent::setSize(mysql_num_rows($result));
-		$books = format_books(&$result, $absoluteUrl);
+		$books = parent::mysqlResultToHtml(&$result);
 		parent::setHtmlRows($books);
 	}
 	

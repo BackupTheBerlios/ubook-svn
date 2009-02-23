@@ -10,7 +10,6 @@ require_once 'Message.php';
 class ExternalBookList extends AbstractBookList {
 
 	private $from = '';
-	private $booksAsHtmlRows = '';
 	
 	public function __construct($from, $textList) {
 		$this->from = $from;
@@ -40,9 +39,8 @@ class ExternalBookList extends AbstractBookList {
 
 	private function formatBooks($books) {
 		$books_string = '';
-		$class = 0;
 		foreach ($books as $i => $book) {
-			$books_string .= '<tr class="bookrow'.$class.'"><td>';
+			$books_string .= '<tr><td>';
 			$books_string .= '<a href="'.$book[0].'" target="_blank">';
 			if ($book[1]) {
 				$books_string .= $book[1];
@@ -51,14 +49,8 @@ class ExternalBookList extends AbstractBookList {
 			$books_string .= $book[2];
 			$books_string .= '</a>';
 			$books_string .= '</td><td>'.$book[3].' &euro;</td></tr>'."\n";
-			$class = (int) !$class;
 		}
-		$this->booksAsHtmlRows = $books_string;
-
-	}
-
-	public function toHtmlRows() {
-		return $this->booksAsHtmlRows;
+		parent::setHtmlRows($books_string);
 	}
 
 	private static function hasBadCharacters($stringArray) {

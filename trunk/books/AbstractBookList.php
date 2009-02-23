@@ -5,7 +5,9 @@
  */
 
 require_once 'BookList.php';
+
 require_once 'mysql_conn.php';
+require_once 'Parser.php';
 
 abstract class AbstractBookList implements BookList {
 
@@ -13,11 +15,11 @@ abstract class AbstractBookList implements BookList {
 
 	private $numberOfRows;
 	private $booksAsHtmlRows;
-	
+
 	public function size() {
 		return $this->numberOfRows;
 	}
-	
+
 	public function toHtmlRows() {
 		return $this->booksAsHtmlRows;
 	}
@@ -28,6 +30,22 @@ abstract class AbstractBookList implements BookList {
 
 	protected function setHtmlRows($htmlRows) {
 		$this->booksAsHtmlRows = $htmlRows;
+	}
+
+	protected static function mysqlResultToHtml($mysqlResult) {
+		$html = '';
+		while ($book = fetch_book(&$mysqlResult)) {
+			Parser::htmlbook($book);
+			$html .= '<tr><td>'
+			. '<a href="book.php?id=' . $book['id'] . '">';
+			if ($book['author']) {
+				$html .= $book['author'] . ': ';
+			}
+			$html .= $book['title'] . '</a>'
+			. '</td><td>'.$book['price'].' &euro;</td></tr>'."\n";
+			
+		}
+		return $html;
 	}
 
 	public static function numberOfAllBooks() {

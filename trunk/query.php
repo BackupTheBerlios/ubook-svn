@@ -12,7 +12,7 @@ $searchKey = new SearchKey();
 if (!$searchKey->isGiven()) exit;
 
 if (isset($_GET['from'])) {
-	require_once 'books/ExternalServer.php';
+	require_once 'net/ExternalServer.php';
 	$requestingServer = ExternalServer::newFromUrlString($_GET['from']);
 	if ($requestingServer) {
 		$requestingServer->dbInsert();

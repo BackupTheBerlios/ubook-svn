@@ -46,7 +46,7 @@ else {
 			require_once 'net/ExternalBookList.php';
 			require_once 'net/ExternalServerPool.php';
 			require_once 'net/ThreadedBookListReader.php';
-				
+
 			function load_externalBookListArray($searchKey) {
 				$serverPool = new ExternalServerPool(true);
 				$reader = new ThreadedBookListReader($serverPool, $searchKey);
