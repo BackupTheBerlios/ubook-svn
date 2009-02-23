@@ -5,7 +5,8 @@
  */
 
 require_once 'AbstractBookList.php';
-require_once 'Message.php';
+// TODO: no Message required
+require_once 'net/Message.php';
 
 class ExternalBookList extends AbstractBookList {
 
