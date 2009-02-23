@@ -15,7 +15,7 @@ if (!$searchKey->isGiven()) exit;
 
 $localServer = new LocalServer();
 
-if (isset($_GET['from']) && $localServer->acceptAllServers()) {
+if (isset($_GET['from']) && $localServer->rememberNewServers()) {
 	// TODO: abfragen, ob überhaupt server hinzugefügt werden dürfen
 	require_once 'net/ExternalServer.php';
 	$requestingServer = ExternalServer::newFromUrlString($_GET['from']);

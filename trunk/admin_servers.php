@@ -44,6 +44,8 @@ if (!$localServer->isEmpty()) {
 	if (isset($_POST['new_url'])) {
 		$server = ExternalServer::newFromUrlString($_POST['new_url']);
 		$server->dbInsert();
+		// TODO: better one mysql statement
+		$server->setLocationName($_POST['new_url']);
 		Header('Location: admin_servers.php');
 	}
 

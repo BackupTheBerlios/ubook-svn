@@ -47,12 +47,12 @@ class LocalServer {
 		mysql_query($query);
 	}
 	
-	public function acceptAllServers() {
-		return ($this->trustLevel == 2);
+	public function rememberNewServers() {
+		return ($this->trustLevel == 0);
 	}
 
 	public function acceptSuggestedServers() {
-		return ($this->trustLevel >= 1);
+		return ($this->trustLevel == 0);
 	}
 
 }

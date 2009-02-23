@@ -79,7 +79,11 @@ class ExternalServerPool {
 	}
 
 	private function loadFromDb($loadNew, $loadBlacklisted) {
-		$query = 'select url, name, fails, next_try from servers where url != ""';
+		$query = 'select url, name, fails, next_try from servers'
+		. ' where url != ""';
+		/*
+		 * TODO: remove parameter
+		*/
 		if (!$loadNew) {
 			$query .= ' and name != ""';
 		}
