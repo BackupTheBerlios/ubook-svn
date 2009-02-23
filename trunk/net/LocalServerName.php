@@ -5,8 +5,6 @@
  */
 
 require_once 'mysql_conn.php';
-require_once 'books/ExternalServer.php';
-require_once 'books/ExternalServerPool.php';
 
 class LocalServerName {
 

@@ -4,9 +4,8 @@
  * Copyright (C) 2009 Maikel Linke
  */
 
-require_once 'AbstractBookList.php';
-// TODO: no Message required
-require_once 'net/Message.php';
+require_once 'books/AbstractBookList.php';
+require_once 'Message.php';
 
 class ExternalBookList extends AbstractBookList {
 

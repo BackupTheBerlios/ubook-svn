@@ -5,7 +5,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once '../books/ExternalBookList.php';
+require_once '../net/ExternalBookList.php';
 
 
 class ExternalBookListTest extends PHPUnit_Framework_TestCase {

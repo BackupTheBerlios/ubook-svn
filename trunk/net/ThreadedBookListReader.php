@@ -4,6 +4,7 @@
  * Copyright (C) 2009 Maikel Linke
  */
 
+require_once 'ExternalBookList.php';
 require_once 'ExternalServer.php';
 require_once 'HttpUrl.php';
 require_once 'HttpConnection.php';

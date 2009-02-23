@@ -13,10 +13,10 @@ require_once 'Categories.php';
 $categories = new Categories();
 $numberOfCategories = sizeof($categories->getArray());
 
-require_once 'LocalServerName.php';
+require_once 'net/LocalServerName.php';
 $serverName = new LocalServerName();
 
-require_once 'books/ExternalServerPool.php';
+require_once 'net/ExternalServerPool.php';
 $serverPool = new ExternalServerPool(true, true);
 $numberOfServers = $serverPool->size();
 

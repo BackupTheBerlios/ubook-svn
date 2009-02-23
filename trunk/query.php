@@ -5,7 +5,7 @@
  */
 
 require_once 'books/SearchKey.php';
-require_once 'books/Message.php';
+require_once 'net/Message.php';
 
 $searchKey = new SearchKey();
 
@@ -19,7 +19,7 @@ if (isset($_GET['from'])) {
 	}
 }
 
-require_once 'LocalServerName.php';
+require_once 'net/LocalServerName.php';
 $serverName = new LocalServerName();
 
 require_once 'books/SearchKeyExportBookList.php';
@@ -32,7 +32,7 @@ if ($bookList->size() > 0) {
 	$bookListString = $bookList->toTextList();
 }
 else {
-	require_once 'books/ExternalServerPool.php';
+	require_once 'net/ExternalServerPool.php';
 	$serverPool = new ExternalServerPool();
 	$serverTextList = $serverPool->toTextList(); 
 }

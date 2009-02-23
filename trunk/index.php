@@ -43,7 +43,7 @@ else {
 
 		if ($bookList->size() == 0) {
 			/* Nothing found here, ask other servers. */
-			require_once 'books/ExternalBookList.php';
+			require_once 'net/ExternalBookList.php';
 			require_once 'net/ExternalServerPool.php';
 			require_once 'net/ThreadedBookListReader.php';
 				

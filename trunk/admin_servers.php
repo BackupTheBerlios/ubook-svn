@@ -5,9 +5,9 @@
  */
 
 require_once 'mysql_conn.php';
-require_once 'books/ExternalServer.php';
-require_once 'books/ExternalServerPool.php';
-require_once 'LocalServerName.php';
+require_once 'net/ExternalServer.php';
+require_once 'net/ExternalServerPool.php';
+require_once 'net/LocalServerName.php';
 
 $localServerName = new LocalServerName();
 
