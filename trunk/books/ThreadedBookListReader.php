@@ -71,7 +71,7 @@ class ThreadedBookListReader {
 
 	private static function scriptRequest($searchKey) {
 		$requestUrlString = 'query.php?search='
-		. $searchKey->asText()
+		. urlencode($searchKey->asText())
 		. '&from=' . WEBDIR;
 		return $requestUrlString;
 	}
