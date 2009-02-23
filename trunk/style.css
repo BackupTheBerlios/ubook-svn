@@ -16,14 +16,6 @@ div.head {
  display:block;
 }
 
-div.head div
-{/* TODO: what does this? */
-  margin-top:0.5em;
-  font-size:large;
-  font-weight:bold;
-  color:#000;
-}
-
 div.menu {
  margin:0%;
  margin-bottom:0.2em;
