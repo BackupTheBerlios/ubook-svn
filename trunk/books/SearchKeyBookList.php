@@ -7,7 +7,6 @@
 require_once 'AbstractBookList.php';
 
 require_once 'mysql_conn.php';
-require_once 'func_format_books.php';
 
 class SearchKeyBookList extends AbstractBookList {
 	
