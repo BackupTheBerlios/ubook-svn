@@ -7,6 +7,7 @@
 require_once 'BookList.php';
 
 require_once 'mysql_conn.php';
+require_once 'func_book.php';
 require_once 'Parser.php';
 
 abstract class AbstractBookList implements BookList {
