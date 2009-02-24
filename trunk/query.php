@@ -16,11 +16,14 @@ if (!$searchKey->isGiven()) exit;
 $localServer = new LocalServer();
 
 if (isset($_GET['from']) && $localServer->rememberNewServers()) {
-	// TODO: abfragen, ob überhaupt server hinzugefügt werden dürfen
 	require_once 'net/ExternalServer.php';
 	$requestingServer = ExternalServer::newFromUrlString($_GET['from']);
 	if ($requestingServer) {
-		$requestingServer->dbInsert();
+		require_once 'mysql_conn.php';
+		$query = 'insert into servers (url, next_try) values ('
+		. '"'.$requestingServer->getUrl().'", '
+		. '"9999-12-31");';
+		mysql_query($query);
 	}
 }
 

@@ -111,7 +111,7 @@ class ExternalServer {
 		mysql_query($query);
 		$this->dataFromDatabase = true;
 	}
-	
+
 	private function dbSelect() {
 		require_once 'mysql_conn.php';
 		$query = 'select name, url, fails, next_try from servers'
@@ -124,7 +124,7 @@ class ExternalServer {
 			$this->dataFromDatabase = true;
 		}
 	}
-	
+
 	public function isValid() {
 		if ($this->nextTry == '9999-12-31') {
 			return false;
@@ -135,14 +135,12 @@ class ExternalServer {
 	}
 
 	public function isBlacklisted() {
-		if ($this->locationName) {
-			if ($this->isValid() == false) {
-				return true;
-			}
+		if ($this->isValid() == false) {
+			return true;
 		}
 		return false;
 	}
-	
+
 	public function isNew() {
 		$this->dbSelect();
 		if ($this->dataFromDatabase) {
