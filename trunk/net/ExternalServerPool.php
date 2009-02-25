@@ -39,7 +39,7 @@ class ExternalServerPool {
 		$lineArray = split("\n", $serverList);
 		foreach ($lineArray as $i => $urlString) {
 			$server = ExternalServer::newFromUrlString($urlString);
-			if ($server->isNew()) {
+			if ($server && $server->isNew()) {
 				$this->add($server);
 			}
 		}
