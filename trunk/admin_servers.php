@@ -42,11 +42,11 @@ if (!$localServer->isEmpty()) {
 	}
 
 	if (isset($_POST['new_url'])) {
-		$server = ExternalServer::newFromUrlString($_POST['new_url']);
-		$server->dbInsert();
-		// TODO: better one mysql statement
-		$server->setLocationName($_POST['new_url']);
-		Header('Location: admin_servers.php');
+		$new_url = $_POST['new_url'];
+		if (strlen($new_url) > 7) {
+			mysql_query('insert into servers (name, url) values ("'.$_POST['new_url'].'", "'.$_POST['new_url'].'");');
+			Header('Location: admin_servers.php');
+		}
 	}
 
 	if (isset($_GET['blacklist'])) {
@@ -107,10 +107,12 @@ Name:</label> <input type="text" name="local_name"
 des Standorts ändern.</a></span></div>
 <?php if ($serverPool->acceptMoreServers()) { ?>
 <h2>Automatisches Hinzufügen von anderen Standorten aktiv</h2>
-<div class="menu"><span><a href="admin_servers.php?set_manual=1">Das automatische Hinzufügen von Standorten deaktivieren</a></span></div>
+<div class="menu"><span><a href="admin_servers.php?set_manual=1">Das
+automatische Hinzufügen von Standorten deaktivieren</a></span></div>
 <?php } else { ?>
 <h2>Manuelle Verwaltung der Standortliste</h2>
-<div class="menu"><span><a href="admin_servers.php?set_automatic=1">Das automatische Hinzufügen von Standorten aktivieren</a></span></div>
+<div class="menu"><span><a href="admin_servers.php?set_automatic=1">Das
+automatische Hinzufügen von Standorten aktivieren</a></span></div>
 <?php } ?>
 <h2>Bekannte Standorte: <?php echo $serverPool->size(); ?></h2>
 <?php if ($serverPool->size() == 0) { ?>
@@ -119,7 +121,11 @@ Standorteinträge zurücksetzen.</a></span></div>
 <?php } else { ?>
 <ul class="text">
 <?php echo $htmlList; ?>
-<li><form action="admin_servers.php" method="post"><input type="text" name="new_url" value="http://" class="fullsize" /><input type="submit" value="Eintragen" /></form></li>
+	<li>
+	<form action="admin_servers.php" method="post"><input type="text"
+		name="new_url" value="http://" class="fullsize" /><input type="submit"
+		value="Eintragen" /></form>
+	</li>
 </ul>
 <?php } ?>
 
