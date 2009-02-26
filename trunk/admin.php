@@ -6,6 +6,16 @@
 
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
+require_once 'mysql_conn.php';
+
+function number_of_servers() {
+	$result = mysql_query('select count(url) from servers where url != "";');
+	if (!$result) return 0;
+	$countArr = mysql_fetch_row($result);
+	if (!$countArr) return 0;
+	return $countArr[0];	
+}
+
 require_once 'books/AbstractBookList.php';
 $numberOfBooks = AbstractBookList::numberOfAllBooks();
 
@@ -16,9 +26,7 @@ $numberOfCategories = sizeof($categories->getArray());
 require_once 'net/LocalServer.php';
 $serverName = new LocalServer();
 
-require_once 'net/ExternalServerPool.php';
-$serverPool = new ExternalServerPool(true, true);
-$numberOfServers = $serverPool->size();
+$numberOfServers = number_of_servers();
 
 /*
  * Optionen anbieten:

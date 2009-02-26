@@ -24,10 +24,18 @@ if (isset($_POST['local_name'])) {
 }
 
 if (!$localServer->isEmpty()) {
-	$serverPool = new ExternalServerPool(true, true);
 
 	if (isset($_GET['reset_servers'])) {
-		$serverPool->resetDb();
+
+		function reset_db() {
+			mysql_query('delete from servers where url != "";');
+			include 'net/external_servers.php';
+			foreach ($external_servers as $i => $server) {
+				$server->dbInsert();
+			}
+		}
+
+		reset_db();
 		Header('Location: admin_servers.php');
 	}
 
@@ -64,22 +72,56 @@ if (!$localServer->isEmpty()) {
 		Header('Location: admin_servers.php');
 	}
 
-	$htmlList = '';
-	while ($server = $serverPool->next()) {
-		$blackListOption = 'blacklist';
-		if ($server->isBlacklisted()) {
-			$blackListOption = 'activate';
-		}
-		$htmlList .= '<li>'
-		. $server->toHtmlLink()
-		. '&nbsp;&nbsp;<a href="admin_servers.php?'
-		. $blackListOption . '=' . $server->getUrl() .'">'
-		. '[['.$blackListOption.']]</a>'
-		. '</a>'
-		. '&nbsp;&nbsp;<a href="admin_servers.php?delete=' . $server->getUrl() .'">'
-		. '[[delete]]</a>'
-		. '</li>'."\n";
+	function blacklist_link($url) {
+		return action_link($url, 'blacklist', '&darr;');
 	}
+
+	function delete_link($url) {
+		return action_link($url, 'delete', 'X');
+	}
+
+	function activate_link($url) {
+		return action_link($url, 'activate', '&uarr;');
+	}
+
+	function action_link($url, $action, $symbol) {
+		$link = ' [' . $symbol
+		. '<a href="admin_servers.php?' . $action . '='
+		. $url . '">' . $action . '</a>]';
+		return $link;
+	}
+
+	$activeServers = ExternalServerPool::whiteServerPool();
+	$activeList = '';
+	while ($server = $activeServers->next()) {
+		$activeList .= '<li>'
+		. $server->toHtmlLink()
+		. blacklist_link($server->getUrl())
+		. delete_link($server->getUrl())
+		. '</li>';
+	}
+
+	$unknownServers = ExternalServerPool::unknownServerPool();
+	$unknownList = '';
+	while ($server = $unknownServers->next()) {
+		$unknownList .= '<li>'
+		. $server->toHtmlLink()
+		. activate_link($server->getUrl())
+		. blacklist_link($server->getUrl())
+		. delete_link($server->getUrl())
+		. '</li>';
+	}
+
+	$blacklistServers = ExternalServerPool::blacklistServerPool();
+	$blackList = '';
+	while ($server = $blacklistServers->next()) {
+		$blackList .= '<li>'
+		. $server->toHtmlLink()
+		. activate_link($server->getUrl())
+		. delete_link($server->getUrl())
+		. '</li>';
+	}
+
 }
 
 require 'header.php';
@@ -118,21 +160,32 @@ aktiv &harr; <a href="admin_servers.php?add_suggested=0">deaktivieren</a>
 <?php } else {?> <a href="admin_servers.php?add_suggested=1">aktivieren</a>
 &harr; deaktiviert <?php }?></p>
 
+<h2>Liste aller Standorte</h2>
 
-<h2>Bekannte Standorte: <?php echo $serverPool->size(); ?></h2>
-<?php if ($serverPool->size() == 0) { ?>
-<div class="menu"><span><a href="admin_servers.php?reset_servers=1">Alle
-Standorteinträge zurücksetzen.</a></span></div>
-<?php } else { ?>
+<h3>Aktive Standorte: <?php echo $activeServers->size(); ?></h3>
 <ul class="text">
-<?php echo $htmlList; ?>
+<?php echo $activeList; ?>
 	<li>
 	<form action="admin_servers.php" method="post"><input type="text"
 		name="new_url" value="http://" class="fullsize" /><input type="submit"
 		value="Eintragen" /></form>
 	</li>
 </ul>
-<?php } ?>
+
+<h3>Unbekannte Standorte: <?php echo $unknownServers->size(); ?></h3>
+<ul class="text">
+<?php echo $unknownList; ?>
+</ul>
+
+<h3>Blacklist: <?php echo $blacklistServers->size(); ?></h3>
+<ul class="text">
+<?php echo $blackList; ?>
+</ul>
+
+
+<h2>Reset</h2>
+<div class="menu"><span><a href="admin_servers.php?reset_servers=1">Alle
+Standorteinträge zurücksetzen.</a></span></div>
 
 <?php } ?>
 

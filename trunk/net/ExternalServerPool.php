@@ -7,14 +7,34 @@
 require_once 'ExternalServer.php';
 
 class ExternalServerPool {
+	
+	const queryStart = 'select url, name, fails, next_try from servers ';
 
 	private $index = 0;
 	private $servers = array();
-	private $startSize = 0;
 
-	public function __construct($loadNew = false, $loadBlacklisted = false) {
-		$this->loadFromDb($loadNew, $loadBlacklisted);
-		$this->startSize = sizeof($external_servers);
+	public static function activeServerPool() {
+		$pool = new self();
+		$pool->loadActive();
+		return $pool;
+	}
+
+	public static function whiteServerPool() {
+		$pool = new self();
+		$pool->loadWhite();
+		return $pool;
+	}
+
+	public static function unknownServerPool() {
+		$pool = new self();
+		$pool->loadUnknown();
+		return $pool;
+	}
+
+	public static function blacklistServerPool() {
+		$pool = new self();
+		$pool->loadBlacklist();
+		return $pool;
 	}
 
 	public function next() {
@@ -42,38 +62,41 @@ class ExternalServerPool {
 		}
 	}
 
-	public function saveInDb() {
-		for ($i = $this->startSize; $i < sizeof($this->servers); $i++) {
-			$this->servers[$i]->dbInsert();
-		}
-	}
-
 	public function size() {
 		return sizeof($this->servers);
 	}
 
-	public function resetDb() {
-		mysql_query('delete from servers where url != "";');
-		include 'external_servers.php';
-		foreach ($external_servers as $i => $server) {
-			$server->dbInsert();
-		}
-		$this->servers = $external_servers;
+	private function loadActive() {
+		$query = self::queryStart
+		. ' where url != ""'
+		. ' and next_try <= curdate();';
+		$this->loadFromDb($query);
 	}
 
-	private function loadFromDb($loadNew, $loadBlacklisted) {
-		$query = 'select url, name, fails, next_try from servers'
-		. ' where url != ""';
-		/*
-		 * TODO: remove parameter
-		*/
-		if (!$loadNew) {
-			$query .= ' and name != ""';
-		}
-		if (!$loadBlacklisted) {
-			$query .= ' and next_try <= curdate()';
-		}
-		$query .= ';';
+	private function loadWhite() {
+		$query = self::queryStart
+		. ' where url != ""'
+		. ' and next_try < "9999-12-31";';
+		$this->loadFromDb($query);
+	}
+
+	private function loadUnknown() {
+		$query = self::queryStart
+		. ' where url != ""'
+		. ' and name = ""'
+		. ' and next_try = "9999-12-31";';
+		$this->loadFromDb($query);
+	}
+
+	private function loadBlacklist() {
+		$query = self::queryStart
+		. ' where url != ""'
+		. ' and name != ""'
+		. ' and next_try = "9999-12-31";';
+		$this->loadFromDb($query);
+	}
+
+	private function loadFromDb($query) {
 		$result = mysql_query($query);
 		if (!$result) return;
 		while ($serverArray = mysql_fetch_array($result)) {

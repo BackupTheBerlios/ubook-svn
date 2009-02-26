@@ -37,7 +37,7 @@ if ($bookList->size() > 0) {
 }
 else {
 	require_once 'net/ExternalServerPool.php';
-	$serverPool = new ExternalServerPool();
+	$serverPool = ExternalServerPool::activeServerPool();
 	$serverTextList = $serverPool->toTextList(); 
 }
 
