@@ -31,13 +31,13 @@ if (!$localServer->isEmpty()) {
 		Header('Location: admin_servers.php');
 	}
 
-	if (isset($_GET['set_manual'])) {
-		$serverPool->disableAcceptingServers();
+	if (isset($_GET['remember'])) {
+		$localServer->setRemembering((bool) $_GET['remember']);
 		Header('Location: admin_servers.php');
 	}
 
-	if (isset($_GET['set_automatic'])) {
-		$serverPool->enableAcceptingServers();
+	if (isset($_GET['add_suggested'])) {
+		$localServer->setAccepting((bool) $_GET['add_suggested']);
 		Header('Location: admin_servers.php');
 	}
 
@@ -105,15 +105,20 @@ Name:</label> <input type="text" name="local_name"
 <h2>Standort <?php echo $localServer->name(); ?></h2>
 <div class="menu"><span><a href="admin_servers.php?edit_name=1">Namen
 des Standorts ändern.</a></span></div>
-<?php if ($serverPool->acceptMoreServers()) { ?>
-<h2>Automatisches Hinzufügen von anderen Standorten aktiv</h2>
-<div class="menu"><span><a href="admin_servers.php?set_manual=1">Das
-automatische Hinzufügen von Standorten deaktivieren</a></span></div>
-<?php } else { ?>
-<h2>Manuelle Verwaltung der Standortliste</h2>
-<div class="menu"><span><a href="admin_servers.php?set_automatic=1">Das
-automatische Hinzufügen von Standorten aktivieren</a></span></div>
-<?php } ?>
+
+
+<h2>Automatische Standortverwaltung</h2>
+<p>Unbekannte Standorte deaktiviert merken: <?php if ($localServer->rememberNewServers()) { ?>
+aktiv &harr; <a href="admin_servers.php?remember=0">deaktivieren</a> <?php } else {?>
+<a href="admin_servers.php?remember=1">aktivieren</a> &harr; deaktiviert
+<?php }?></p>
+
+<p>Empfohlene Standorte von anderen übernehmen: <?php if ($localServer->acceptSuggestedServers()) { ?>
+aktiv &harr; <a href="admin_servers.php?add_suggested=0">deaktivieren</a>
+<?php } else {?> <a href="admin_servers.php?add_suggested=1">aktivieren</a>
+&harr; deaktiviert <?php }?></p>
+
+
 <h2>Bekannte Standorte: <?php echo $serverPool->size(); ?></h2>
 <?php if ($serverPool->size() == 0) { ?>
 <div class="menu"><span><a href="admin_servers.php?reset_servers=1">Alle

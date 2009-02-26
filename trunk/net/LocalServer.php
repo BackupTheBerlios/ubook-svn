@@ -9,6 +9,16 @@ require_once 'mysql_conn.php';
 class LocalServer {
 
 	private $name = '';
+	/*
+	 * The trust level encodes two options:
+	 * 1. Remember unknown servers,
+	 * 2. Add servers suggested from others.
+	 * These levels are possible:
+	 * 0: manual configuration
+	 * 1: remember unknown
+	 * 2: add suggested
+	 * 3: do both
+	 */
 	private $trustLevel = 0;
 
 	public function __construct() {
@@ -20,7 +30,7 @@ class LocalServer {
 			$this->trustLevel = $arr['trust_level'];
 		}
 	}
-	
+
 	public function isEmpty() {
 		if ($this->name) {
 			return false;
@@ -46,13 +56,40 @@ class LocalServer {
 		}
 		mysql_query($query);
 	}
-	
+
 	public function rememberNewServers() {
-		return ($this->trustLevel == 0);
+		return ($this->trustLevel & 1);
 	}
 
 	public function acceptSuggestedServers() {
-		return ($this->trustLevel == 0);
+		return ($this->trustLevel & 2);
+	}
+
+	public function setRemembering($doRemember) {
+		if ($doRemember) {
+			$this->trustLevel |= 1;
+		}
+		else {
+			$this->trustLevel &= 2;
+		}
+		$this->updateLevel();
+	}
+
+	public function setAccepting($doAccept) {
+		if ($doAccept) {
+			$this->trustLevel |= 2;
+		}
+		else {
+			$this->trustLevel &= 1;
+		}
+		$this->updateLevel();
+	}
+	
+	private function updateLevel() {
+		$query = 'update servers set'
+		. ' fails = ' . $this->trustLevel
+		. ' where url = "";';
+		mysql_query($query);
 	}
 
 }

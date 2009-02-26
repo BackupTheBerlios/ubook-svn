@@ -8,6 +8,8 @@ require_once 'ExternalBookList.php';
 require_once 'ExternalServer.php';
 require_once 'HttpUrl.php';
 require_once 'HttpConnection.php';
+require_once 'LocalServer.php';
+
 require_once 'WEBDIR.php';
 
 class ThreadedBookListReader {
@@ -24,6 +26,7 @@ class ThreadedBookListReader {
 		$bookListArray = array();
 		$connectionArray = array();
 		$scriptRequest = self::scriptRequest($this->searchKey);
+		$localServer = new LocalServer();
 		do {
 			if ($server = $this->serverPool->next()) {
 				// unsused server available, use it
@@ -58,7 +61,9 @@ class ThreadedBookListReader {
 					$bookListArray[] = $bookList;
 				}
 				else {
-					$this->serverPool->append($connData->getNewServers());
+					if ($localServer->acceptSuggestedServers()) {
+						$this->serverPool->append($connData->getNewServers());
+					}
 				}
 				continue;
 			}
