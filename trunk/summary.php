@@ -4,7 +4,7 @@
  * Copyright (C) 2009 Maikel Linke
  */
 
-require_once 'UsersBooks.php';
+require_once 'books/UsersBooks.php';
 require_once 'Mailer.php';
 
 function sendSummary() {
