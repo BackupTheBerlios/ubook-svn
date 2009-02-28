@@ -46,8 +46,8 @@ class LocalServer {
 		$newName = trim($newName);
 		if (!$newName) return;
 		if ($this->isEmpty()) {
-			$query = 'insert into servers (url, name) values ("", '
-			. '"' . $newName . '");';
+			$query = 'insert into servers (url, name, fails) values ("", '
+			. '"' . $newName . '", 2);';
 		}
 		else {
 			$query = 'update servers set '
