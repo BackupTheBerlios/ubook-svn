@@ -9,13 +9,19 @@ require_once 'net/HttpUrl.php';
 
 
 class HttpUrlTest extends PHPUnit_Framework_TestCase {
-	
+
 	function testHttpUrl() {
 		$urlString = 'http://localhost/ubook/';
 		$url = new HttpUrl($urlString);
 		$this->assertEquals('localhost', $url->getDomainName());
 		$this->assertEquals('/ubook/', $url->getDirectory());
 	}
-	
+
+	function testHttpUrlFail() {
+		$url = new HttpUrl(true);
+		$this->assertEquals('', $url->getDomainName());
+		$this->assertEquals('', $url->getDirectory());
+	}
+
 }
 ?>
