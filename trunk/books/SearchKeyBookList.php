@@ -30,7 +30,7 @@ class SearchKeyBookList extends AbstractBookList {
 		$and = ' ';
 		$query = 'select id, author, title, price from books where ';
 		foreach ($keys as $i => $k) {
-			$query .= $and.$fields.'like "%'.$k.'%"';
+			$query .= $and . $fields . 'like "%' . $k . '%"';
 			$and = ' and ';
 		}
 		if ($option == 'new') {

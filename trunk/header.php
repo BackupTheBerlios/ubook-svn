@@ -46,6 +46,14 @@ header('Content-Type: text/html;charset=utf-8');
   <link rel="up" title="Hoch" href="./" />
 <?php echo_navigation(); ?>
   <script language="javascript" type="text/javascript" src="focus.js"></script>
+<?php if (defined('AUTOCOMPLETER')) {?>  
+  <link rel="stylesheet" type="text/css" href="autocompleter/Autocompleter.css" />
+  <script language="javascript" type="text/javascript" src="autocompleter/mootools-1.2.1-core.js"></script>
+  <script language="javascript" type="text/javascript" src="autocompleter/Autocompleter.js"></script>
+  <script language="javascript" type="text/javascript" src="autocompleter/Autocompleter.Request.js"></script>
+  <script language="javascript" type="text/javascript" src="autocompleter/Observer.js"></script>
+  <script language="javascript" type="text/javascript" src="autocompleter/load_autocompleter.js"></script>
+<?php }?>
   <title>uBook</title>
  </head>
  <body>
