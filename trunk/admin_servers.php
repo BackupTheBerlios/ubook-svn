@@ -8,87 +8,112 @@ require_once 'mysql_conn.php';
 require_once 'net/ExternalServer.php';
 require_once 'net/ExternalServerPool.php';
 require_once 'net/LocalServer.php';
+// TODO: Review!
+/**
+ * Provides admin functions to manipulate the servers table.
+ * @author maikel
+ */
+abstract class AdminServers {
+
+	public static function reload() {
+		header('Location: admin_servers.php');
+		exit;
+	}
+
+	public static function resetDb() {
+		mysql_query('delete from servers where url != "";');
+		include 'net/external_servers.php';
+		foreach ($external_servers as $i => $server) {
+			$server->dbInsert();
+		}
+	}
+
+	public static function addUrl($url) {
+		if (strlen($url) > 7) {
+			mysql_query('insert into servers'
+			. ' (name, url) values'
+			. ' ("'	. $url . '", "'	. $url.'");');
+		}
+	}
+
+	public static function menuLinksWhite($url) {
+		return self::blacklistLink($url) . self::deleteLink($url);
+	}
+
+	public static function menuLinksUnknown($url) {
+		return self::activateLink($url) . self::blacklistLink($url) . self::deleteLink($url);
+	}
+
+	public static function menuLinksBlack($url) {
+		return self::activateLink($url) . self::deleteLink($url);
+	}
+
+	private static function blacklistLink($url) {
+		return self::actionLink($url, 'blacklist', '&darr;');
+	}
+
+	private static function deleteLink($url) {
+		return self::actionLink($url, 'delete', 'X');
+	}
+
+	private static function activateLink($url) {
+		return self::actionLink($url, 'activate', '&uarr;');
+	}
+
+	private static function actionLink($url, $action, $symbol) {
+		$link = ' [' . $symbol
+		. '<a href="admin_servers.php?' . $action . '='
+		. $url . '">' . $action . '</a>]';
+		return $link;
+	}
+
+}
 
 $localServer = new LocalServer();
 
 if (isset($_POST['local_name'])) {
-	$reset = false;
-	if ($localServer->isEmpty()) $reset = true;
-	$localServer->update($_POST['local_name']);
-	if ($reset) {
-		header('Location: admin_servers.php?reset_servers=1');
+	if ($localServer->isEmpty()) {
+		$localServer->setUp($_POST['local_name']);
 	}
 	else {
-		header('Location: admin_servers.php');
+		$localServer->update($_POST['local_name']);
 	}
+	AdminServers::reload();
+}
+
+if (isset($_GET['drop'])) {
+	mysql_query('drop table servers;');
+	Header('Location: admin.php');
 }
 
 if (!$localServer->isEmpty()) {
 
 	if (isset($_GET['reset_servers'])) {
-
-		function reset_db() {
-			mysql_query('delete from servers where url != "";');
-			include 'net/external_servers.php';
-			foreach ($external_servers as $i => $server) {
-				$server->dbInsert();
-			}
-		}
-
-		reset_db();
-		Header('Location: admin_servers.php');
+		AdminServers::resetDb();
 	}
 
 	if (isset($_GET['remember'])) {
 		$localServer->setRemembering((bool) $_GET['remember']);
-		Header('Location: admin_servers.php');
 	}
 
 	if (isset($_GET['add_suggested'])) {
 		$localServer->setAccepting((bool) $_GET['add_suggested']);
-		Header('Location: admin_servers.php');
 	}
 
 	if (isset($_POST['new_url'])) {
-		$new_url = $_POST['new_url'];
-		if (strlen($new_url) > 7) {
-			mysql_query('insert into servers (name, url) values ("'.$_POST['new_url'].'", "'.$_POST['new_url'].'");');
-			Header('Location: admin_servers.php');
-		}
+		AdminServers::addUrl($_POST['new_url']);
 	}
 
 	if (isset($_GET['blacklist'])) {
 		ExternalServer::blacklist($_GET['blacklist']);
-		Header('Location: admin_servers.php');
 	}
 
 	if (isset($_GET['activate'])) {
 		ExternalServer::activate($_GET['activate']);
-		Header('Location: admin_servers.php');
 	}
 
 	if (isset($_GET['delete'])) {
 		ExternalServer::delete($_GET['delete']);
-		Header('Location: admin_servers.php');
-	}
-
-	function blacklist_link($url) {
-		return action_link($url, 'blacklist', '&darr;');
-	}
-
-	function delete_link($url) {
-		return action_link($url, 'delete', 'X');
-	}
-
-	function activate_link($url) {
-		return action_link($url, 'activate', '&uarr;');
-	}
-
-	function action_link($url, $action, $symbol) {
-		$link = ' [' . $symbol
-		. '<a href="admin_servers.php?' . $action . '='
-		. $url . '">' . $action . '</a>]';
-		return $link;
 	}
 
 	$activeServers = ExternalServerPool::whiteServerPool();
@@ -96,8 +121,7 @@ if (!$localServer->isEmpty()) {
 	while ($server = $activeServers->next()) {
 		$activeList .= '<li>'
 		. $server->toHtmlLink()
-		. blacklist_link($server->getUrl())
-		. delete_link($server->getUrl())
+		. AdminServers::menuLinksWhite($server->getUrl())
 		. '</li>';
 	}
 
@@ -106,9 +130,7 @@ if (!$localServer->isEmpty()) {
 	while ($server = $unknownServers->next()) {
 		$unknownList .= '<li>'
 		. $server->toHtmlLink()
-		. activate_link($server->getUrl())
-		. blacklist_link($server->getUrl())
-		. delete_link($server->getUrl())
+		. AdminServers::menuLinksUnknown($server->getUrl())
 		. '</li>';
 	}
 
@@ -117,12 +139,14 @@ if (!$localServer->isEmpty()) {
 	while ($server = $blacklistServers->next()) {
 		$blackList .= '<li>'
 		. $server->toHtmlLink()
-		. activate_link($server->getUrl())
-		. delete_link($server->getUrl())
+		. AdminServers::menuLinksBlack($server->getUrl())
 		. '</li>';
 	}
 
 }
+
+if (sizeof($_GET)) AdminServers::reload();
+if (sizeof($_POST)) AdminServers::reload();
 
 require 'header.php';
 
@@ -145,8 +169,10 @@ Name:</label> <input type="text" name="local_name"
 </div>
 <?php } else { ?>
 <h2>Standort <?php echo $localServer->name(); ?></h2>
-<div class="menu"><span><a href="admin_servers.php?edit_name=1">Namen
-des Standorts ändern.</a></span></div>
+<p><a href="admin_servers.php?edit_name=1">Namen des Standorts ändern</a></p>
+<p><a href="admin_servers.php?drop=1">Suche an anderen Standorten
+ausschalten</a><br />
+Dies löscht den Standortnamen und die Liste der Standorte.</p>
 
 
 <h2>Automatische Standortverwaltung</h2>
@@ -185,7 +211,7 @@ aktiv &harr; <a href="admin_servers.php?add_suggested=0">deaktivieren</a>
 
 <h2>Reset</h2>
 <div class="menu"><span><a href="admin_servers.php?reset_servers=1">Alle
-Standorteinträge zurücksetzen.</a></span></div>
+Standorteinträge zurücksetzen</a></span></div>
 
 <?php } ?>
 

@@ -65,17 +65,6 @@ if ($error == '') {
 		$new_table .= ')';
 		mysql_query($new_table);
 	}
-	$table_servers = mysql_query('describe servers;');
-	if ($table_servers == null) {
-		$new_table = 'CREATE TABLE `servers` (';
-		$new_table .= '`url` varchar(128) NOT NULL,';
-		$new_table .= '`name` varchar(128) NOT NULL,';
-		$new_table .= '`fails` tinyint(3) unsigned NOT NULL,';
-		$new_table .= '`next_try` date NOT NULL,';
-		$new_table .= 'PRIMARY KEY  (`url`)';
-		$new_table .= ')';
-		mysql_query($new_table);
-	}
 }
 
 require 'header.php';
