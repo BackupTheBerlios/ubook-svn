@@ -85,6 +85,7 @@ if (isset($_POST['local_name'])) {
 if (isset($_GET['drop'])) {
 	mysql_query('drop table servers;');
 	Header('Location: admin.php');
+	exit;
 }
 
 if (!$localServer->isEmpty()) {
