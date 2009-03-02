@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2009 Maikel Linke
@@ -12,10 +12,18 @@ $query = 'select author, title from books'
 . ' where author like "' . $keywords . '%"'
 . ' or title like "' . $keywords . '%"'
 . ' group by author, title'
-. ' order by author, title;';
+. ' order by author, title'
+. ' limit 7;';
 $result = mysql_query($query);
 while ($a = mysql_fetch_array($result)) {
-	echo '<li>' . $a['author'] . ' ' . $a['title'] . '</li>';
+	if ($a['author']) {
+		$new_keywords = $a['author'] . ' ' . $a['title'];
+	}
+	else {
+		$new_keywords = $a['title'];
+	}
+	if ($new_keywords == $keywords) continue;
+	echo '<li>' . $new_keywords . '</li>';
 }
 
 ?>

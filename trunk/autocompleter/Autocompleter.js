@@ -22,7 +22,7 @@ var Autocompleter = new Class({
 		onHide: $empty,
 		onBlur: $empty,
 		onFocus: $empty,*/
-		minLength: 1,
+		minLength: 2,
 		markQuery: true,
 		width: 'inherit',
 		maxChoices: 10,
