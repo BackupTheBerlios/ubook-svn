@@ -8,7 +8,7 @@ require_once 'mysql_conn.php';
 require_once 'net/ExternalServer.php';
 require_once 'net/ExternalServerPool.php';
 require_once 'net/LocalServer.php';
-// TODO: Review!
+
 /**
  * Provides admin functions to manipulate the servers table.
  * @author maikel
@@ -74,6 +74,7 @@ $localServer = new LocalServer();
 if (isset($_POST['local_name'])) {
 	if ($localServer->isEmpty()) {
 		$localServer->setUp($_POST['local_name']);
+		AdminServers::resetDb();
 	}
 	else {
 		$localServer->update($_POST['local_name']);
