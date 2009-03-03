@@ -7,7 +7,7 @@
 require_once 'PHPUnit/Framework.php';
 
 class PhpTest extends PHPUnit_Framework_TestCase {
-	
+
 	function testArrayWalking() {
 		$a = array('a', 'b', 'c');
 		$this->assertEquals('a', current($a));
@@ -22,14 +22,10 @@ class PhpTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(0, $i);
 		$this->assertEquals('a', $v);
 	}
-	
+/*
 	function testIncompleteUnitTest() {
 		$this->markTestIncomplete('PHP is not tested completely.');
 	}
-	
-	function testSkip() {
-		$this->markTestSkipped('This test does nothing.');
-	}
-	
+*/
 }
 ?>
