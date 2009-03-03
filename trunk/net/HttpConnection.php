@@ -41,15 +41,23 @@ class HttpConnection {
 	 */
 	public function read() {
 	    if (!$this->fp) return null;
+	    $someBytes = fread($this->fp, 1024);
+	    $this->response .= $someBytes;
 	    if (feof($this->fp)) {
 	        fclose($this->fp);
 	        $this->fp = null;
 	        $this->parseResponse();
-	        return null;
 	    }
-	    $someBytes = fread($this->fp, 1024);
-	    $this->response .= $someBytes;
 	    return $someBytes;
+	}
+
+	/**
+	 * Checks wether the stream end is reached.
+	 * @return bool
+	 */
+	public function end() {
+		if (!$this->fp) return true;
+		return feof($this->fp);
 	}
 
 	/**
