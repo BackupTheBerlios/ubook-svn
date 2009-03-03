@@ -11,7 +11,7 @@ require_once 'HttpConnection.php';
 require_once 'ConnectionData.php';
 require_once 'LocalServer.php';
 
-require_once 'WEBDIR.php';
+require_once 'tools/WEBDIR.php';
 
 class ThreadedBookListReader {
 

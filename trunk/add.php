@@ -7,8 +7,9 @@
 /* anti spam */
 if (isset($_POST['name']) && $_POST['name'] != '') exit;
 
+require_once 'tools/SelectableCategories.php';
+
 include_once 'mysql_conn.php';
-include_once 'SelectableCategories.php';
 
 // creates a random string with certain length
 function random_key($l=32) {
@@ -58,7 +59,7 @@ if (isset($_POST['author'])) {
 		$to = stripslashes($mail);
 		$subject = '';
 		$message = 'Mit deiner E-Mailadresse wurde das unten stehende Buch angeboten. Hebe diese E-Mail auf, um das Angebot später ändern und löschen zu können.';
-		require_once 'Mailer.php';
+		require_once 'tools/Mailer.php';
 		Mailer::send($book_id, $subject, $message);
 		header('Location: book.php?id='.$book_id.'&key='.$key.'&new=1');
 	}
@@ -78,7 +79,7 @@ include 'header.php';
   <legend>Buch anbieten...&nbsp;</legend>
   <form action="add.php" method="post">
     <input type="text" name="name" value="" class="boogy" />
-    
+
     <label>Nachname, Vorname der Autorin / des Autor<br/>
     <input type="text" name="mail" value="" class="fullsize" />
     </label>

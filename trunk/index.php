@@ -7,9 +7,9 @@ if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
 require_once 'func_text2html.php';
-require_once 'Categories.php';
 require_once 'books/SearchKey.php';
 require_once 'books/BookList.php';
+require_once 'tools/Categories.php';
 
 function categoryMenu() {
 	$categories = new Categories();
@@ -52,7 +52,7 @@ else {
 				$reader = new ThreadedBookListReader($serverPool, $searchKey);
 				return $reader->read();
 			}
-			
+
 			$externalBookListArray = load_externalBookListArray($searchKey);
 		}
 	}
@@ -111,7 +111,7 @@ von anderen Standorten angezeigt.</div>
 <table align="center">
 <?php echo $bookList->toHtmlRows(); ?>
 </table>
-<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt"> 
+<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">
 <?php echo $bookList->size(); ?> / <?php echo AbstractBookList::numberOfAllBooks(); ?>
 </div>
 </div>
@@ -130,7 +130,7 @@ von anderen Standorten angezeigt.</div>
 <table align="center">
 <?php echo $catBookList->toHtmlRows(); ?>
 </table>
-<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt"> 
+<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">
 <?php echo $catBookList->size(); ?> / <?php echo AbstractBookList::numberOfAllBooks(); ?>
 </div>
 </div>

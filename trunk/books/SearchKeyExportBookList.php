@@ -8,11 +8,11 @@ require_once 'SearchKeyBookList.php';
 
 require_once 'mysql_conn.php';
 require_once 'func_book.php';
-require_once 'Parser.php';
-require_once 'WEBDIR.php';
+require_once 'tools/Parser.php';
+require_once 'tools/WEBDIR.php';
 
 class SearchKeyExportBookList extends SearchKeyBookList {
-	
+
 	const token = '<p>';
 
 	private $textList = '';
@@ -25,7 +25,7 @@ class SearchKeyExportBookList extends SearchKeyBookList {
 		if ($this->size() == 0) return;
 		$this->formatBooks(&$result);
 	}
-	
+
 	public function toTextList() {
 		return $this->textList;
 	}

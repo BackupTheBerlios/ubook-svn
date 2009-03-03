@@ -21,8 +21,8 @@ function echoSelectableCategories($selectableCategories) {
 
 require_once 'mysql_conn.php';
 require_once 'func_book.php';
-require_once 'SelectableCategories.php';
-require_once 'Parser.php';
+require_once 'tools/SelectableCategories.php';
+require_once 'tools/Parser.php';
 
 if (!isset($_GET['id'])) exit;
 if (!isset($_GET['key'])) exit;
@@ -31,7 +31,7 @@ $id = (int) $_GET['id'];
 $key = $_GET['key'];
 
 $query = 'select
- author, title, year, price, expires, description 
+ author, title, year, price, expires, description
  from books where id="'.$id.'" and auth_key="'.$key.'"';
 $result = mysql_query($query);
 if (mysql_num_rows($result) == 0) {

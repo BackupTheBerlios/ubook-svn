@@ -5,7 +5,7 @@
  */
 
 require_once 'mysql_conn.php';
-require_once 'Image.php';
+require_once 'tools/Image.php';
 
 if (!isset($_GET['id'])) exit;
 if (!isset($_GET['key'])) exit;

@@ -3,7 +3,7 @@
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2008 Maikel Linke
  */
- 
+
 $books = '';
 
 require_once 'mysql_conn.php';
@@ -11,7 +11,7 @@ require_once 'mysql_conn.php';
 if (isset($_POST['subject'])) {
 	require_once 'books/UsersBooks.php';
 	require_once 'func_book.php';
-	require_once 'Mailer.php';
+	require_once 'tools/Mailer.php';
 	$subject = stripslashes($_POST['subject']);
 	$text = stripslashes($_POST['text']);
 	$query = 'select distinct mail from books';
@@ -35,7 +35,7 @@ include 'header.php';
 
 <div class="menu"><span><a href="admin.php">&larr; Zurück zur
 Administrationsübersicht</a></span></div>
-  
+
   <?php if (isset($_GET['sent_mails'])) { ?>
   <div class="infobox">
    Es wurden <?php echo $_GET['sent_mails']; ?> von <?php echo $_GET['user_number']; ?> E-Mails verschickt.

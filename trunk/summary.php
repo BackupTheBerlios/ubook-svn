@@ -5,7 +5,7 @@
  */
 
 require_once 'books/UsersBooks.php';
-require_once 'Mailer.php';
+require_once 'tools/Mailer.php';
 
 function sendSummary() {
 	$userMail = Mailer::mailFromUser('mail');
@@ -24,7 +24,7 @@ $sent = sendSummary();
 
 include 'header.php';
 ?>
-  
+
   <div class="menu">
    <span><a href="./">Buch suchen</a></span>
    <span><a href="add.php">Buch anbieten</a></span>
@@ -32,7 +32,7 @@ include 'header.php';
    <span><a href="about.php">Impressum</a></span>
   </div>
 
-<?php if ($sent) { ?>  
+<?php if ($sent) { ?>
   <h2>Zusammenfassung gesendet</h2>
   <div class="text">
    An die angegebene E-Mailadresse wurde eine Nachricht versendet. Darin sind alle Bücher aufgelistet, die mit dieser E-Mailadresse angeboten werden.
@@ -47,5 +47,5 @@ include 'header.php';
     <input type="submit" value="Erneut versuchen" />
    </form>
 <?php } ?>
-  
+
 <?php include 'footer.php'; ?>

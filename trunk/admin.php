@@ -13,13 +13,13 @@ function number_of_servers() {
 	if (!$result) return 0;
 	$countArr = mysql_fetch_row($result);
 	if (!$countArr) return 0;
-	return $countArr[0];	
+	return $countArr[0];
 }
 
 require_once 'books/AbstractBookList.php';
 $numberOfBooks = AbstractBookList::numberOfAllBooks();
 
-require_once 'Categories.php';
+require_once 'tools/Categories.php';
 $categories = new Categories();
 $numberOfCategories = sizeof($categories->getArray());
 

@@ -3,9 +3,8 @@
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2007 Maikel Linke
  */
- 
+
 require_once 'mysql_conn.php';
-//require_once 'Categories.php';
 
 $message = '';
 
@@ -66,9 +65,9 @@ require 'header.php';
   <div class="menu">
    <span><a href="admin.php">&larr; Zurück zur Administrationsübersicht</a></span>
   </div>
-  
+
   <?php echo $message; ?>
-  
+
   <?php if (isset($rename_cat)) { ?>
    <form action="admin_categories.php" method="get">
     <input type="hidden" name="rename" value="<?php echo $rename_cat; ?>" />
@@ -87,10 +86,10 @@ require 'header.php';
   <ol class="text">
   <?php echo $cats; ?>
   </ol>
-  
+
   <form action="admin_categories.php" method="get">
    <p><input type="text" name="new_category" size="16" maxlength="32" /> <input type="submit" value="Hinzufügen" /></p>
   </form>
-  
+
 <?php include 'footer.php'; ?>
 

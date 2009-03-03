@@ -6,8 +6,8 @@
 
 require_once 'mysql_conn.php';
 require_once 'func_book.php';
-require_once 'Parser.php';
-require_once 'Image.php';
+require_once 'tools/Parser.php';
+require_once 'tools/Image.php';
 
 /*
  * Checks POST data and sends E-Mail, if everything is correct.
@@ -20,7 +20,7 @@ function send($book) {
 	if (!isset($_POST['name'])) return false;
 	$user_mail = stripslashes($_POST['name']);
 	if (!strstr($user_mail,'@')) return true;
-	include_once 'Mailer.php';
+	require_once 'tools/Mailer.php';
 	$subject = 'Anfrage: ';
 	$message = 'Es hat jemand mit der E-Mailadresse "'.$user_mail.'" Interesse für das unten stehende Buch bekundet.';
 	if (isset($_POST['user_text']) && $_POST['user_text']) {
@@ -75,7 +75,7 @@ include 'header.php';
   <?php } ?>
   <?php if (isset($_GET['renew'])) { ?>
   <div class="infobox">
-  Das Buchangebot wurde 
+  Das Buchangebot wurde
   <?php if ($_GET['renew'] == 0) { ?>
   <b>nicht</b>
   <?php } ?>

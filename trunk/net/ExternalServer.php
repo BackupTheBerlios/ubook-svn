@@ -23,7 +23,7 @@ class ExternalServer {
 	public static function newFromUrlString($urlString) {
 		if (strlen($urlString) <= 7) return;
 		if (self::containsSpecialChar($urlString)) return;
-		require_once 'WEBDIR.php';
+		require_once 'tools/WEBDIR.php';
 		if ($urlString == WEBDIR) return;
 		require_once 'HttpUrl.php';
 		$url = new HttpUrl($urlString);

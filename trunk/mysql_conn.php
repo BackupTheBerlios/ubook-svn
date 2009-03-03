@@ -4,9 +4,9 @@
  * Copyright (C) 2008 Maikel Linke
  */
 
-require_once 'WEBDIR.php';
 require_once 'mysql_conn_only.php';
-require_once 'Mailer.php';
+require_once 'tools/Mailer.php';
+require_once 'tools/WEBDIR.php';
 
 /*
  * Checks for old entries.

@@ -5,11 +5,11 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'Mailer.php';
+require_once 'tools/Mailer.php';
 
 
 class MailerTest extends PHPUnit_Framework_TestCase {
-	
+
 	function testIsValidAddress() {
 		$result = Mailer::isValidAddress('juser');
 		$this->assertTrue($result, 'Simple name not accepted.');
@@ -21,6 +21,6 @@ class MailerTest extends PHPUnit_Framework_TestCase {
 		$result = Mailer::isValidAddress($mail);
 		$this->assertFalse($result, 'new line accepted');
 	}
-	
+
 }
 ?>
