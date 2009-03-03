@@ -5,6 +5,7 @@
  */
 
 include_once 'magic_quotes.php';
+require_once 'tools/Parser.php';
 
 class SearchKey {
 
@@ -24,7 +25,7 @@ class SearchKey {
 	}
 
 	public function asHtml() {
-		return text2html(stripslashes($this->key));
+		return Parser::text2html(stripslashes($this->key));
 	}
 
 	public function getOption() {

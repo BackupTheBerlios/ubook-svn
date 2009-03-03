@@ -6,7 +6,6 @@
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
-require_once 'func_text2html.php';
 require_once 'books/SearchKey.php';
 require_once 'books/BookList.php';
 require_once 'tools/Categories.php';
