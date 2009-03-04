@@ -66,7 +66,7 @@ else {
 
 
 $navigation_links['first'] = array('Erste','./');
-define('AUTOCOMPLETER', true);
+//define('AUTOCOMPLETER', true);
 include 'header.php';
 
 ?>
