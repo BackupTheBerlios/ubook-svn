@@ -47,10 +47,6 @@ class PhpTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(feof($fp));
 		fclose($fp);
 	}
-/*
-	function testIncompleteUnitTest() {
-		$this->markTestIncomplete('PHP is not tested completely.');
-	}
-*/
+
 }
 ?>

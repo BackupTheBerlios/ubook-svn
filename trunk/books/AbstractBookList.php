@@ -7,8 +7,7 @@
 require_once 'BookList.php';
 
 require_once 'mysql_conn.php';
-require_once 'func_book.php';
-require_once 'tools/Parser.php';
+require_once 'tools/BookFetcher.php';
 
 abstract class AbstractBookList implements BookList {
 
@@ -35,8 +34,7 @@ abstract class AbstractBookList implements BookList {
 
 	protected static function mysqlResultToHtml($mysqlResult) {
 		$html = '';
-		while ($book = fetch_book(&$mysqlResult)) {
-			Parser::htmlbook($book);
+		while ($book = BookFetcher::fetchHtml($mysqlResult)) {
 			$html .= '<tr><td>'
 			. '<a href="book.php?id=' . $book['id'] . '">';
 			if ($book['author']) {
@@ -44,7 +42,6 @@ abstract class AbstractBookList implements BookList {
 			}
 			$html .= $book['title'] . '</a>'
 			. '</td><td>'.$book['price'].' &euro;</td></tr>'."\n";
-
 		}
 		return $html;
 	}

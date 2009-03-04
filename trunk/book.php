@@ -5,7 +5,7 @@
  */
 
 require_once 'mysql_conn.php';
-require_once 'func_book.php';
+require_once 'tools/BookFetcher.php';
 require_once 'tools/Parser.php';
 require_once 'tools/Image.php';
 
@@ -29,14 +29,14 @@ function send($book) {
 	}
 	$booked = Mailer::send($book['id'],$subject,$message,$user_mail);
 	header('Location: book.php?id='.$book['id'].'&booked='.$booked);
-	return false;
+	exit;
 }
 
 
 if (!isset($_GET['id'])) exit;
 $book_id = (int) $_GET['id'];
 $result = mysql_query('select id,author,title,year,price,description,auth_key,mail from books where id="'.$book_id.'"');
-$book = fetch_book($result); // null, if no book was found
+$book = BookFetcher::fetch($result); // null, if no book was found
 if ($book === null) exit;
 
 /* checks mail sending, no returning on success */

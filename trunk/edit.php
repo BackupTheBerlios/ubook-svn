@@ -20,7 +20,7 @@ function echoSelectableCategories($selectableCategories) {
 }
 
 require_once 'mysql_conn.php';
-require_once 'func_book.php';
+require_once 'tools/BookFetcher.php';
 require_once 'tools/SelectableCategories.php';
 require_once 'tools/Parser.php';
 
@@ -56,8 +56,7 @@ if (mysql_num_rows($result) == 0) {
 		require 'renew.php';
 	}
 
-	$book = fetch_book($result);
-	Parser::htmlbook($book);
+	$book = BookFetcher::fetchHtml($result);
 }
 
 include 'header.php';

@@ -10,7 +10,6 @@ require_once 'mysql_conn.php';
 
 if (isset($_POST['subject'])) {
 	require_once 'books/UsersBooks.php';
-	require_once 'func_book.php';
 	require_once 'tools/Mailer.php';
 	$subject = stripslashes($_POST['subject']);
 	$text = stripslashes($_POST['text']);

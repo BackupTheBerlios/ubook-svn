@@ -18,11 +18,11 @@ class Mailer {
 	 */
 	function send($book_id, $subject, $message, $reply_to = null) {
 		include_once 'mysql_conn.php';
-		include_once 'func_book.php';
+		require_once 'BookFetcher.php';
 		$query = 'select mail, id, author, title, price, year, description, auth_key from books where id="'.$book_id.'"';
 		$result = mysql_query($query);
 		if (mysql_num_rows($result) != 1) return false;
-		$book = fetch_book($result);
+		$book = BookFetcher::fetch($result);
 
 		$subject = $subject.$book['title'];
 
@@ -81,7 +81,7 @@ class Mailer {
 		// self does not work with PHP4
 		return Mailer::book_link($book_id).'&key='.$auth_key;
 	}
-	
+
 	/**
 	 * Checks for valid chars, but not for an address defined in RFC 2822.
 	 * @param $mailAddress address to check
@@ -90,7 +90,7 @@ class Mailer {
 	function isValidAddress($mailAddress) {
 		return (boolean) ereg('^[[:print:]]+$', $mailAddress);
 	}
-	
+
 	function mailFromUser($postIndex) {
 		if (!isset($_POST[$postIndex])) return null;
 		$mail = $_POST[$postIndex];

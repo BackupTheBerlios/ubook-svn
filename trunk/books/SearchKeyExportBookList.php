@@ -7,7 +7,7 @@
 require_once 'SearchKeyBookList.php';
 
 require_once 'mysql_conn.php';
-require_once 'func_book.php';
+require_once 'tools/BookFetcher.php';
 require_once 'tools/Parser.php';
 require_once 'tools/WEBDIR.php';
 
@@ -33,8 +33,7 @@ class SearchKeyExportBookList extends SearchKeyBookList {
 	private function formatBooks($mysqlResult) {
 		$list = '';
 		$bookScriptUrl = WEBDIR . 'book.php';
-		while ($book = fetch_book(&$mysqlResult)) {
-			Parser::htmlbook($book);
+		while ($book = BookFetcher::fetchHtml($mysqlResult)) {
 			$list .= $bookScriptUrl . '?id=' . $book['id']
 			. self::token . $book['author']
 			. self::token . $book['title']
