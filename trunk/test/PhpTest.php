@@ -48,5 +48,15 @@ class PhpTest extends PHPUnit_Framework_TestCase {
 		fclose($fp);
 	}
 
+	function testNumberCasting() {
+		$expected = 5.07;
+		$germanPriceString = '5,07';
+		$float = (float) $germanPriceString;
+		$this->assertNotEquals($expected, $float);
+		$priceString = str_replace(',', '.', $germanPriceString);
+		$float = (float) $priceString;
+		$this->assertEquals($expected, $float);
+	}
+
 }
 ?>
