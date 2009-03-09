@@ -66,6 +66,7 @@ else {
 
 
 $navigation_links['first'] = array('Erste','./');
+define('FOCUS', true);
 //define('AUTOCOMPLETER', true);
 include 'header.php';
 
@@ -78,7 +79,7 @@ include 'header.php';
 <form action="./" method="get" name="books"><input type="text"
 	name="search" id="search" size="20" alt="Suchworte"
 	value="<?php echo $searchKey->asHtml(); ?>" /> <script
-	language="javascript" type="text/javascript">
+	type="text/javascript">
      setFocus();
     </script> <br />
 <input type="submit" value="Suchen" /> <input type="submit" name="new"

@@ -39,17 +39,20 @@ if (isset($_POST['author'])) {
 	$mail = Mailer::mailFromUser('author');
 	if ($mail && strstr($mail,'@')) {
 		$key = random_key();
-		$query = 'insert into books (author,title,year,price,description,mail,auth_key,created,expires) values (
-   		"'.$_POST['mail'].'",
-   		"'.$_POST['title'].'",
-   		"'.$_POST['year'].'",
-   		"'.str_replace(',','.',$_POST['price']).'",
-  		"'.$_POST['description'].'",
-		"'.$mail.'",
-		"'.$key.'",
-		now(),
-		date_add(now(),interval 45 day)
-		)';
+		$query = 'insert into books'
+		. ' (author, title, year, price, description, mail, auth_key'
+		. ', created,expires)'
+		. ' values ('
+   		. '"' . trim($_POST['mail']) . '"'
+   		. ', "' . trim($_POST['title']) . '"'
+   		. ', "' . (int) trim($_POST['year']) . '"'
+   		. ', "' . (float) str_replace(',', '.', $_POST['price']) . '"'
+  		. ', "' . $_POST['description'] . '"'
+		. ', "' . $mail . '"'
+		. ', "' . $key . '"'
+		. ', now()'
+		. ', date_add(now(), interval 45 day)'
+		. ')';
 		mysql_query($query);
 		$book_id = mysql_insert_id();
 		$selectableCategories->setBookId($book_id);
@@ -77,7 +80,7 @@ include 'header.php';
   </div>
   <fieldset class="fullsize">
   <legend>Buch anbieten...&nbsp;</legend>
-  <form action="add.php" method="post">
+  <form action="add.php" method="post" name="add_form">
     <input type="text" name="name" value="" class="boogy" />
 
     <label>Nachname, Vorname der Autorin / des Autor<br/>
@@ -115,4 +118,7 @@ include 'header.php';
       <input type="submit" value="Abbrechen" />
   </form>
   </fieldset>
+  <script type="text/javascript">
+   document.add_form.mail.focus();
+  </script>
 <?php include 'footer.php'; ?>
