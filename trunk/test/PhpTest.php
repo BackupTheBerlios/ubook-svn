@@ -48,6 +48,9 @@ class PhpTest extends PHPUnit_Framework_TestCase {
 		fclose($fp);
 	}
 
+	/**
+	 * @see add.php
+	 */
 	function testNumberCasting() {
 		$expected = 5.07;
 		$germanPriceString = '5,07';
