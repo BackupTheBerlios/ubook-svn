@@ -75,7 +75,7 @@ include 'header.php';
  <div class="menu">
    <span><a href="./">Buch suchen</a></span>
    <span><b>Buch anbieten</b></span>
-   <span><a href="help.php">Hilfe</a></span>
+   <span><a href="help.php">Tipps</a></span>
    <span><a href="about.php">Impressum</a></span>
   </div>
   <fieldset class="fullsize">

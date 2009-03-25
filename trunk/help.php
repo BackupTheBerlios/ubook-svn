@@ -10,7 +10,7 @@ include 'header.php';
  <div class="menu">
    <span><a href="./">Buch suchen</a></span>
    <span><a href="add.php">Buch anbieten</a></span>
-   <span><b>Hilfe</b></span>
+   <span><b>Tipps</b></span>
    <span><a href="about.php">Impressum</a></span>
   </div>
  <h2>Wie funktioniert das?</h2>

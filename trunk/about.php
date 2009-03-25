@@ -10,10 +10,10 @@ include 'header.php';
  <div class="menu">
    <span><a href="./">Buch suchen</a></span>
    <span><a href="add.php">Buch anbieten</a></span>
-   <span><a href="help.php">Hilfe</a></span>
+   <span><a href="help.php">Tipps</a></span>
    <span><b>Impressum</b></span>
   </div>
-  
+
  <div class="text">
    <p>
     Diese Seite basiert auf der <a href="http://ubook.berlios.de/" target="_blank">freien Software uBook</a> und wird angeboten von:
