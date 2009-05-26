@@ -3,7 +3,7 @@ Hi!
 	/* Requirements */
 This is uBook. To run it on a server you need
  - a webserver with PHP support (Apache)
- - PHP4 or higher with MySQL support (perhaps you have to activate it
+ - PHP5 or higher with MySQL support (perhaps you have to activate it
    during compiling)
  - MySQL5 or higher (for MySQL4 you need to rewrite some SQL
    statements in the uBook code)
@@ -12,7 +12,10 @@ This is uBook. To run it on a server you need
  - Place this directory with all files in some webspace. Don't forget
    the hidden files .htaccess and .htusers. The .htaccess file will 
    protect the admin scripts.
- - Configure these two files. !!!Your server may not run before this!!!
+ - Configure these two files. !!!Your server may not run before this!!! How to
+   configure htaccess files:
+    - http://en.wikipedia.org/wiki/.htaccess
+    - http://de.selfhtml.org/servercgi/server/htaccess.htm (german)
  - Now uBook needs MySQL access. Create a user in the database (e.g.
    phpMyAdmin).
  - The username, password and database has to be stored in a file
@@ -35,3 +38,5 @@ sheets. Feel free to write me an E-Mail (ubook@asta-bielefeld.de) and
 report about problems, experience and further developement. But you 
 have to keep the license, which can be found in the file COPYING.
 uBook is free software.
+
+2009-05-26
