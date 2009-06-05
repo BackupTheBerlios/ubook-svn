@@ -109,7 +109,7 @@ include 'header.php';
    <?php } ?>
   <?php } else { ?>
   <?php if ($user_key) { ?>
-  <?php if (is_writable('img/')) { ?>
+  <?php if (Image::uploadable()) { ?>
   <form action="upload.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
     <input type="submit" value="Bild hochladen" />
   </form>

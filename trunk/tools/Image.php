@@ -1,33 +1,30 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2008 Maikel Linke
+ * Copyright (C) 2009 Maikel Linke
  */
 
 /**
- * This handles an image of a book.
- *
+ * This class handles an image of a book.
  */
 class Image {
-	
-	var $id;
-	
+
+	private $id;
+
 	/**
-	 * public
 	 * Constructor saving book id and determining image path
 	 *
 	 * @param int $id
 	 * @return Image
 	 */
-	function Image($id) {
+	public function __construct($id) {
 		$this->id = (int) $id;
 	}
 
 	/**
-	 * public
-	 * 
+	 * Reads the uploaded file and writes the image as png to the image dir.
 	 */
-	function moveUploaded() {
+	public function moveUploaded() {
 		if (count($_FILES) != 1) return;
 		if (!isset($_FILES['image'])) return;
 		$tmp_name = $_FILES['image']['tmp_name'];
@@ -49,28 +46,28 @@ class Image {
 		$this->delete();
 		imagepng($image, 'img/'.$this->id.'.png');
 		$max_thumb_width = 250;
-		$max_thumb_height = 250; 
+		$max_thumb_height = 250;
 		$img_width = imagesx($image);
 		$img_height = imagesy($image);
 		if ($img_width > $max_thumb_width || $img_height > $max_thumb_height) {
-			 if ($img_width > $img_height) {
-			 	$thumb_width = $max_thumb_width;
-			 	$thumb_height = $thumb_width * $img_height / $img_width;
-			 }
-			 else {
-			 	$thumb_height = $max_thumb_height;
-			 	$thumb_width = $thumb_height * $img_width / $img_height;
-			 }
-			 $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
-			 imagecopyresized($thumb, $image, 0, 0, 0, 0, $thumb_width, $thumb_height, $img_width, $img_height);
-			 imagepng($thumb, 'img/'.$this->id.'_thumb.png');
-			 imagedestroy($thumb);
+			if ($img_width > $img_height) {
+				$thumb_width = $max_thumb_width;
+				$thumb_height = $thumb_width * $img_height / $img_width;
+			}
+			else {
+				$thumb_height = $max_thumb_height;
+				$thumb_width = $thumb_height * $img_width / $img_height;
+			}
+			$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+			imagecopyresized($thumb, $image, 0, 0, 0, 0, $thumb_width, $thumb_height, $img_width, $img_height);
+			imagepng($thumb, 'img/'.$this->id.'_thumb.png');
+			imagedestroy($thumb);
 		}
 		imagedestroy($image);
 		return true;
 	}
-	
-	function delete() {
+
+	public function delete() {
 		$imgURL = 'img/'.$this->id.'.png';
 		$thumbURL = 'img/'.$this->id.'_thumb.png';
 		if (is_file($imgURL)) {
@@ -80,14 +77,14 @@ class Image {
 			unlink($thumbURL);
 		}
 	}
-	
+
 	/**
-	 * public static
+	 * Returns the right HTML tag to display an image.
 	 *
 	 * @param int $id
 	 * @return HTML tag
 	 */
-	function imgTag($id) {
+	public static function imgTag($id) {
 		$imgURL = 'img/'.$id.'.png';
 		if (!is_file($imgURL)) return '';
 		$thumbURL = 'img/'.$id.'_thumb.png';
@@ -100,6 +97,19 @@ class Image {
 			$tag = '<img src="'.$imgURL.'" class="bookImage" />';
 		}
 		return $tag;
+	}
+
+	/**
+	 * Checks all conditions for uploading images.
+	 * @return boolean
+	 */
+	public static function uploadable() {
+		if (defined('GD_VERSION')) {
+			return is_writable('img/');
+		}
+		else {
+			return false;
+		}
 	}
 
 }
