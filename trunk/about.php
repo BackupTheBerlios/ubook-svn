@@ -19,7 +19,7 @@ include 'header.php';
     Diese Seite basiert auf der <a href="http://ubook.berlios.de/" target="_blank">freien Software uBook</a> und wird angeboten von:
    </p>
    <p style="padding-left:1em;">
-    <a href="http://www.your-domain.net/" target="_blank">Responsible name or company</a><br />
+    <a href="http://www.example.net/" target="_blank">Responsible name or company</a><br />
     Address <br />
     Additional information
    </p>
