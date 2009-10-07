@@ -21,7 +21,17 @@ include 'header.php';
  <div class="text">
   Die eingegebenen Zeichen werden als erstes in Worte aufgeteilt (an Leerzeichen getrennt).
   Jedes Wort muss dann in mindestens einem Datenfeld zumindest als Teilwort vorkommen.
-  Durchsucht werden die Datenfelder Autor, Titel und Beschreibung. 
+  Durchsucht werden die Datenfelder Autor, Titel und Beschreibung.
+ </div>
+ <h2>Wie lösche ich ein Angebot?</h2>
+ <div class="text">
+  Bei der Erstellung eines Angebots wird dir eine E-Mail zugeschickt, in der ein
+  Link zum Ändern und Löschen des Angebots enthalten ist. Falls du diese E-Mail
+  nicht mehr hast, kannst du dir eine <a href="#summary">Zusammenfassung</a>
+  deiner Angebote mit entsprechenden Links zusenden lassen. Wenn du ein Angebot
+  mit einer falschen E-Mailadresse eingetragen hast, kannst du uns informieren,
+  damit wir das Angebot direkt löschen können. Ansonsten wird es nach einer
+  Weile automatisch gelöscht.
  </div>
  <h2>Ich habe keine Mail bekommen. Was nun?</h2>
  <div class="text">
@@ -29,12 +39,12 @@ include 'header.php';
   <p>2. Du kannst bei deinem Angebot versuchen, dir selbst eine E-Mail zuzuschicken. Du musst jedoch die vorher eingetragene E-Mailadresse auch dort angeben, um den Änderungslink für dein Angebot zu bekommen. Wenn das auch nicht funktioniert, dann ist die eingetragene E-Mailadresse wohl falsch.</p>
   <p>3. Wenn die Adresse falsch ist, dann erstelle einfach ein neues Angebot. Das alte wird nach einer Weile automatisch gelöscht.</p>
  </div>
- <h2>Welche Bücher biete ich eigentlich an?</h2>
+ <h2><a name="summary"></a>Welche Bücher biete ich eigentlich an?</h2>
  <div class="text">
    Wenn du vergessen hast, welche Bücher du hier anbietest oder nochmal eine Zusammenfassung zugeschickt bekommen möchtest, dann trage deine E-Mailadresse in dieses Formular ein:<br />
  </div>
    <form action="summary.php" method="post">
-    <input name="mail" type="text" class="fullsize" /><br />
+    <input name="mail" type="text" class="fullsize" style="margin-top: 0.5em;" /><br />
     <input type="submit" value="Zusammenfassung schicken" />
    </form>
  <h2>Du hast noch Fragen?</h2>
