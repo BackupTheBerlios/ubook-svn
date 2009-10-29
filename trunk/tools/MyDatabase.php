@@ -17,7 +17,7 @@ class MyDatabase {
      */
 	public static function connect() {
 		include 'mysql.php';
-		$c = mysql_connect($server,$username,$password);
+        self::$connection = mysql_connect($server,$username,$password);
 		if (!mysql_select_db($database)) {
 			/* fail */
 			$err_num = mysql_errno();
@@ -31,8 +31,6 @@ class MyDatabase {
 					exit;
 			}
 		}
-		self::$connection = $c;
-		return $c;
 	}
 
 	/*

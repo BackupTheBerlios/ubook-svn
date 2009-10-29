@@ -8,6 +8,6 @@ require_once 'tools/MyDatabase.php';
 
 include_once 'magic_quotes.php';
 
-$mysql_conn = MyDatabase::connect();
+MyDatabase::connect();
 
 ?>

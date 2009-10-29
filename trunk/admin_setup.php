@@ -27,9 +27,6 @@ if (!is_file('mysql.php')) { // no config file
 
 if ($error == '') {
 	include_once 'mysql_conn_only.php';
-	if (!$mysql_conn) {
-		$error = 'no connection';
-	}
 	$table_books = mysql_query('describe books;');
 	if ($table_books == null) { // no table, so create
 		$new_table = 'CREATE TABLE `books` (';
@@ -76,13 +73,13 @@ require 'header.php';
    <span><a href="admin.php">Zur Administrationsübersicht &rarr;</a></span>
   </div>
   <?php } ?>
-  
-  
+
+
   <?php if ($error == 'not writeable') {?>
    <p>In diesem Verzeichnis muss die Konfigurationsdatei "mysql.php" geschrieben und ein Verzeichnis zum Bilderupload erstellt werden. Dazu braucht der Webserver das Schreibrecht für dieses Verzeichnis. Vergib das Schreibrecht und es geht weiter.</p>
    <form action="admin_setup.php" method="get"><p><input type="submit" value="Weiter" /></p></form>
   <?php } ?>
-  
+
   <?php if ($error == 'no file') {?>
   <p>Dieses Programm braucht Zugang zu einer MySQL-Datenbank.</p>
   <form action="admin_setup.php" method="post">
@@ -95,5 +92,5 @@ require 'header.php';
    <p><input type="submit" value="Weiter" /></p>
   </form>
   <?php } ?>
-  
+
 <?php include 'footer.php'; ?>
