@@ -26,7 +26,8 @@ if (!is_file('mysql.php')) { // no config file
 }
 
 if ($error == '') {
-	include_once 'mysql_conn_only.php';
+    require_once 'tools/MyDatabase.php';
+    MyDatabase::connect();
 	$table_books = mysql_query('describe books;');
 	if ($table_books == null) { // no table, so create
 		$new_table = 'CREATE TABLE `books` (';

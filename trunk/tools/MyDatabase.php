@@ -5,6 +5,11 @@
  */
 
 /*
+ * Security: Force quoting of GET and POST variables.
+ */
+include_once 'magic_quotes.php';
+
+/*
  * Connects to a MySQL-Database. Checks configuration and provides information
  * about it.
  */
@@ -17,7 +22,8 @@ class MyDatabase {
      */
 	public static function connect() {
 		include 'mysql.php';
-        self::$connection = mysql_connect($server,$username,$password);
+        self::$connection = @mysql_connect($server,$username,$password);
+        if (!self::$connection) return;
 		if (!mysql_select_db($database)) {
 			/* fail */
 			$err_num = mysql_errno();

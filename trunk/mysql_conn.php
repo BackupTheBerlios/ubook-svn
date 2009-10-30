@@ -4,16 +4,21 @@
  * Copyright (C) 2008 Maikel Linke
  */
 
-require_once 'mysql_conn_only.php';
-require_once 'tools/Mailer.php';
-require_once 'tools/WEBDIR.php';
+/*
+ * This script connects to the database or exits by sending an error message.
+ * If a connection is etablished, old database entries will be deleted.
+ */
+
+require_once 'tools/MyDatabase.php';
 
 /*
  * Checks for old entries.
  * Locks the table books to avoid repeated mail sending.
  */
 function check_old() {
-	/* checking if antoher thread holds the lock */
+    require_once 'tools/Mailer.php';
+    require_once 'tools/WEBDIR.php';
+	/* checking if anoher thread holds the lock */
 	$is_free_result = mysql_query('select is_free_lock("check_old")');
 	$is_free_row = mysql_fetch_row($is_free_result);
 	if ($is_free_row[0] == 0) return;
@@ -37,5 +42,19 @@ function check_old() {
 	mysql_query('select release_lock("check_old")');
 }
 
-check_old();
+MyDatabase::connect();
+
+if (MyDatabase::getConnection()) {
+    check_old();
+} else {
+    require 'header.php';
+    ?>
+    <h2>Störung</h2>
+    <div class="text">
+    Leider besteht zur Zeit keine Verbindung zur Datenbank. :-(
+    </div>
+    <?php
+    require 'footer.php';
+    exit;
+}
 ?>
