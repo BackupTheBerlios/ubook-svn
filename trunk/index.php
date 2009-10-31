@@ -123,7 +123,7 @@ von anderen Standorten angezeigt.</div>
 </div>
 <?php } ?>
 <?php
-    if (!isset($_GET['searchSaved'])) {
+    if (!isset($_GET['searchSaved']) && !$searchKey->getOption()) {
         require_once 'notification/Searches.php';
         $searches = new Searches();
         if ($searches->areActivated()) {
