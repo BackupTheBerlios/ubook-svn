@@ -42,7 +42,7 @@ class Mailer {
 		}
 		else {
 			$content .= 'Buchangebot ansehen:'."\n";
-			$content .= Mailer::book_link($book['id'],$book['auth_key'])."\n";
+			$content .= Mailer::book_link($book['id'])."\n";
 		}
 
 		return Mailer::mail($book['mail'], $subject, $content, $reply_to);
