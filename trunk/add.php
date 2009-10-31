@@ -7,23 +7,10 @@
 /* anti spam */
 if (isset($_POST['name']) && $_POST['name'] != '') exit;
 
+require_once 'tools/KeyGenerator.php';
 require_once 'tools/SelectableCategories.php';
 
 include_once 'mysql_conn.php';
-
-// creates a random string with certain length
-function random_key($l=32) {
-	$char = array();
-	for($i=48;$i<58;$i++) $char[] = chr($i);
-	for($i=65;$i<91;$i++) $char[] = chr($i);
-	for($i=97;$i<123;$i++) $char[] = chr($i);
-	srand((double)microtime()*1000000);
-	$s = '';
-	for($i=0;$i<$l;$i++){
-		$s.= $char[rand(0,sizeof($char)-1)];
-	}
-	return addslashes($s);
-}
 
 // generates output with select fields
 function echoSelectableCategories($selectableCategories) {
@@ -38,7 +25,7 @@ $selectableCategories = new SelectableCategories();
 if (isset($_POST['author'])) {
 	$mail = Mailer::mailFromUser('author');
 	if ($mail && strstr($mail,'@')) {
-		$key = random_key();
+		$key = KeyGenerator::genKey();
 		$query = 'insert into books'
 		. ' (author, title, year, price, description, mail, auth_key'
 		. ', created,expires)'
@@ -64,6 +51,11 @@ if (isset($_POST['author'])) {
 		$message = 'Mit deiner E-Mailadresse wurde das unten stehende Buch angeboten. Hebe diese E-Mail auf, um das Angebot später ändern und löschen zu können.';
 		require_once 'tools/Mailer.php';
 		Mailer::send($book_id, $subject, $message);
+		require_once 'notification/Searches.php';
+		$searches = new Searches();
+		if ($searches->areActivated()) {
+			$searches->bookAdded($book_id, trim($_POST['mail']), trim($_POST['title']), $_POST['description']);
+		}
 		header('Location: book.php?id='.$book_id.'&key='.$key.'&new=1');
 	}
 }

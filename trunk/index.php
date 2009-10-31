@@ -86,6 +86,12 @@ include 'header.php';
 	value="Neues" /> <input type="submit" name="random" value="Zufälliges" />
 </form>
 
+<?php if (isset($_GET['searchSaved']) && $_GET['searchSaved']) { ?>
+<div class="infobox">Diese Suche wurde abonniert.</div>
+<?php } ?>
+<?php if (isset($_GET['searchDeleted']) && $_GET['searchDeleted']) { ?>
+<div class="infobox">Das Abonnement für diese Suche wurde beendet.</div>
+<?php } ?>
 
 <?php if ($searchKey->isGiven()) { ?>
 <?php if ($bookList->size() == 0) { ?>
@@ -116,6 +122,22 @@ von anderen Standorten angezeigt.</div>
 </div>
 </div>
 <?php } ?>
+<?php
+    if (!isset($_GET['searchSaved'])) {
+        require_once 'notification/Searches.php';
+        $searches = new Searches();
+        if ($searches->areActivated()) {
+?>
+<div class="notificationSubscription">
+<form action="save_search.php" method="get">
+ <input type="hidden" name="search" value="<?php echo $searchKey->asHtml(); ?>" />
+ <input type="submit" value="Diese Suche abonnieren" />
+</form>
+</div>
+<?php
+        }
+    }
+?>
 <?php } ?>
 
 

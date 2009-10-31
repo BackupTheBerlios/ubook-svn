@@ -89,6 +89,10 @@ div.results td+td {
     font-style: italic;
 }
 
+div.notificationSubscription {
+	margin-top: 1em;
+}
+
 div.book {
  margin: 1em;
 }
