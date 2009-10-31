@@ -52,7 +52,7 @@ require 'header.php';
 <tr><td>Buchangebote</td><td><?php echo $numberOfBooks; ?></td><td><a href="admin_view.php">alle einsehen</a></td></tr>
 <tr><td>Kategorien</td><td><?php echo $numberOfCategories; ?></td><td><a href="admin_categories.php">verwalten</a></td></tr>
 <?php if ($searches->areActivated()) { ?>
-<tr><td>Gespeicherte Suchen</td><td><?php echo $numberOfSearches; ?></td><td><a href="admin_notification.php?deactivate=1">deaktivieren</a></td></tr>
+<tr><td>Gespeicherte Suchen</td><td><?php echo $numberOfSearches; ?></td><td><a href="admin_notification.php?deactivate=1">alle löschen</a></td></tr>
 <?php } else { ?>
 <tr><td colspan="3"><a href="admin_notification.php?activate=1">Suchbenachrichtigungen aktivieren</a></td></tr>
 <?php } ?>
