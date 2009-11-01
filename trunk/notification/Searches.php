@@ -47,7 +47,6 @@ class Searches {
 		. ' search = "' . $search . '"'
 		. ' and mail = "' . $mail . '"'
 		. ' and auth_key = "' . $authKey . '";';
-		echo $query;
 		mysql_query($query);
 	}
 
