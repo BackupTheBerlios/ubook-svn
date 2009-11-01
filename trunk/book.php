@@ -130,9 +130,13 @@ include 'header.php';
    </fieldset>
    <p style="width:25em;margin:0px auto;"><em><small>Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen. Oft gibt die Preisangabe jedoch die Verhandlungsbasis an.</small></em></p>
   </form>
+  <?php } ?>
+  <?php } ?>
+
+  <?php if (isset($_GET['booked']) || !$user_key) { ?>
   <div class="menu" style="margin-top:1em;">
    <span><a href="offeror.php?id=<?php echo $book['id']; ?>">Alle Angebote der selben Person</a></span>
   </div>
   <?php } ?>
-  <?php } ?>
+
 <?php include 'footer.php'; ?>
