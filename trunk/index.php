@@ -36,6 +36,10 @@ if (sizeof($_GET) == 0) {
 else {
 	/* Okay, dealing user input */
 
+	/* Cleaning old books before searching */
+	require_once 'books/Cleaner.php';
+	Cleaner::checkOld();
+
 	if ($searchKey->isGiven()) {
 		require_once 'books/SearchKeyBookList.php';
 		$bookList = new SearchKeyBookList($searchKey);
