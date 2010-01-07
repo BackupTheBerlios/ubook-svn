@@ -22,7 +22,22 @@ function echoSelectableCategories($selectableCategories) {
 
 $selectableCategories = new SelectableCategories();
 
+$book = array(
+'isbn' => '',
+'author' => '',
+'title' => '',
+'year' => ''
+);
+
+if (isset($_POST['isbn'])) {
+    require_once 'isbn/IsbnQuery.php';
+    /* DANGER: check isbn */
+	// TODO: Input check
+    $book = IsbnQuery::query($_POST['isbn']);
+}
+
 if (isset($_POST['author'])) {
+	require_once 'tools/Mailer.php';
 	$mail = Mailer::mailFromUser('author');
 	if ($mail && strstr($mail,'@')) {
 		$quotedAuthor =  trim($_POST['mail']);
@@ -72,16 +87,27 @@ include 'header.php';
 <div class="menu"><span><a href="./">Buch suchen</a></span> <span><b>Buch
 anbieten</b></span> <span><a href="help.php">Tipps</a></span> <span><a
 	href="about.php">Impressum</a></span></div>
+
+<?php if (!isset($_POST['isbn'])) { ?>
+<fieldset class="fullsize"><legend>Automatisch füllen...&nbsp;</legend>
+<form action="add.php" method="post" name="isbn_form"><label>ISBN: <input
+	type="text" name="isbn" value="" class="fullsize" /> </label> <input
+	type="submit" value="Ausfüllen" /></form>
+</fieldset>
+<br />
+<br />
+<?php } ?>
+
 <fieldset class="fullsize"><legend>Buch anbieten...&nbsp;</legend>
 <form action="add.php" method="post" name="add_form"><input type="text"
 	name="name" value="" class="boogy" /> <label>Nachname, Vorname der
 Autorin / des Autor<br />
-<input type="text" name="mail" value="" class="fullsize" /> </label> <label>Titel
+<input type="text" name="mail" value="<?php echo $book['author']; ?>" class="fullsize" /> </label> <label>Titel
 des Buches<br />
-<input type="text" name="title" value="" class="fullsize" /> </label>
+<input type="text" name="title" value="<?php echo $book['title']; ?>" class="fullsize" /> </label>
 
 <div style="float: left; margin-right: 2em;"><label>Erscheinungsjahr<br />
-<input type="text" name="year" value="" size="6" /> </label></div>
+<input type="text" name="year" value="<?php echo $book['year']; ?>" size="6" /> </label></div>
 
 <div style="margin-bottom: 0.5em;"><label>Dein Preis<br />
 <input type="text" name="price" value="" size="6" /> &euro;</label></div>
@@ -90,13 +116,22 @@ des Buches<br />
 <?php echoSelectableCategories($selectableCategories); ?></label> <label
 	style="clear: both;">Deine E-Mailadresse<br />
 <input type="text" name="author" value="" class="fullsize" /></label> <label>Weiteres<br />
-<textarea name="description" cols="24" rows="10" class="fullsize"></textarea>
+<textarea name="description" cols="24" rows="10" class="fullsize">
+<?php if ($book['isbn']) {
+	echo 'ISBN: ' . $book['isbn'] . "\n\n";
+} ?></textarea>
 </label> <br />
 <input type="submit" value="Anbieten" /></form>
 <form action="./" method="get"><input type="submit" value="Abbrechen" />
 </form>
 </fieldset>
 <script type="text/javascript">
-   document.add_form.mail.focus();
-  </script>
+<?php
+if (isset($_POST['isbn'])) {
+   echo 'document.add_form.mail.focus();';
+} else {
+   echo 'document.isbn_form.isbn.focus();';
+}
+?>
+</script>
 <?php include 'footer.php'; ?>
