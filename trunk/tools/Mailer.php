@@ -68,8 +68,9 @@ class Mailer {
 		}
 		$header .= 'Content-Type: text/plain; charset=UTF-8'."\n";
 		$subject = '[ubook] '.$subject;
+		$encodedSubject = '=?UTF-8?B?' . base64_encode($subject).'?=';
 		$subject = utf8_decode($subject);
-		return mail($to, $subject, $content, $header);
+		return mail($to, $encodedSubject, $content, $header);
 	}
 
 	function book_link($book_id) {
