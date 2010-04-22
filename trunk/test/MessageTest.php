@@ -8,12 +8,12 @@ require_once 'PHPUnit/Framework.php';
 require_once 'net/Message.php';
 
 class MessageTest extends PHPUnit_Framework_TestCase {
-	
+
 	function testBadChar() {
 		$this->assertFalse(Message::hasBadChar('hallo'));
 		$this->assertTrue(Message::hasBadChar('<hallo>'));
 	}
-	
+
 	function testMessageFromXml() {
 		$xmlString = file_get_contents("test/uBookAnswer.xml");
 		$m = Message::createFromXml($xmlString);
@@ -30,7 +30,8 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function testBadMessageFromXml() {
-		$xmlString = file_get_contents("test/uBookAnswerBad.xml");
+		$xmlString = file_get_contents("test/uBookAnswer.xml");
+		$xmlString = str_replace('Bioinformatik', '<b>Bioinformatik</b>', $xmlString);
 		$m = Message::createFromXml($xmlString);
 		$this->assertNull($m);
 	}
