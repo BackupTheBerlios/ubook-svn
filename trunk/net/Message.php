@@ -27,7 +27,7 @@ class Message {
 
 	public static function createFromXml($xmlString) {
 		try {
-			$xml = new SimpleXMLElement($xmlString);
+			$xml = @new SimpleXMLElement($xmlString);
 		} catch (Exception $ex) {
 			// malformed xml
 			return;

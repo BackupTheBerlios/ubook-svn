@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 require_once 'HttpUrl.php';
@@ -35,14 +35,14 @@ class ConnectionData {
 	}
 
     public function createBookList() {
-        $message = Message::parseString($this->connection->getBody());
+        $message = Message::createFromXml($this->connection->getBody());
         if (!$message) {
             $this->server->failed();
             return;
         }
         $this->server->setLocationName($message->fromServer());
         $this->newServers = $message->getNewServers();
-        return new ExternalBookList($message->fromServer(), $message->bookTextList());
+        return new ExternalBookList($message->fromServer(), $message->bookList());
 
     }
 
