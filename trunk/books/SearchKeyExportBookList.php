@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 require_once 'SearchKeyBookList.php';
@@ -13,9 +13,7 @@ require_once 'tools/WEBDIR.php';
 
 class SearchKeyExportBookList extends SearchKeyBookList {
 
-	const token = '<p>';
-
-	private $textList = '';
+	private $list = array();
 
 	public function __construct($searchKey, $absoluteUrl = false) {
 		$searchQuery = parent::searchQuery($searchKey->asText(), $searchKey->getOption());
@@ -26,20 +24,17 @@ class SearchKeyExportBookList extends SearchKeyBookList {
 		$this->formatBooks(&$result);
 	}
 
-	public function toTextList() {
-		return $this->textList;
+	public function getList() {
+		return $this->list;
 	}
 
 	private function formatBooks($mysqlResult) {
-		$list = '';
 		$bookScriptUrl = WEBDIR . 'book.php';
 		while ($book = BookFetcher::fetchHtml($mysqlResult)) {
-			$list .= $bookScriptUrl . '?id=' . $book['id']
-			. self::token . $book['author']
-			. self::token . $book['title']
-			. self::token . $book['price'] . "\n";
+			$book['url'] = $bookScriptUrl . '?id=' . $book['id'];
+			$extBook = new ExternalBook($book);
+			$this->list[] = $extBook;
 		}
-		$this->textList = $list;
 	}
 
 }

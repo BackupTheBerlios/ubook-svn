@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 class ExternalServer {
@@ -30,6 +30,7 @@ class ExternalServer {
 		if ($url->getDomainName() == 'localhost') return;
 		return new ExternalServer('', $urlString);
 		return new self('', $urlString);
+		// TODO: check the returns!
 	}
 
 	public static function blacklist($url) {

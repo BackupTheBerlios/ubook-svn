@@ -44,6 +44,10 @@ class ExternalServerPool {
 		else return null;
 	}
 
+	public function toArray() {
+		return $this->servers;
+	}
+
 	public function toTextList() {
 		$list = '';
 		foreach ($this->servers as $i => $server) {

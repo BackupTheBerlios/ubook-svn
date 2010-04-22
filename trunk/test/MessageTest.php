@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 require_once 'PHPUnit/Framework.php';
@@ -14,19 +14,32 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(Message::hasBadChar('<hallo>'));
 	}
 	
-	function testMessageFromString() {
-		$string = "<!-- section -->\nTest\n<!-- section -->\n0\n<!-- section -->\n\n<!-- section -->\n\n";
-		$message = Message::parseString($string);
-		$this->assertEquals($string, $message->toString());
+	function testMessageFromXml() {
+		$xmlString = file_get_contents("test/uBookAnswer.xml");
+		$m = Message::createFromXml($xmlString);
+		$this->assertNotNull($m);
+		$this->assertEquals('Bielefeld', $m->fromServer());
+		$this->assertEquals(2, $m->resultSize());
+		$books = $m->bookList();
+		$this->assertEquals('http://ubook.asta-bielefeld.de/book.php?id=2169', $books[0]->getUrl());
+		$this->assertEquals('Merkl und Waack', $books[1]->getAuthor());
+		$servers = $m->getNewServers();
+		$this->assertEquals(1, sizeof($servers));
+		$server = $servers[0];
+		$this->assertEquals('http://www.example.org/', $server->getUrl());
 	}
-	
-	function testMalformedString() {
-		$message = Message::parseString('');
-		$this->assertNull($message);
-		$string = "<!-- section -->\n<script>I am evil!</script>\n<!-- section -->\n0\n<!-- section -->\n\n<!-- section -->\n\n";
-		$message = Message::parseString($string);
-		$this->assertNull($message);
+
+	function testBadMessageFromXml() {
+		$xmlString = file_get_contents("test/uBookAnswerBad.xml");
+		$m = Message::createFromXml($xmlString);
+		$this->assertNull($m);
 	}
-	
+
+	function testToXml() {
+		$xmlString = file_get_contents("test/uBookAnswer.xml");
+		$m = Message::createFromXml($xmlString);
+		$this->assertEquals($xmlString, $m->toXmlString());
+	}
+
 }
 ?>

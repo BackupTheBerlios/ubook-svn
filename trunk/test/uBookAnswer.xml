@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<server name="Bielefeld"></server>
+	<books>
+		<book url="http://ubook.asta-bielefeld.de/book.php?id=2169" author="Dr. Peter Naeve" title="Stochastik für Informatik" price="15,00"></book>
+		<book url="http://ubook.asta-bielefeld.de/book.php?id=2333" author="Merkl und Waack" title="Bioinformatik Interaktiv" price="45,00"></book>
+	</books>
+	<servers>
+		<server url="http://www.example.org/"></server>
+	</servers>
+</root>

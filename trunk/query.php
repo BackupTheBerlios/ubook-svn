@@ -29,19 +29,16 @@ if (isset($_GET['from']) && $localServer->rememberNewServers()) {
 
 $bookList = new SearchKeyExportBookList($searchKey);
 
-$bookListString = '';
-$serverTextList = '';
-
+$message = new Message($localServer->name());
 if ($bookList->size() > 0) {
-	$bookListString = $bookList->toTextList();
+	$message->setBooks($bookList->getList());
 }
 else {
 	require_once 'net/ExternalServerPool.php';
 	$serverPool = ExternalServerPool::activeServerPool();
-	$serverTextList = $serverPool->toTextList(); 
+	$message->setServers($serverPool->toArray());
 }
 
-$message = new Message($localServer->name(), $bookList->size(), $bookListString, $serverTextList);
-echo $message->toString();
+echo $message->toXmlString();
 
 ?>
