@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
@@ -122,7 +122,7 @@ von anderen Standorten angezeigt.</div>
 <?php echo $bookList->toHtmlRows(); ?>
 </table>
 <div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">
-<?php echo $bookList->size(); ?> / <?php echo AbstractBookList::numberOfAllBooks(); ?>
+    [ Gefunden: <?php echo $bookList->size(); ?> ][ Insgesamt: <?php echo AbstractBookList::numberOfAllBooks(); ?> ]
 </div>
 </div>
 <?php } ?>
