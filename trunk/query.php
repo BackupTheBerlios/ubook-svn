@@ -39,6 +39,7 @@ else {
 	$message->setServers($serverPool->toArray());
 }
 
+header('Content-Type: text/xml; charset=utf-8');
 echo $message->toXmlString();
 
 ?>
