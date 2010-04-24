@@ -120,8 +120,11 @@ div.categories span {
 
 fieldset {
  display:inline;
- font-size:12pt;
  padding:1.25em;
+}
+
+fieldset legend {
+ font-size:12pt;
  font-weight:600;
 }
 
