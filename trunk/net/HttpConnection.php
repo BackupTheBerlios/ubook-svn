@@ -20,6 +20,9 @@ class HttpConnection {
 	private $body = null;
 
 	public function __construct($httpUrl) {
+        if ($httpUrl == null) {
+            throw new Exception('URL must not be null!');
+        }
 		$this->url = $httpUrl;
 	}
 
