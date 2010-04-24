@@ -106,8 +106,7 @@ if (isset($_POST['book_data'])) { ?>
                 echo '<input type="hidden" name="mail" value="' . $_GET['mail'] . '" />';
             } ?>
         <label>Importfeld<br />
-            <textarea name="book_data" cols="30" rows="20" class="text">
-            </textarea>
+            <textarea name="book_data" cols="30" rows="20" class="text"></textarea>
         </label> <br />
         <input type="submit" value="Importieren" /></form>
     <form action="./" method="get"><input type="submit" value="Abbrechen" />
