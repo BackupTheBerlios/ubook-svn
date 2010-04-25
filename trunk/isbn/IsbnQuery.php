@@ -1,13 +1,13 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
- */
+ * Copyright (C) 2010 Maikel Linke
+*/
+
+require_once 'Providers.php';
 
 require_once 'net/HttpUrl.php';
 require_once 'net/ThreadedDownloader.php';
-require_once 'IsbnDbDotComProvider.php';
-require_once 'UBKarlsruheProvider.php';
 
 /**
  * Fetches information about a book from different APIs.
@@ -15,27 +15,22 @@ require_once 'UBKarlsruheProvider.php';
  */
 class IsbnQuery {
 
-	public static function query($isbn) {
-        $ubka = new UBKarlsruheProvider();
-        ThreadedDownloader::startDownload($ubka->urlFor($isbn), $ubka);
-        $iddc = new IsbnDbDotComProvider();
-        ThreadedDownloader::startDownload($iddc->urlFor($isbn), $iddc);
+    public static function query($isbn) {
+        $providers = Providers::createProviders();
+        foreach ($providers as $i => $p) {
+            ThreadedDownloader::startDownload($p->urlFor($isbn), $p);
+        }
         ThreadedDownloader::finishAll();
-        if ($ubka->getBook()) {
-            $book = $ubka->getBook();
-            if (sizeof($book) > 0) {
+        foreach ($providers as $i => $p) {
+            $book = $p->getBook();
+            if ($book && sizeof($book) > 0) {
                 return $book;
             }
         }
-        if ($iddc->getBook()) {
-            $book = $iddc->getBook();
-            if (sizeof($book) > 0) {
-                return $book;
-            }
-        }
-		return array('isbn' => $isbn);
-	}
+        return array('isbn' => $isbn);
+    }
 
 }
+
 
 ?>

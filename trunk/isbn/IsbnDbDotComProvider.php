@@ -15,11 +15,16 @@ require_once 'net/ThreadedDownloader.php';
  */
 class IsbnDbDotComProvider implements IsbnDbProvider {
 
+    private $accessKey;
     private $book;
+
+    public function  __construct($accessKey) {
+        $this->accessKey = $accessKey;
+    }
 
     public function urlFor($isbn) {
         $urlString = 'http://isbndb.com/api/books.xml?'
-        . 'access_key=FGOZ2S4A&index1=isbn&value1='.$isbn;
+        . 'access_key=' . $this->accessKey . '&index1=isbn&value1='.$isbn;
         return new HttpUrl($urlString);
     }
 
