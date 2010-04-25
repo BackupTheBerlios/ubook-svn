@@ -121,7 +121,7 @@ von anderen Standorten angezeigt.</div>
 <table align="center">
 <?php echo $bookList->toHtmlRows(); ?>
 </table>
-<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">
+<div style="margin-top: 0.3em;" title="Summe gefundener Bücher / Summe aller Bücher insgesamt">
     [ Gefunden: <?php echo $bookList->size(); ?> ][ Insgesamt: <?php echo AbstractBookList::numberOfAllBooks(); ?> ]
 </div>
 </div>
@@ -156,8 +156,8 @@ von anderen Standorten angezeigt.</div>
 <table align="center">
 <?php echo $catBookList->toHtmlRows(); ?>
 </table>
-<div style="margin-top: 0.3em;" title="Summe angezeigter Bücher / Summe der Bücher insgesamt">
-<?php echo $catBookList->size(); ?> / <?php echo AbstractBookList::numberOfAllBooks(); ?>
+<div style="margin-top: 0.3em;" title="Summe gefundener Bücher / Summe aller Bücher insgesamt">
+    [ Gefunden: <?php echo $catBookList->size(); ?> ][ Insgesamt: <?php echo AbstractBookList::numberOfAllBooks(); ?> ]
 </div>
 </div>
 <?php } ?>
