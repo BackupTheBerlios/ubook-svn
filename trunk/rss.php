@@ -22,18 +22,16 @@ function create_rss($search) {
     $copyright = 'uBook';
     $rss = new RssChannel($title, $link, $desc, $lang, $copyright);
     $imageUrl = 'http://ubook.asta-bielefeld.de/ubook_small.gif';
-    $imageTitle = 'uBook-Logo';
-    $rss->addImage($imageUrl, $imageTitle, $link);
+    $rss->addImage($imageUrl, $title, $link);
     $query = BookQuery::searchQuery($search);
     $query .= ' order by created desc limit 23';
     $mysqlResult = mysql_query($query);
     while ($book = BookFetcher::fetch($mysqlResult)) {
-        $id = $book['id'];
         $title = $book['title'];
         $desc = 'Neues Buchangebot:' . "\n" . BookFormatter::asText($book);
         $desc = str_replace("\n", "<br />\n", $desc);
-        $link = WEBDIR . 'book.php?id=' . $book['id'];
-        $author = 'ubook@asta-bielefeld.de';
+        $id = $link = WEBDIR . 'book.php?id=' . $book['id'];
+        $author = 'ubook@asta-bielefeld.de (uBook-Team)';
         $date = $book['created'];
         $rss->addItem($id, $title, $desc, $link, $author, $date);
     }
