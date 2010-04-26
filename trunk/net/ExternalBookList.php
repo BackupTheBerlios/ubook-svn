@@ -12,7 +12,7 @@ class ExternalBookList extends AbstractBookList {
 	private $from;
 	private $books;
 	
-	public function __construct($from, $bookList) {
+	public function __construct($from, array $bookList) {
 		$this->from = $from;
 		$this->books = $bookList;
 		$this->formatBooks($bookList);

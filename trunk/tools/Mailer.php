@@ -1,8 +1,10 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
+
+require_once 'tools/BookFormatter.php';
 
 class Mailer {
 
@@ -29,12 +31,7 @@ class Mailer {
 		$content = 'Hallo!'."\n";
 		$content .= "\n";
 		$content .= $message."\n\n";
-		$content .= ' Autor: '.$book['author']."\n";
-		$content .= ' Titel: '.$book['title']."\n";
-		$content .= ' Preis: '.str_replace('.',',',$book['price']).' Euro'."\n";
-		$content .= ' Erscheinungsjahr: '.$book['year']."\n";
-		$content .= ' Beschreibung:'."\n";
-		$content .= $book['description']."\n\n";
+        $content .= BookFormatter::asText($book) . "\n\n";
 
 		if ($reply_to == null || $reply_to == $book['mail']) {
 			$content .= 'Buchangebot ändern oder löschen:'."\n";

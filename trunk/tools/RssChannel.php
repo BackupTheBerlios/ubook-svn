@@ -10,6 +10,7 @@
 class RssChannel {
 
 	private $doc;
+    private $channel;
 
 	/**
 	 * Creates an empty news feed.
@@ -22,7 +23,8 @@ class RssChannel {
 	public function  __construct($title, $link, $desc, $lang, $copyright) {
 		$this->doc = $this->createRssDoc();
 		$channel = $this->createChannel($title, $link, $desc, $lang, $copyright);
-		$this->doc->rss->appendChild($channel);
+        $this->channel = $channel;
+		$this->doc->documentElement->appendChild($channel);
 	}
 
 	/**
@@ -37,14 +39,15 @@ class RssChannel {
 
 	/**
 	 * Adds a news item to the feed.
+	 * @param string $id a unique identifyer of this item
 	 * @param string $title title of the news item
 	 * @param string $desc description of the news item
 	 * @param string $link link to a longer text
 	 * @param string $author author of the text
 	 * @param string $date for example '2010-04-26 15:26:16'
 	 */
-	public function addItem($title, $desc, $link, $author, $date) {
-		$this->addToChannel($this->createItem($title, $desc, $link, $author, $date));
+	public function addItem($id, $title, $desc, $link, $author, $date) {
+		$this->addToChannel($this->createItem($id, $title, $desc, $link, $author, $date));
 	}
 
 	/**
@@ -60,16 +63,16 @@ class RssChannel {
 		$rss = $doc->createElement('rss');
 		$rss->setAttribute('version', '2.0');
 		$doc->appendChild($rss);
-		$rss->appendChild($this->createChannel());
 		return $doc;
 	}
 
 	private function createElement($tagName, $value = '') {
+        $value = str_replace('&', '&amp;', $value);
 		return $this->doc->createElement($tagName, $value);
 	}
 
 	private function addToChannel(DOMElement $element) {
-		$this->doc->rss->channel->appendChild($element);
+		$this->channel->appendChild($element);
 	}
 
 	private function createChannel($title, $link, $desc, $lang, $copyright) {
@@ -97,19 +100,19 @@ class RssChannel {
 
 	private function createImage($url, $title, $link) {
 		$image = $this->createElement('image');
-		$image->appendChile(
+		$image->appendChild(
 				$this->createElement('url', $url)
 		);
-		$image->appendChile(
+		$image->appendChild(
 				$this->createElement('title', $title)
 		);
-		$image->appendChile(
+		$image->appendChild(
 				$this->createElement('link', $link)
 		);
 		return $image;
 	}
 
-	private function createItem($title, $desc, $link, $author, $date) {
+	private function createItem($id, $title, $desc, $link, $author, $date) {
 		$item = $this->createElement('item');
 		$item->appendChild(
 				$this->createElement('title', $title)
@@ -122,6 +125,9 @@ class RssChannel {
 		);
 		$item->appendChild(
 				$this->createElement('author', $author)
+		);
+		$item->appendChild(
+				$this->createElement('guid', $id)
 		);
 		$time = strtotime($date);
 		$item->appendChild(
