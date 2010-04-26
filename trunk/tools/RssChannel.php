@@ -142,7 +142,7 @@ class RssChannel {
         } else {
             $date = date($dateFormat, $time);
         }
-        return $this->createElement('pubDate', $date . ' MEZ');
+        return $this->createElement('pubDate', $date . ' +0100');
     }
 
 }
