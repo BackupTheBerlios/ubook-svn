@@ -33,7 +33,7 @@ function create_rss($search) {
         $desc = 'Neues Buchangebot:' . "\n" . BookFormatter::asText($book);
         $desc = str_replace("\n", "<br />\n", $desc);
         $link = WEBDIR . 'book.php?id=' . $book['id'];
-        $author = $book['author'] . ' (Buchautor)';
+        $author = 'ubook@asta-bielefeld.de';
         $date = $book['created'];
         $rss->addItem($id, $title, $desc, $link, $author, $date);
     }
