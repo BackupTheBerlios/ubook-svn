@@ -16,8 +16,8 @@ class Providers {
 
 	public static function createProviders() {
         $list = array();
-        //$list[] = new BooklookerProvider('key needed');
         $list[] = new UBKarlsruheProvider();
+        //$list[] = new BooklookerProvider('key needed');
         //$list[] = new IsbnDbDotComProvider('key needed');
         return $list;
 	}
