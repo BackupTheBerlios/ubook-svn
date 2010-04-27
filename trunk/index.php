@@ -3,6 +3,8 @@
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
  */
+// TODO: <form> darf kein <from> enthalt.
+// TODO: mirgration from XHTML 1.0 to 1.1
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
