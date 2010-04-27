@@ -28,9 +28,7 @@ class ExternalServer {
 		require_once 'HttpUrl.php';
 		$url = new HttpUrl($urlString);
 		if ($url->getDomainName() == 'localhost') return;
-		return new ExternalServer('', $urlString);
 		return new self('', $urlString);
-		// TODO: check the returns!
 	}
 
 	public static function blacklist($url) {
