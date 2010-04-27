@@ -45,6 +45,7 @@ header('Content-Type: text/html;charset=utf-8');
   <link rel="top" title="Startseite" href="./" />
   <link rel="up" title="Hoch" href="./" />
 <?php echo_navigation(); ?>
+<?php if (isset($feedLink)) echo $feedLink; ?>
 <?php if (defined('FOCUS')) {?>
   <script type="text/javascript" src="focus.js"></script>
 <?php }?>

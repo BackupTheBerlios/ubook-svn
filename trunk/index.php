@@ -58,6 +58,10 @@ else {
 
 			$externalBookListArray = load_externalBookListArray($searchKey);
 		}
+
+		$feedUrl = WEBDIR . 'rss.php?search=' . urlencode($searchKey->asText());
+		$feedLink = '<link rel="alternate" type="application/rss+xml"'
+		. ' title="RSS" href="' . $feedUrl . '" />';
 	}
 
 	if (isset($_GET['cat'])) {
@@ -127,7 +131,7 @@ von anderen Standorten angezeigt.</div>
 </div>
 <?php } ?>
 <div class="notificationSubscription">
-	<a href="<?php echo WEBDIR . 'rss.php?search=' . urlencode($searchKey->asText()); ?>">Diese Suche als RSS-Feed</a>
+	<a href="<?php echo $feedUrl; ?>">Diese Suche als RSS-Feed</a>
 </div>
 <?php
     if (!isset($_GET['searchSaved']) && !$searchKey->getOption()) {
