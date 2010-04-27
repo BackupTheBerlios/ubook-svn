@@ -15,6 +15,19 @@ require_once 'net/ThreadedDownloader.php';
  */
 class IsbnQuery {
 
+    /**
+     * Proofs, if an ISBN string contains only valid chars.
+     * @param string $isbn to check
+     * @return boolean true, if $isbn contains only valid chars
+     */
+    public static function containsValidChars($isbn) {
+        if (preg_match('/^[0-9-]+[xX]?$/', $isbn) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function query($isbn) {
         $providers = Providers::createProviders();
         foreach ($providers as $i => $p) {

@@ -23,17 +23,17 @@ function echoSelectableCategories($selectableCategories) {
 $selectableCategories = new SelectableCategories();
 
 $book = array(
-'isbn' => '',
-'author' => '',
-'title' => '',
-'year' => ''
+        'isbn' => '',
+        'author' => '',
+        'title' => '',
+        'year' => ''
 );
 
 if (isset($_POST['isbn'])) {
     require_once 'isbn/IsbnQuery.php';
-    /* DANGER: check isbn */
-	// TODO: Input check
-    $book = IsbnQuery::query($_POST['isbn']);
+    if (IsbnQuery::containsValidChars($_POST['isbn'])) {
+        $book = IsbnQuery::query($_POST['isbn']);
+    }
 }
 
 if (isset($_POST['author'])) {
