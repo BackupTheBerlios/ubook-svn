@@ -74,7 +74,6 @@ class DownloadData {
     public function  __construct(HttpConnection $conn) {
         $this->conn = $conn;
         $this->future = new FutureDownload();
-        // TODO: task
         $this->nextData = $this;
         $this->prevData = $this;
     }
