@@ -24,7 +24,7 @@ function create_rss($search) {
     $imageUrl = 'http://ubook.asta-bielefeld.de/ubook_small.gif';
     $rss->addImage($imageUrl, $title, $link);
     $query = BookQuery::searchQuery($search);
-    $query .= ' order by created desc limit 23';
+    $query .= ' order by created desc';
     $mysqlResult = mysql_query($query);
     while ($book = BookFetcher::fetch($mysqlResult)) {
         $title = $book['title'];

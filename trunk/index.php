@@ -126,6 +126,9 @@ von anderen Standorten angezeigt.</div>
 </div>
 </div>
 <?php } ?>
+<div class="notificationSubscription">
+	<a href="<?php echo WEBDIR . 'rss.php?search=' . urlencode($searchKey->asText()); ?>">Diese Suche als RSS-Feed</a>
+</div>
 <?php
     if (!isset($_GET['searchSaved']) && !$searchKey->getOption()) {
         require_once 'notification/Searches.php';
