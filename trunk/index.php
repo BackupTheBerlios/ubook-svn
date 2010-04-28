@@ -3,8 +3,23 @@
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
  */
-// TODO: <form> darf kein <from> enthalt.
-// TODO: mirgration from XHTML 1.0 to 1.1
+/*
+ * TODO and further ideas
+ * A collection of ideas, what should or could be done in the future.
+ *
+ * - <form> must not contain <form>.
+ * - mirgration from XHTML 1.0 to 1.1
+ * - statistics:
+ *   - percentage of books with image
+ *   - distribution of books in the time (created, expire, lifetime)
+ *   - books per person
+ *   - number of stored mail addresses
+ *   - active books / total number of books (with deleted ones)
+ * - feedback, if a wrong mail address was typed in
+ * - (Bielefeld) category 'Sprachbücher', because of a lot of language lectures
+ * - (Bielefeld) categories of the FH
+ * - new category schema, perhaps a tree?
+ */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
