@@ -7,6 +7,7 @@
  * TODO and further ideas
  * A collection of ideas, what should or could be done in the future.
  *
+ * - image upload fails with some (too big?) images (see berlios ticket)
  * - <form> must not contain <form>.
  * - mirgration from XHTML 1.0 to 1.1
  * - statistics:
