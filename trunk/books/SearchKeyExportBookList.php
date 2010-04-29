@@ -31,8 +31,8 @@ class SearchKeyExportBookList extends SearchKeyBookList {
 	private function formatBooks($mysqlResult) {
 		$bookScriptUrl = WEBDIR . 'book.php';
 		while ($book = BookFetcher::fetchHtml($mysqlResult)) {
-			$book['url'] = $bookScriptUrl . '?id=' . $book['id'];
-			$extBook = new ExternalBook($book);
+			$url = $bookScriptUrl . '?id=' . $book['id'];
+			$extBook = new ExternalBook($url, $book['author'], $book['title'], $book['price']);
 			$this->list[] = $extBook;
 		}
 	}

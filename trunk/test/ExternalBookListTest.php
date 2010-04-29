@@ -19,12 +19,12 @@ class ExternalBookListTest extends PHPUnit_Framework_TestCase {
 	
 	function testExternalBookList() {
         $bookList = array(
-            new ExternalBook(array(
-                'url' => 'http://bla/',
-                'author' => 'Linke, Maikel',
-                'title' => 'uBook - Die Bücherbörse',
-                'price' => '0',
-            ))
+            new ExternalBook(
+                'http://bla/',
+                'Linke, Maikel',
+                'uBook - Die Bücherbörse',
+                '0'
+            )
         );
 		$list = new ExternalBookList('Test', $bookList);
 		$this->assertEquals(1, $list->size());
