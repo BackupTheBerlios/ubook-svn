@@ -126,9 +126,9 @@ class RssChannel {
         $item->appendChild(
                 $this->createElement('author', $author)
         );
-        $item->appendChild(
-                $this->createElement('guid', $id)
-        );
+        $guid = $this->createElement('guid', $id);
+        $guid->setAttribute('isPermaLink', 'false');
+        $item->appendChild($guid);
         $item->appendChild(
                 $this->createPubDate(strtotime($date))
         );
