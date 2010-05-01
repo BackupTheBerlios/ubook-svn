@@ -9,11 +9,6 @@ require_once 'net/Message.php';
 
 class MessageTest extends PHPUnit_Framework_TestCase {
 
-    function testBadChar() {
-        $this->assertFalse(Message::hasBadChar('hallo'));
-        $this->assertTrue(Message::hasBadChar('<hallo>'));
-    }
-
     function testMessageFromXml() {
         $xmlString = file_get_contents("test/uBookAnswer.xml");
         $m = Message::createFromXml($xmlString);

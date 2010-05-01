@@ -12,36 +12,24 @@ class Message {
     private $bookList = array();
     private $servers = array();
 
-    public static function hasBadChar($string) {
-        if (strpos($string, '<') !== false) {
-            return true;
-        }
-        if (strpos($string, '>') !== false) {
-            return true;
-        }
-        if (strpos($string, '"') !== false) {
-            return true;
-        }
-        return false;
-    }
-
     public static function createFromXml($xmlString) {
         $doc = DOMDocument::loadXML($xmlString);
+        /*
+         * Validating every message agains a definition in the web is wasting
+         * time. So let's validate against a local schema.
         if (!$doc->validate()) {
             throw new Exception('Unvalid XML.');
         }
-        /* Now we believe, that we have a valid uBookMessage, but be carefull!
-         * We don't know the content of the referenced DTD yet!
-         * Can we validate against a local DTD file? */
+         */
+        /*
+         * The validation makes a lot of checks for us. We don't have to look
+         * for '<' and '>' characters.
+         */
+        if (!$doc->schemaValidate('uBookMessage.xsd')) {
+            throw new Exception('Unvalid uBookMessage.');
+        }
         $elem = $doc->documentElement;
-        $version = $elem->getAttribute('version');
-        if ($version != '1') {
-            throw new Exception('Unsupported version number: ' . $version);
-        }
         $from = $elem->getAttribute('from');
-        if (self::hasBadChar($from)) {
-            throw new Exception('Servername contains a bad char.');
-        }
         $message = new self($from);
         $message->parseBookList($elem);
         $message->parseServerList($elem);
@@ -109,13 +97,9 @@ class Message {
     private function parseBookList(DomElement $elem) {
         foreach ($elem->getElementsByTagName('book') as $b) {
             $url = $b->getAttribute('url');
-            if (self::hasBadChar($url)) return;
             $author = $b->getAttribute('author');
-            if (self::hasBadChar($author)) return;
             $title = $b->getAttribute('title');
-            if (self::hasBadChar($title)) return;
             $price = $b->getAttribute('price');
-            if (self::hasBadChar($price)) return;
             $this->bookList[] = new ExternalBook($url, $author, $title, $price);
         }
     }
