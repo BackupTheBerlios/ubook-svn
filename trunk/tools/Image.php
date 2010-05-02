@@ -66,7 +66,10 @@ class Image {
         $tmp_name = $_FILES['image']['tmp_name'];
         if (!is_uploaded_file($tmp_name)) return false;
         $imageSize = getimagesize($tmp_name);
-        $imageBytes = $imageSize[0] * $imageSize[1] * ($imageSize['bits'] / 8);
+        /* How many bytes needs this image in the memory? */
+        $imagePixels = $imageSize[0] * $imageSize[1];
+        $bytesPerPixel = $imageSize['bits'] / 8;
+        $imageBytes = $imagePixels * $bytesPerPixel * $imageSize['channels'];
         /* How many bytes needs the calling script? We guess 1MB. */
         $scriptBytes = (int) 1E6;
         $memoryLimit = self::returnBytes(ini_get('memory_limit'));
