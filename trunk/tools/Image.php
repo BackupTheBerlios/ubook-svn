@@ -2,8 +2,7 @@
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2009 Maikel Linke
- */
-
+*/
 /**
  * This handles an image of a book.
  */
@@ -67,6 +66,11 @@ class Image {
         $tmp_name = $_FILES['image']['tmp_name'];
         if (!is_uploaded_file($tmp_name)) return false;
         $imageSize = getimagesize($tmp_name);
+        $imageBytes = $imageSize[0] * $imageSize[1] * ($imageSize['bits'] / 8);
+        /* How many bytes needs the calling script? We guess 1MB. */
+        $scriptBytes = (int) 1E6;
+        $memoryLimit = self::returnBytes(ini_get('memory_limit'));
+        if (($scriptBytes + $imageBytes) > $memoryLimit) return false;
         switch ($imageSize[2]) {
             case IMAGETYPE_GIF:
                 $image = imagecreatefromgif($tmp_name);
@@ -119,5 +123,26 @@ class Image {
         }
     }
 
+    /**
+     * Calculates the byte number of a short ini_get value.
+     * @copyright copied from http://php.net/manual/en/function.ini-get.php
+     * @param string $val value from ini_get
+     * @return int $val in bytes
+     */
+    private static function returnBytes($val) {
+        $val = trim($val);
+        $last = strtolower($val[strlen($val)-1]);
+        switch($last) {
+            // The 'G' modifier is available since PHP 5.1.0
+            case 'g':
+                $val *= 1024;
+            case 'm':
+                $val *= 1024;
+            case 'k':
+                $val *= 1024;
+        }
+
+        return $val;
+    }
 }
 ?>
