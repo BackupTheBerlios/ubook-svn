@@ -21,6 +21,9 @@
  * - (Bielefeld) categories of the FH
  * - new category schema, perhaps a tree?
  * - Sending HTTP Not Changed answers (template engine?)
+ * - Provide more than HTML and XML for the book search results:
+ *   - JASON, JAML, RDF(S)
+ * - Perhaps using a framework like ZEND or EZNO
  */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
