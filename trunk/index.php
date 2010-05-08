@@ -20,6 +20,7 @@
  * - (Bielefeld) category 'Sprachbücher', because of a lot of language lectures
  * - (Bielefeld) categories of the FH
  * - new category schema, perhaps a tree?
+ * - Sending HTTP Not Changed answers (template engine?)
  */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
