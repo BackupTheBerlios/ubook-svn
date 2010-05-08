@@ -8,6 +8,7 @@
  * A collection of ideas, what should or could be done in the future.
  *
  * - RSS link no on the 'new' and 'random' site
+ * - new column in the book table: isbn
  * - upload.php: error-reporting for the user
  * - <form> must not contain <form>.
  * - mirgration from XHTML 1.0 to 1.1
