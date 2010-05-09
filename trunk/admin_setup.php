@@ -41,6 +41,7 @@ if ($error == '') {
 		$new_table .= '`title` varchar(128) NOT NULL,';
 		$new_table .= '`year` decimal(4,0) NOT NULL,';
 		$new_table .= '`price` decimal(5,2) NOT NULL,';
+		$new_table .= '`isbn` varchar(17) NOT NULL,';
 		$new_table .= '`description` text NOT NULL,';
 		$new_table .= 'PRIMARY KEY  (`id`)';
 		$new_table .= ')';
