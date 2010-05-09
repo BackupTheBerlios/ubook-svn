@@ -7,7 +7,6 @@
  * TODO and further ideas
  * A collection of ideas, what should or could be done in the future.
  *
- * - RSS link no on the 'new' and 'random' site
  * - new column in the book table: isbn
  * - upload.php: error-reporting for the user
  * - <form> must not contain <form>.
@@ -154,11 +153,12 @@ von anderen Standorten angezeigt.</div>
 </div>
 </div>
 <?php } ?>
+<?php if (!$searchKey->getOption()) {?>
 <div class="notificationSubscription">
 	<a href="<?php echo $feedUrl; ?>">Diese Suche als RSS-Feed</a>
 </div>
 <?php
-    if (!isset($_GET['searchSaved']) && !$searchKey->getOption()) {
+    if (!isset($_GET['searchSaved'])) {
         require_once 'notification/Searches.php';
         $searches = new Searches();
         if ($searches->areActivated()) {
@@ -173,6 +173,7 @@ von anderen Standorten angezeigt.</div>
         }
     }
 ?>
+<?php } ?>
 <?php } ?>
 
 
