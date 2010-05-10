@@ -13,8 +13,11 @@ class Message {
     private $servers = array();
 
     public static function createFromXml($xmlString) {
-        $doc = DOMDocument::loadXML($xmlString);
-        /*
+        $doc = @DOMDocument::loadXML($xmlString);
+        if ($doc == null) {
+            throw new Exception('Unvalid XML string.');
+        }
+    	/*
          * Validating every message agains a definition in the web is wasting
          * time. So let's validate against a local schema.
         if (!$doc->validate()) {
@@ -118,7 +121,7 @@ class Message {
 class ExternalBook {
 
     private $fields;
- 
+
     public function  __construct($url, $author, $title, $price) {
         $this->fields = array(
                 'url' => $url,
