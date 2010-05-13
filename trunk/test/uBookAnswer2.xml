@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<uBookMessage version="1" from="Bielefeld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../uBookMessage.xsd">
+	<book url="http://ubook.asta-bielefeld.de/book.php?id=2169" author="Dr. Peter Naeve" title="Stochastik für Informatik" price="15,00"/>
+	<book url="http://ubook.asta-bielefeld.de/book.php?id=2333" author="Merkl und Waack" title="Bioinformatik Interaktiv" price="45,00"/>
+	<server url="http://www.example.org/"/>
+</uBookMessage>
