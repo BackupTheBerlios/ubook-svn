@@ -9,22 +9,20 @@
  *
  * - new column in the book table: isbn
  * - upload.php: error-reporting for the user
- * - <form> must not contain <form>.
  * - mirgration from XHTML 1.0 to 1.1
+ * - Sending HTTP Not Changed answers (template engine?)
+ * - feedback, if a wrong mail address was typed in
  * - statistics:
  *   - percentage of books with image
  *   - distribution of books in the time (created, expire, lifetime)
  *   - books per person
  *   - number of stored mail addresses
  *   - active books / total number of books (with deleted ones)
- * - feedback, if a wrong mail address was typed in
  * - (Bielefeld) category 'Sprachbücher', because of a lot of language lectures
  * - (Bielefeld) categories of the FH
  * - new category schema, perhaps a tree?
- * - Sending HTTP Not Changed answers (template engine?)
  * - Provide more than HTML and XML for the book search results:
  *   - JASON, JAML, RDF(S)
- * - Perhaps using a framework like ZEND or EZNO
  */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
