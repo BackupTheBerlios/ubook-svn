@@ -6,6 +6,7 @@
 
 require_once 'IsbnDbProvider.php';
 
+require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
 require_once 'net/ThreadedDownloader.php';
 
@@ -36,13 +37,13 @@ class BooklookerProvider implements IsbnDbProvider {
 			return;
 		}
         if (!isset($xml->Book)) return;
-        $book = array();
         $xmlBook = $xml->Book[0];
-        $book['isbn'] = (string) $xmlBook->ISBN;
-        $book['title'] = (string) $xmlBook->Title;
-        $book['author'] = (string) $xmlBook->Author;
-        $book['year'] = (string) $xmlBook->Year;
-        $this->book = $book;
+        $this->book = new Book(
+                (string) $xmlBook->Author,
+                (string) $xmlBook->Title,
+                (string) $xmlBook->Year,
+                '',
+                (string) $xmlBook->ISBN);
     }
 
     public function getBook() {

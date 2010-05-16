@@ -6,6 +6,7 @@
 
 require_once 'IsbnDbProvider.php';
 
+require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
 require_once 'net/ThreadedDownloader.php';
 
@@ -37,16 +38,13 @@ class IsbnDbDotComProvider implements IsbnDbProvider {
 		}
         if (!isset($xml->BookList)) return;
         if (!isset($xml->BookList->BookData)) return;
-        $book = array();
         $xmlBook = $xml->BookList->BookData[0];
-        $book['isbn'] = (string) $xmlBook['isbn'];
-        $book['isbn13'] = (string) $xmlBook['isbn13'];
-        $xmlTitle = $xmlBook->Title;
-        $book['title'] = (string) $xmlTitle;
-        $xmlAuthor = $xmlBook->AuthorsText;
-        $book['author'] = (string) $xmlAuthor;
-        $book['year'] = '';
-        $this->book = $book;
+        $this->book = new Book(
+                (string) $xmlBook->AuthorsText,
+                (string) $xmlBook->Title,
+                '',
+                '',
+                (string) $xmlBook['isbn']);
     }
 
     public function getBook() {

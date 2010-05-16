@@ -6,27 +6,107 @@
 
 /*
  * Substitutes special template tags with given content.
+ *
+ * This is just another template class for HTML/XML templates. BUT it is the
+ * result of studying several other template engines and tries to merge all
+ * advantages. This text explains you two things:
+ *
+ * 1. how to use, some examples
+ * 2. why this way, good reasons for the syntax and the API
+ *
+ * == How To Use ==
+ *
+ * Begin to create pure HTML. It could be like this:
+ *
+ * <pre>
+ *     <p>Hello, this is normal text. But it is also possible to insert
+ *        variable text here. For example the time: &time;.</p>
+ *     <p>Okay, this is easy. It's just a string replacement. But now follows
+ *        a subtemplate. It allows you to repeat some code over and over again,
+ *        everytime with different content. For example a list of names:</p>
+ *     <ul>
+ *         <!-- BEGIN item -->
+ *         <li>&name;</li>
+ *         <!-- END item -->
+ *     </ul>
+ * </pre>
+ *
+ * Now we have the template. Let's write code to fill it with data.
+ *
+ * <?php
+ *     $template = new Template($theHtmlCodeAsString);
+ *     // or
+ *     $template = Template::fromFile($filenameOfTemplate);
+ *
+ *     // replace a variable with a value
+ *     $template->assign('time', time());
+ *
+ *     // use the subtemplate to generate three list items
+ *     $sub = $template->addSubtemplate('item');
+ *     $sub->assign('name', 'Andrea');
+ *     $sub = $template->addSubtemplate('item');
+ *     $sub->assign('name', 'Andy');
+ *     $sub = $template->addSubtemplate('item');
+ *     $sub->assign('name', 'Anna');
+ *
+ *     // ready...
+ *     echo $template->result();
+ * ?>
+ *
+ * == Why This Way ==
+ *
+ * This class was written for a simple project. It's just one class, not a whole
+ * framework with caching and so on. Providing only three methods it supports
+ * everything, that a simple template engine should support. But not more.
+ * Keep it simple.
+ *
+ * Why do you use these ampersands and semicolons? It's hard to read!
+ * - Yes, something like {foo} looks nicer. But this syntax has two advantages:
+ * 1. Some editors highlight this syntax.
+ * 2. It's not possible, that users inject template code. Normal Text in an
+ * HTML/XML document must contain ampersands as entity: &amp;. So if a user
+ * writes &secret; in a text, then the document contains &amp;secret; and this
+ * will not be replaced by $template->assign('secret', 'xxx').
+ * 
+ * Besides, if you like another syntax, just change the constants in the script.
+ * It's free software.
+ *
+ * Why don't you provide an assign-method for arrays?
+ * - It's no good idea to store everything in an array. Assigning one variable
+ * to the template is not more complicated than a new entry in an array.
+ * Perhaps you have a full array of data from mysql_fetch_array(). But you
+ * should not insert this into a template. Normally you have more data in there
+ * than you want to present the user. And you have to encode the user data to
+ * prevent code injection. So depending on your application, perhapts you can do
+ * something like this:
+ * <?php
+ *     $arr = mysql_fetch_array($result);
+ *     foreach ($arr as $key => $value) {
+ *         $encoded = htmlentities($value, ENT_QUOTES, 'UTF-8');
+ *         $template->assign($key, $encoded);
+ *     }
+ * ?>
+ * But this depends on your application. Better to write your own code based on
+ * minimalistic work of others than including huge complex frameworks and using
+ * only one percent of it.
 */
 class Template {
 
     /**
-     * The beginning of a tag to substitute. Tag example: {foo}
+     * The beginning of a tag to substitute. Tag example: &foo;
      */
-    const TAG_START = '{';
+    const TAG_START = '&';
     /**
-     * The beginning of a tag to substitute. Tag example: {bar}
+     * The beginning of a tag to substitute. Tag example: &bar;
      */
-    const TAG_END = '}';
+    const TAG_END = ';';
     /**
-     * Regular expression for subtemplates. Example:
-     * <pre>
-     *     <p>Normal Text</p>
-     *     <ul>
-     *         <!-- BEGIN item -->
-     *         <li>{name}</li>
-     *         <!-- END item -->
-     *     </ul>
-     * </pre>
+     * Regular expression for subtemplates.
+     *
+     * It uses the following pattern modifiers:
+     * i - caseless
+     * m - multiline
+     * s - dotall
      */
     const SUB_PATTERN = '/<!--\s*BEGIN\s+([a-z0-9_\-]+)\s*-->(.*?)<!--\s*END\s+\\1\s*-->/ims';
 
@@ -62,22 +142,13 @@ class Template {
      * @param string $value new value in the document
      */
     public function assign($name, $value) {
-        $search = '{' . $name . '}';
+        $search = self::TAG_START . $name . self::TAG_END;
         $this->content = str_replace($search, $value, $this->content);
     }
 
     /**
      * Subtemplates are defined once and will appear in the result zero or more
-     * times. Varying content and also sub-subpatterns are possible. In the
-     * following example 'item' is the name of the subtemplate.
-     * <pre>
-     *     <p>Normal Text</p>
-     *     <ul>
-     *         <!-- BEGIN item -->
-     *         <li>{name}</li>
-     *         <!-- END item -->
-     *     </ul>
-     * </pre>
+     * times. Varying content and also sub-subtemplates are possible.
      * @param string $name identifyer of the subtemplate
      * @return Template a full template instance to customize this subtemplate
      */
@@ -91,7 +162,7 @@ class Template {
     }
 
     /**
-     * Returns the result.
+     * Returns the parsed result.
      * @return string actual result with all given replacements
      */
     public function result() {
@@ -107,20 +178,7 @@ class Template {
     }
 
     private function initSubtemplates() {
-        if (!isset($this->subTemplates[$name])) {
-            $this->subTemplates[$name] = array();
-        }
-
-        $pattern = '/<!--\s*BEGIN\s+([a-z0-9_\-]+)\s*-->'
-                . '(.*?)'
-                . '<!--\s*END\s+\\1\s*-->/ims';
-        /*
-         * Using the following pattern modifiers:
-         * i - caseless
-         * m - multiline
-         * s - dotall
-        */
-        preg_match_all($pattern, $this->content, $matches);
+        preg_match_all(self::SUB_PATTERN, $this->content, $matches);
         for ($i = 0; $i < sizeof($matches[0]); $i++) {
             $key = $matches[0][$i];
             $name = $matches[1][$i];

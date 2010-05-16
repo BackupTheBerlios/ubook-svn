@@ -1,52 +1,32 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2007 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 require_once 'Categories.php';
+require_once 'Template.php';
 require_once 'mysql_conn.php';
 
-/*
+/**
  * Creates select fields for html forms.
  */
 class SelectableCategories {
 	
-	var $categories;
-	var $book_id;
-	var $book_cats;
+	private $categories;
+	private $bookId;
+	private $bookCats;
 	
 	/* this makes sure, that the table of categories is loaded */
-	function SelectableCategories($book_id=0) {
+	public function __construct($bookId = 0) {
 		$this->categories = new Categories();
-		$this->setBookId($book_id);
+		$this->setBookId($bookId);
 		$this->loadBookCats();
-	}
-	
-	function createSelect($index) {
-		$cats = $this->categories->getArray();
-		if (isset($this->book_cats[$index])) {
-			$book_cat = $this->book_cats[$index];
-		}
-		$select = '<select name="categories['.$index.']" size="1">';
-		$select .= '<option></option>';
-		foreach ($cats as $index => $category) {
-			$option = '<option';
-			if ($category == $book_cat) {
-				$option .= ' selected="selected"';
-			}
-			$option .= '>';
-			$option .= $category;
-			$option .= '</option>';
-			$select .= $option;
-		}
-		$select .= '</select>';
-		return $select;
 	}
 	
 	// started a method for a number of selects depending on the number of categories
 
-	function createSelectArray() {
+	public function createSelectArray() {
 		$size = $this->numberOfSelectableCategories();
 		$selectArray = array();
 		for ($i=0; $i<$size; $i++) {
@@ -56,15 +36,15 @@ class SelectableCategories {
 	}
 
 	/* update the database from POST form data */
-	function update() {
+	public function update() {
 		if (!isset($_POST['categories'])) return;
 		$new_cats = $_POST['categories'];
 		if (count($new_cats) != $this->numberOfSelectableCategories()) return;
-		$old_cats = $this->book_cats;
+		$old_cats = $this->bookCats;
 		$to_delete = array_diff($old_cats,$new_cats);
 		$to_add = array_diff($new_cats,$old_cats);
 		if (count($to_delete) > 0) {
-			$q = 'delete from book_cat_rel where book_id="'.$this->book_id.'"';
+			$q = 'delete from book_cat_rel where book_id="'.$this->bookId.'"';
 			mysql_query($q);
 			$to_add = $new_cats;
 		}
@@ -72,26 +52,46 @@ class SelectableCategories {
 			if (!trim($category)) continue;
 			if (!$this->categories->exists(stripslashes($category))) continue;
 			$q = 'insert into book_cat_rel (book_id, category)
-				values ("'.$this->book_id.'", "'.$category.'")';
+				values ("'.$this->bookId.'", "'.$category.'")';
 			mysql_query($q);
 		}
 	}
 	
-	function setBookId($book_id) {
-		$this->book_id = $book_id;
+	public function setBookId($bookId) {
+		$this->bookId = $bookId;
 	}
 	
-	function loadBookCats() {
-		$this->book_cats = array();
-		if ($this->book_id == 0) return;
-		$q = 'select category from book_cat_rel where book_id="'.$this->book_id.'"';
+	private function createSelect($index) {
+		$cats = $this->categories->getArray();
+        $selectedCat = '';
+		if (isset($this->bookCats[$index])) {
+            $selectedCat = $this->bookCats[$index];
+        }
+
+        $select = Template::fromFile('view/select.html');
+        $select->assign('index', $index);
+		foreach ($cats as $index => $category) {
+            $option = $select->addSubtemplate('option');
+            $option->assign('category', $category);
+            if ($category == $selectedCat) {
+                $option->addSubtemplate('selected');
+            }
+        }
+
+		return $select->result();
+	}
+
+	private function loadBookCats() {
+		$this->bookCats = array();
+		if ($this->bookId == 0) return;
+		$q = 'select category from book_cat_rel where book_id="'.$this->bookId.'"';
 		$result = mysql_query($q);
 		while ($row = mysql_fetch_array($result)) {
-			$this->book_cats[] = $row['category'];
+			$this->bookCats[] = $row['category'];
 		}
 	}
 	
-	function numberOfSelectableCategories() {
+	private function numberOfSelectableCategories() {
 		$numCats = count($this->categories->getArray());
 		$numSelCats = floor(log($numCats));
 		if ($numSelCats < 1) return 1;

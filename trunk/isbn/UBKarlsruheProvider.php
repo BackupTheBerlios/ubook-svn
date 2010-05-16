@@ -6,6 +6,7 @@
 
 require_once 'IsbnDbProvider.php';
 
+require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
 require_once 'net/ThreadedDownloader.php';
 
@@ -33,12 +34,7 @@ class UBKarlsruheProvider implements IsbnDbProvider {
         list($number, $titleAuthorYear) = explode(' ', $line, 2);
         list($title, $authorYear) = explode(' / ', $titleAuthorYear);
         list($author, $year) = explode(' , ', $authorYear);
-        $this->book = array(
-                'isbn' => $this->isbn,
-                'author' => $author,
-                'title' => $title,
-                'year' => $year
-        );
+        $this->book = new Book($author, $title, $year, '', $this->isbn);
     }
 
     public function getBook() {

@@ -16,12 +16,13 @@ class IsbnQueryTest extends PHPUnit_Framework_TestCase {
 
 	function testQuery() {
 		$isbn13 = '978-3897215429';
-		$expected = array(
-		'author' => 'Günther, Karsten',
-		'title' => 'LaTeX',
-		'year' => '2008',
-        'isbn' => $isbn13
-		);
+        $expected = new Book(
+                'Günther, Karsten',
+                'LaTeX',
+                '2008',
+                '',
+                $isbn13
+        );
         $result = IsbnQuery::query($isbn13);
 		$this->assertEquals($expected, $result);
 	}

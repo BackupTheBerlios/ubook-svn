@@ -6,6 +6,7 @@
 
 require_once 'Providers.php';
 
+require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
 require_once 'net/ThreadedDownloader.php';
 
@@ -36,11 +37,11 @@ class IsbnQuery {
         ThreadedDownloader::finishAll();
         foreach ($providers as $i => $p) {
             $book = $p->getBook();
-            if ($book && sizeof($book) > 0) {
+            if ($book) {
                 return $book;
             }
         }
-        return array('isbn' => $isbn);
+        return new Book('', '', '', '', $isbn);
     }
 
 }
