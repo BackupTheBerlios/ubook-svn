@@ -2,21 +2,21 @@
     <form action="add.php" method="post" name="add_form">
         <input type="text" name="name" value="" class="boogy" />
         <label>Nachname, Vorname der Autorin / des Autor<br />
-            <input type="text" name="mail" value="<?php echo $book['author']; ?>" class="fullsize" /> </label> <label>Titel
-            des Buches<br />
-            <input type="text" name="title" value="<?php echo $book['title']; ?>" class="fullsize" /> </label>
+            <input type="text" name="mail" value="'author'" class="fullsize" /> </label>
+        <label>Titel des Buches<br />
+            <input type="text" name="title" value="'title'" class="fullsize" /> </label>
 
         <div style="float: left; margin-right: 2em;"><label>Erscheinungsjahr<br />
-                <input type="text" name="year" value="<?php echo $book['year']; ?>" size="6" /> </label></div>
+                <input type="text" name="year" value="'year'" size="6" /> </label></div>
 
         <div style="margin-bottom: 0.5em;"><label>Dein Preis<br />
-                <input type="text" name="price" value="<?php echo $book['price']; ?>" size="6" /> &euro;</label></div>
+                <input type="text" name="price" value="'price'" size="6" /> &euro;</label></div>
 
         <label style="clear: both;">Kategorien<br />
-                <?php echoSelectableCategories($selectableCategories); ?></label> <label
-            style="clear: both;">Deine E-Mailadresse<br />
-            <input type="text" name="author" value="<?php echo $book['mail']; ?>" class="fullsize" /></label> <label>Weiteres<br />
-            <textarea name="description" cols="24" rows="10" class="fullsize"><?php echo $book['description']; ?></textarea>
+            'categories'</label>
+        <label style="clear: both;">Deine E-Mailadresse<br />
+            <input type="text" name="author" value="'mail'" class="fullsize" /></label> <label>Weiteres<br />
+            <textarea name="description" cols="24" rows="10" class="fullsize">'description'</textarea>
         </label> <br />
         <input type="submit" value="Anbieten" /></form>
     <form action="./" method="get"><input type="submit" value="Abbrechen" />

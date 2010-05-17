@@ -1,6 +1,9 @@
-<div class="menu"><span><a href="./">Buch suchen</a></span> <span><b>Buch
-            anbieten</b></span> <span><a href="help.php">Tipps</a></span> <span><a
-            href="about.php">Impressum</a></span></div>
+<div class="menu">
+    <span><a href="./">Buch suchen</a></span>
+    <span><b>Buch anbieten</b></span>
+    <span><a href="help.php">Tipps</a></span>
+    <span><a href="about.php">Impressum</a></span>
+</div>
 
 <!-- begin isbnForm -->
 <fieldset class="fullsize"><legend>Automatisch füllen...&nbsp;</legend>
@@ -16,13 +19,13 @@
     <form action="add.php" method="post" name="add_form">
         <input type="text" name="name" value="" class="boogy" />
         <label>Nachname, Vorname der Autorin / des Autor<br />
-            <input type="text" name="mail" value="&author;" class="fullsize" /> </label>
+            <input type="text" name="mail" value="'author'" class="fullsize" /> </label>
         <label>Titel des Buches<br />
-            <input type="text" name="title" value="&title;" class="fullsize" /> </label>
+            <input type="text" name="title" value="'title'" class="fullsize" /> </label>
 
         <div style="float: left; margin-right: 2em;">
             <label>Erscheinungsjahr<br />
-                <input type="text" name="year" value="&year;" size="6" />
+                <input type="text" name="year" value="'year'" size="6" />
             </label>
         </div>
 
@@ -33,13 +36,13 @@
         </div>
 
         <label style="clear: both;">Kategorien<br />
-            &categories;
+            'categories'
         </label>
         <label style="clear: both;">Deine E-Mailadresse<br />
             <input type="text" name="author" value="" class="fullsize" />
         </label>
         <label>Weiteres<br />
-            <textarea name="description" cols="24" rows="10" class="fullsize">&description;</textarea>
+            <textarea name="description" cols="24" rows="10" class="fullsize">'description'</textarea>
         </label> <br />
         <input type="submit" value="Anbieten" />
     </form>
@@ -47,12 +50,12 @@
     </form>
 </fieldset>
 <script type="text/javascript">
-    <![CDATA[
-        <!-- begin focusIsbn -->
-        document.isbn_form.isbn.focus();
-        <!-- end focusIsbn -->
-        <!-- begin focusMail -->
-        document.add_form.mail.focus();
-        <!-- end foucusMail -->
-    ]]
+        <![CDATA[
+            <!-- begin focusIsbn -->
+            document.isbn_form.isbn.focus();
+            <!-- end focusIsbn -->
+            <!-- begin focusMail -->
+            document.add_form.mail.focus();
+            <!-- end foucusMail -->
+        ]]
 </script>

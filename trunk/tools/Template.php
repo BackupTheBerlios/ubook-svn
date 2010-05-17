@@ -20,13 +20,13 @@
  *
  * <pre>
  *     <p>Hello, this is normal text. But it is also possible to insert
- *        variable text here. For example the time: &time;.</p>
+ *        variable text here. For example the time: 'time'.</p>
  *     <p>Okay, this is easy. It's just a string replacement. But now follows
  *        a subtemplate. It allows you to repeat some code over and over again,
  *        everytime with different content. For example a list of names:</p>
  *     <ul>
  *         <!-- BEGIN item -->
- *         <li>&name;</li>
+ *         <li>'name'</li>
  *         <!-- END item -->
  *     </ul>
  * </pre>
@@ -60,14 +60,15 @@
  * everything, that a simple template engine should support. But not more.
  * Keep it simple.
  *
- * Why do you use these ampersands and semicolons? It's hard to read!
- * - Yes, something like {foo} looks nicer. But this syntax has two advantages:
- * 1. Some editors highlight this syntax.
- * 2. It's not possible, that users inject template code. Normal Text in an
- * HTML/XML document must contain ampersands as entity: &amp;. So if a user
- * writes &secret; in a text, then the document contains &amp;secret; and this
- * will not be replaced by $template->assign('secret', 'xxx').
- * 
+ * Why do you use single quotes for variables?
+ * - There are three reasons:
+ * 1. It's easy to write on most keyboards.
+ * 2. Valid HTML will stay valid, when you insert single quotes in the text.
+ * It's also no problem to insert single quotes into a double quoted parameter
+ * value.
+ * 3. You can prevent unintended replacements by encoding the user data via
+ * htmlentities() before inserting into the template (see example below).
+ *
  * Besides, if you like another syntax, just change the constants in the script.
  * It's free software.
  *
@@ -77,7 +78,7 @@
  * Perhaps you have a full array of data from mysql_fetch_array(). But you
  * should not insert this into a template. Normally you have more data in there
  * than you want to present the user. And you have to encode the user data to
- * prevent code injection. So depending on your application, perhapts you can do
+ * prevent code injection. So depending on your application, perhaps you can do
  * something like this:
  * <?php
  *     $arr = mysql_fetch_array($result);
@@ -87,19 +88,19 @@
  *     }
  * ?>
  * But this depends on your application. Better to write your own code based on
- * minimalistic work of others than including huge complex frameworks and using
+ * minimalistic work of others than including huge, complex frameworks and using
  * only one percent of it.
 */
 class Template {
 
     /**
-     * The beginning of a tag to substitute. Tag example: &foo;
+     * The beginning of a tag to substitute. Tag example: 'foo'
      */
-    const TAG_START = '&';
+    const TAG_START = "'";
     /**
-     * The beginning of a tag to substitute. Tag example: &bar;
+     * The beginning of a tag to substitute. Tag example: 'bar'
      */
-    const TAG_END = ';';
+    const TAG_END = "'";
     /**
      * Regular expression for subtemplates.
      *

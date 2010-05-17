@@ -9,6 +9,10 @@ body, a, a:visited, a:link, div.menu a
   color: #ac0001;
 }
 
+img {
+    border-width: 0px;
+}
+
 div.head {
  text-decoration:none;
  color:black;
