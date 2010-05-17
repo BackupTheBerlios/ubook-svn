@@ -1,0 +1,23 @@
+<div class="menu">
+    <span><a href="./">Buch suchen</a></span>
+    <span><a href="add.php">Buch anbieten</a></span>
+    <span><a href="help.php">Tipps</a></span>
+    <span><a href="about.php">Impressum</a></span>
+</div>
+
+<form action="edit.php?id='id'&amp;key='key'" method="post">
+    <table style="width: 20em; border: 1px solid gray; margin-top:1em;" align="center">
+        <tr><td>Autorin / Autor:</td><td><input type="text" name="author" value="'author'" /></td></tr>
+        <tr><td>Titel:</td><td><input type="text" name="title" value="'title'" /></td></tr>
+        <tr><td>Preis:</td><td><input type="text" name="price" value="'price'" size="5" /> Euro</td></tr>
+        <tr><td>Erscheinungsjahr:</td><td><input type="text" name="year" value="'year'" size="4" /></td></tr>
+        <!-- begin categories -->
+        <tr><td>Kategorien:</td><td>'category0'</td></tr>
+        <!-- begin category -->
+        <tr><td>&nbsp;</td><td>'category'</td></tr>
+        <!-- end category -->
+        <!-- end categories -->
+        <tr><td colspan="2">Weiteres:<br /><textarea name="description" cols="25" rows="10">'description'</textarea></td></tr>
+    </table>
+    <p><input type="submit" value="Speichern" /></p>
+</form>

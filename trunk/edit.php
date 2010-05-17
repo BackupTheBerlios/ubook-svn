@@ -1,21 +1,18 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2008 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
-function format_categories_of(&$book) {
-	$id = $_GET['id'];
-	$q = 'select category from book_cat_rel where book_id="'.$id.'"';
-}
-
 // generates output with select fields
-function echoSelectableCategories($selectableCategories) {
+function assignSelectableCategories($selectableCategories, Template $tmpl) {
 	$selCatArray = $selectableCategories->createSelectArray();
-	if (sizeOf($selCatArray) < 1) return "";
-	echo '<tr><td>Kategorien:</td><td>'.$selCatArray[0].'</td></tr>'."\n";
-	for ($i=1; $i<sizeOf($selCatArray); $i++) {
-		echo '<tr><td>&nbsp;</td><td>'.$selCatArray[$i].'</td></tr>'."\n";
+	if (sizeOf($selCatArray) < 1) return;
+    $categoriesTmpl = $tmpl->addSubtemplate('categories');
+    $categoriesTmpl->assign('category0', $selCatArray[0]);
+	for ($i = 1; $i < sizeOf($selCatArray); $i++) {
+        $catTmpl = $categoriesTmpl->addSubtemplate('category');
+        $catTmpl->assign('category', $selCatArray[$i]);
 	}
 }
 
@@ -57,26 +54,18 @@ if (mysql_num_rows($result) == 0) {
 	}
 
 	$book = BookFetcher::fetchHtml($result);
+
+    require_once 'tools/Output.php';
+    require_once 'tools/Template.php';
+    $tmpl = Template::fromFile('view/edit.html');
+    $tmpl->assign('id', $_GET['id']);
+    $tmpl->assign('key', $_GET['key']);
+    foreach ($book as $name => $value) {
+        $tmpl->assign($name, $value);
+    }
+    assignSelectableCategories($selectableCategories, $tmpl);
+    $output = new Output($tmpl->result());
+    $output->send();
 }
 
-include 'header.php';
-
 ?>
-  <div class="menu">
-   <span><a href="./">Buch suchen</a></span>
-   <span><a href="add.php">Buch anbieten</a></span>
-   <span><a href="help.php">Tipps</a></span>
-   <span><a href="about.php">Impressum</a></span>
- </div>
-   <form action="edit.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post">
-    <table style="width:20em; border:gray;solid;1px; margin-top:1em;" align="center">
-     <tr><td>Autorin / Autor:</td><td><input type="text" name="author" value="<?php echo $book['author']; ?>" /></td></tr>
-     <tr><td>Titel:</td><td><input type="text" name="title" value="<?php echo $book['title']; ?>" /></td></tr>
-     <tr><td>Preis:</td><td><input type="text" name="price" value="<?php echo $book['price']; ?>" size="5" /> Euro</td></tr>
-     <tr><td>Erscheinungsjahr:</td><td><input type="text" name="year" value="<?php echo $book['year']; ?>" size="4" /></td></tr>
-     <?php echoSelectableCategories($selectableCategories); ?>
-     <tr><td colspan="2">Weiteres:<br /><textarea name="description" cols="25" rows="10"><?php echo $book['description']; ?></textarea></td></tr>
-    </table>
-    <p><input type="submit" value="Speichern" /></p>
-   </form>
-<?php include 'footer.php'; ?>
