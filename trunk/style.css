@@ -33,6 +33,7 @@ div.menu span {
 form
 {
   display:inline;
+  font-weight: lighter;
 }
 
 .text {
@@ -137,7 +138,6 @@ label
 {
   font-size:10pt;
   display:block;
-  font-weight:100;
   margin-top:0.5em;
 }
 

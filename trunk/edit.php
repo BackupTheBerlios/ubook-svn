@@ -44,7 +44,7 @@ if (mysql_num_rows($result) == 0) {
   		title = "'.$_POST['title'].'",
   		year = "'.$_POST['year'].'",
   		price = "'.str_replace(',','.',$_POST['price']).'",
-  		description = "'.$_POST['description'].'"
+  		description = "'.$_POST['desc'].'"
 	     where id="'.$id.'" and auth_key="'.$key.'"';
 		mysql_query($query);
 		/* update category relations */
