@@ -35,7 +35,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
     function testAssign() {
         $text = 'This is just text.';
-        $tText = 'This is &a template;.';
+        $tText = "This is 'a template'.";
         $t = new Template($tText);
         $t->assign('a template', 'just text');
         $this->assertEquals($text, $t->result());
@@ -44,7 +44,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
     function testAddSubtemplate() {
         $tText = 'Hello World.'
         . '<!-- BEGIN subtemplate -->'
-        . ' I love &you;!'
+        . " I love 'you'!"
         . '<!-- END subtemplate -->'
         . '<!-- BEGIN subNotToUse -->'
         . ' Ayayayayyyy!'
@@ -52,7 +52,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $expText = 'Hello World.';
         $t = new Template($tText);
         $s = $t->addSubtemplate('subtemplate');
-        $expSubText = ' I love &you;!';
+        $expSubText = " I love 'you'!";
         $this->assertEquals($expSubText, $s->result());
         $expText .= $expSubText;
         $this->assertEquals($expText, $t->result());
