@@ -4,6 +4,7 @@
  * Copyright (C) 2010 Maikel Linke
 */
 
+require_once 'Isbn.php';
 require_once 'Providers.php';
 
 require_once 'books/Book.php';
@@ -16,23 +17,10 @@ require_once 'net/ThreadedDownloader.php';
  */
 class IsbnQuery {
 
-    /**
-     * Proofs, if an ISBN string contains only valid chars.
-     * @param string $isbn to check
-     * @return boolean true, if $isbn contains only valid chars
-     */
-    public static function containsValidChars($isbn) {
-        if (preg_match('/^[0-9-]+[xX]?$/', $isbn) > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static function query($isbn) {
+    public static function query(Isbn $isbn) {
         $providers = Providers::createProviders();
         foreach ($providers as $i => $p) {
-            ThreadedDownloader::startDownload($p->urlFor($isbn), $p);
+            ThreadedDownloader::startDownload($p->urlFor($isbn->toString()), $p);
         }
         ThreadedDownloader::finishAll();
         foreach ($providers as $i => $p) {
@@ -41,7 +29,7 @@ class IsbnQuery {
                 return $book;
             }
         }
-        return new Book('', '', '', '', $isbn);
+        return new Book('', '', '', '', $isbn->toString());
     }
 
 }

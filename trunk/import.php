@@ -27,11 +27,13 @@ function import_book($bookString, Template $tmpl) {
 $menuTmpl = Template::fromFile('view/menu.html');
 
 if (isset($_POST['book_data'])) {
-    $tmpl = Template::fromFile('view/imported.html');
+    $tmpl = Template::fromFile('view/add_form.html');
     import_book($_POST['book_data'], $tmpl);
     if (isset($_POST['mail'])) {
         $tmpl->assign('mail', $_POST['mail']);
     }
+    // TODO: isbn
+    $tmpl->assign('isbn', '');
     $selectableCategories = new SelectableCategories();
     $categoryString = implode(' ', $selectableCategories->createSelectArray());
     $tmpl->assign('categories', $categoryString);

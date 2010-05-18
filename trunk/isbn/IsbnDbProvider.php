@@ -12,6 +12,7 @@ require_once 'net/ThreadedDownloader.php';
  */
 interface IsbnDbProvider extends Processor {
 
+    // TODO make this string to an Isbn instance
 	function urlFor($isbn);
 
 }

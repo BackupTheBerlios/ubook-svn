@@ -28,7 +28,7 @@ $id = (int) $_GET['id'];
 $key = $_GET['key'];
 
 $query = 'select
- author, title, year, price, expires, description
+ author, title, year, price, isbn, expires, description
  from books where id="'.$id.'" and auth_key="'.$key.'"';
 $result = mysql_query($query);
 if (mysql_num_rows($result) == 0) {
@@ -38,6 +38,7 @@ if (mysql_num_rows($result) == 0) {
 	$selectableCategories = new SelectableCategories($id);
 
 	if (isset($_POST['author'])) {
+        // TODO: standard importing of book vars with type checking.
 		/* update base book data */
 		$query = 'update books set
   		author = "'.$_POST['author'].'",

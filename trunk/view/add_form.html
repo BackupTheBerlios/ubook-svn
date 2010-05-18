@@ -1,0 +1,35 @@
+<fieldset class="fullsize"><legend>Buch anbieten...&nbsp;</legend>
+    <form action="add.php" method="post" name="add_form">
+        <input type="text" name="name" value="" class="boogy" />
+
+        <label for="isbn">ISBN</label>
+        <input type="text" id="isbn" name="isbn" value="'isbn'" class="fullsize" />
+        <!-- begin isbnSubmit -->
+        <input type="submit" name="isbnQuery" value="Rest automatisch füllen" />
+        <!-- end isbnSubmit -->
+        <label for="mail">Nachname, Vorname der Autorin / des Autor</label>
+        <input type="text" id="mail" name="mail" value="'author'" class="fullsize" />
+        <label for="title">Titel des Buches</label>
+        <input type="text" id="title" name="title" value="'title'" class="fullsize" />
+
+        <div style="float: left; margin-right: 2em;">
+            <label for="year">Erscheinungsjahr</label>
+            <input type="text" id="year" name="year" value="'year'" size="6" />
+        </div>
+
+        <div style="margin-bottom: 0.5em;">
+            <label for="price">Dein Preis</label>
+            <input type="text" id="price" name="price" value="" size="6" /> &euro;
+        </div>
+
+        <label for="categories" style="clear: both;">Kategorien</label>
+        'categories'
+        <label for="author" style="clear: both;">Deine E-Mailadresse</label>
+        <input type="text" id="author" name="author" value="" class="fullsize" />
+        <label for="desc">Weiteres</label>
+        <textarea id="desc" name="desc" cols="24" rows="10" class="fullsize">'description'</textarea>
+        <input type="submit" value="Anbieten" />
+    </form>
+    <form action="./" method="get"><input type="submit" value="Abbrechen" />
+    </form>
+</fieldset>

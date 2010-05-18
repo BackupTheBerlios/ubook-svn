@@ -8,6 +8,7 @@
 if (isset($_POST['name']) && $_POST['name'] != '') exit;
 
 require_once 'books/Book.php';
+require_once 'isbn/Isbn.php';
 require_once 'tools/KeyGenerator.php';
 require_once 'tools/SelectableCategories.php';
 
@@ -21,18 +22,20 @@ if (isset($_POST['author'])) {
     if ($mail && strstr($mail,'@')) {
         $quotedAuthor =  trim($_POST['mail']);
         $quotedTitle = trim($_POST['title']);
+        $isbn = Isbn::stringFromPost();
         $year = (int) trim($_POST['year']);
         $price = (float) str_replace(',', '.', $_POST['price']);
         $quotedDescription = $_POST['desc'];
         $key = KeyGenerator::genKey();
         $query = 'insert into books'
-                . ' (author, title, year, price, description, mail, auth_key'
+                . ' (author, title, year, price, isbn, description, mail, auth_key'
                 . ', created,expires)'
                 . ' values ('
                 . '"' . $quotedAuthor . '"'
                 . ', "' . $quotedTitle . '"'
                 . ', "' . $year . '"'
                 . ', "' . $price . '"'
+                . ', "' . $isbn . '"'
                 . ', "' . $quotedDescription . '"'
                 . ', "' . $mail . '"'
                 . ', "' . $key . '"'
@@ -62,24 +65,28 @@ if (isset($_POST['author'])) {
 require_once 'tools/Output.php';
 require_once 'tools/Template.php';
 
-$tmpl = Template::fromFile('view/add.html');
+$addForm = Template::fromFile('view/add_form.html');
 
 if (isset($_POST['isbn'])) {
     require_once 'isbn/IsbnQuery.php';
-    if (IsbnQuery::containsValidChars($_POST['isbn'])) {
-        $book = IsbnQuery::query($_POST['isbn']);
-        //$book->set('description', 'ISBN: ' . $book->get('isbn') . "\n\n");
+    try {
+        $isbn = new Isbn($_POST['isbn']);
+        $book = IsbnQuery::query($isbn);
+    } catch (Exception $ex) {
+        // forget it
     }
 }
 
 if (!isset($book)) $book = new Book();
 
-$book->assignToTemplate($tmpl);
+$book->assignToTemplate($addForm);
 
 $categoryString = implode(' ', $selectableCategories->createSelectArray());
-$tmpl->assign('categories', $categoryString);
-$tmpl->assign('isbn', $book->get('isbn'));
-
+$addForm->assign('categories', $categoryString);
+$addForm->assign('isbn', $book->get('isbn'));
+$addForm->addSubtemplate('isbnSubmit');
+$tmpl = Template::fromFile('view/add.html');
+$tmpl->assign('add_form', $addForm->result());
 $output = new Output($tmpl->result());
 $output->setExpires('43200');
 $output->addNavigationLink('first', 'Erste', 'add.php');
