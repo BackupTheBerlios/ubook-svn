@@ -73,5 +73,16 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         }
     }
 
+    function testSubstitutionInSubtemplate() {
+        $tText = 'Hello World.'
+        . '<!-- BEGIN subtemplate -->'
+        . " I love 'you'!"
+        . '<!-- END subtemplate -->';
+        $expText = 'Hello World.';
+        $t = new Template($tText);
+        $t->assign('you', 'bugs');
+        $this->assertEquals($expText, $t->result());
+    }
+
 }
 ?>

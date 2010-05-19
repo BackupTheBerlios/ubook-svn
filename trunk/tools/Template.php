@@ -112,6 +112,7 @@ class Template {
     const SUB_PATTERN = '/<!--\s*BEGIN\s+([a-z0-9_\-]+)\s*-->(.*?)<!--\s*END\s+\\1\s*-->/ims';
 
     private $content;
+    private $assignments = array();
     private $subTemplates = array();
     private $subTemplateKeys = array();
     private $subTemplateStrings = array();
@@ -143,8 +144,8 @@ class Template {
      * @param string $value new value in the document
      */
     public function assign($name, $value) {
-        $search = self::TAG_START . $name . self::TAG_END;
-        $this->content = str_replace($search, $value, $this->content);
+        $this->assignments[$name] = $value;
+
     }
 
     /**
@@ -154,7 +155,7 @@ class Template {
      * @return Template a full template instance to customize this subtemplate
      */
     public function addSubtemplate($name) {
-        if (!isset($this->subTemplateKeys[$name])) {
+        if (!isset($this->subTemplates[$name])) {
             throw new Exception('This subtemplate is not available: ' . $name);
         }
         $sub = new Template($this->subTemplateStrings[$name]);
@@ -167,14 +168,8 @@ class Template {
      * @return string actual result with all given replacements
      */
     public function result() {
-        $c = $this->content;
-        foreach ($this->subTemplateKeys as $name => $key) {
-            $replace = '';
-            foreach ($this->subTemplates[$name] as $n => $sub) {
-                $replace .= $sub->result();
-            }
-            $c = str_replace($key, $replace, $c);
-        }
+        $c = $this->assignSubtemplates($this->content);
+        $c = $this->assignAtoms($c);
         return $c;
     }
 
@@ -188,6 +183,25 @@ class Template {
             $this->subTemplateStrings[$name] = $substring;
             $this->subTemplates[$name] = array();
         }
+    }
+
+    private function assignAtoms($content) {
+        foreach ($this->assignments as $name => $value) {
+            $search = self::TAG_START . $name . self::TAG_END;
+            $content = str_replace($search, $value, $content);
+        }
+        return $content;
+    }
+
+    private function assignSubtemplates($content) {
+        foreach ($this->subTemplateKeys as $name => $key) {
+            $replace = '';
+            foreach ($this->subTemplates[$name] as $n => $sub) {
+                $replace .= $sub->result();
+            }
+            $content = str_replace($key, $replace, $content);
+        }
+        return $content;
     }
 
 }
