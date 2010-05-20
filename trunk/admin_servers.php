@@ -21,6 +21,7 @@ abstract class AdminServers {
 	}
 
 	public static function resetDb() {
+        // TODO: check using http://dev.mysql.com/doc/refman/5.1/de/truncate.html
 		mysql_query('delete from servers where url != "";');
 		include 'net/external_servers.php';
 		foreach ($external_servers as $i => $server) {

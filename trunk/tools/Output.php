@@ -7,6 +7,11 @@
 require_once 'Template.php';
 
 /*
+ * TODO: check more header functionality from:
+ * http://php.net/manual/de/function.header.php
+ */
+
+/*
  * Represents the output sent to the browser.
 */
 class Output {
@@ -42,6 +47,11 @@ class Output {
         $this->configureTemplate();
         header('Content-Type: text/html;charset=utf-8');
         echo $this->template->result();
+    }
+
+    public function sendNotFound() {
+        header('HTTP/1.0 404 Not Found');
+        $this->send();
     }
 
     private function configureTemplate() {

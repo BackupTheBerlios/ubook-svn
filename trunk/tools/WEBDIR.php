@@ -18,6 +18,13 @@ function define_webdir() {
     }
     define('WEBDIR', $protocoll . str_replace('//', '/', $uri));
 }
+/*
+ * TODO: check alternativ from the php.net forum:
+ * $host  = $_SERVER['HTTP_HOST'];
+ * $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+ * $extra = 'mypage.php';
+ * header("Location: http://$host$uri/$extra");
+*/
 
 define_webdir();
 

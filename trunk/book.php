@@ -2,7 +2,7 @@
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2008 Maikel Linke
- */
+*/
 
 require_once 'mysql_conn.php';
 require_once 'tools/BookFetcher.php';
@@ -11,132 +11,122 @@ require_once 'tools/Image.php';
 
 /*
  * Checks POST data and sends E-Mail, if everything is correct.
- */
+*/
 function send($book) {
-	/*
+    /*
 	 * $_POST['name'] should contain a mail address.
 	 * It is named 'name' to trick robots.
-	 */
-	if (!isset($_POST['name'])) return false;
-	$user_mail = stripslashes($_POST['name']);
-	if (!strstr($user_mail,'@')) return true;
-	require_once 'tools/Mailer.php';
-	$subject = 'Anfrage: ';
-	$message = 'Es hat jemand mit der E-Mailadresse "'.$user_mail.'" Interesse für das unten stehende Buch bekundet.';
-	if (isset($_POST['user_text']) && $_POST['user_text']) {
-		$message .= ' Folgende Nachricht wurde mitgesandt:'."\n\n";
-		$message .= stripslashes($_POST['user_text'])."\n";
-	}
-	$booked = Mailer::send($book['id'],$subject,$message,$user_mail);
-	header('Location: book.php?id='.$book['id'].'&booked='.$booked);
-	exit;
+    */
+    if (!isset($_POST['name'])) return false;
+    $user_mail = stripslashes($_POST['name']);
+    if (!strstr($user_mail,'@')) return true;
+    require_once 'tools/Mailer.php';
+    $subject = 'Anfrage: ';
+    $message = 'Es hat jemand mit der E-Mailadresse "'.$user_mail.'" Interesse für das unten stehende Buch bekundet.';
+    if (isset($_POST['user_text']) && $_POST['user_text']) {
+        $message .= ' Folgende Nachricht wurde mitgesandt:'."\n\n";
+        $message .= stripslashes($_POST['user_text'])."\n";
+    }
+    $booked = Mailer::send($book['id'],$subject,$message,$user_mail);
+    header('Location: book.php?id='.$book['id'].'&booked='.$booked);
+    exit;
 }
 
 
 if (!isset($_GET['id'])) exit;
 $book_id = (int) $_GET['id'];
+
+/*** begin computing output ***/
+require_once 'tools/Output.php';
+require_once 'tools/Template.php';
+
+$tmpl = Template::fromFile('view/book.html');
+
+$tmpl->assign('id', $book_id);
+
 $result = mysql_query('select id,author,title,year,price,description,auth_key,mail from books where id="'.$book_id.'"');
-$book = BookFetcher::fetch($result); // null, if no book was found
-if ($book === null) exit;
+if (mysql_num_rows($result) != 1) {
+    $tmpl->addSubtemplate('messageNotFound');
+    $output = new Output($tmpl->result());
+    $output->sendNotFound();
+    exit;
+}
+
+$book = BookFetcher::fetch($result);
 
 /* checks mail sending, no returning on success */
 $mail_error = send($book);
 
-Parser::htmlbook($book);
+$bookTmpl = $tmpl->addSubtemplate('book');
 
-$category_string = '';
-$cat_seperator = '';
+if ($mail_error) {
+    $tmpl->addSubtemplate('bookingFailed');
+}
+
+if (isset($_GET['new'])) {
+    $tmpl->addSubtemplate('messageNew');
+}
+
+if (isset($_GET['renew'])) {
+    if ($_GET['renew']) {
+        $tmpl->addSubtemplate('messageRenewed');
+    } else {
+        $tmpl->addSubtemplate('messageNotRenewed');
+    }
+}
+
+if (isset($_GET['uploaded'])) {
+    $tmpl->addSubtemplate('messageUploaded');
+}
+
+$tmpl->assign('img_tag', Image::imgTag($book_id));
+
+Parser::htmlbook($book);
+foreach ($book as $name => $value) {
+    $bookTmpl->assign($name, $value);
+}
+$bookTmpl->assign('nl2br_description', nl2br($book['description']));
+
+$categoryArray = array();
 $result = mysql_query('select category from book_cat_rel where book_id="'.$book_id.'"');
 while ($row = mysql_fetch_array($result)) {
-	$category_string .= $cat_seperator;
-	$category_string .= $row['category'];
-	$cat_seperator = ', ';
+    $categoryArray[] = $row['category'];
 }
+$bookTmpl->assign('category_string', implode(', ', $categoryArray));
 
-
-$user_key = '';
 if (isset($_GET['key'])) {
-	$user_key = $_GET['key'];
+    $bookTmpl->assign('id', $_GET['id']);
+    $bookTmpl->assign('key', $_GET['key']);
+    $tmpl->addSubtemplate('editAndDelete');
+    if (Image::uploadable()) {
+        $tmpl->addSubtemplate('uploadButton');
+    }
+} else {
+    $showBookForm = true;
+    if (isset($_GET['booked'])) {
+        if ($_GET['booked']) {
+            $tmpl->addSubtemplate('booked');
+            $showBookForm = false;
+        } else {
+            $tmpl->addSubtemplate('bookingFailed');
+        }
+    }
+    if ($showBookForm) {
+        $form = $tmpl->addSubtemplate('bookingForm');
+        if (isset($_POST['name'])) {
+            $form->assign('user_mail', $_POST['name']);
+        } else {
+            $form->assign('user_mail', '');
+        }
+        if (isset($_POST['user_text'])) {
+            $form->assign('user_text', $_POST['user_text']);
+        } else {
+            $form->assign('user_text', '');
+        }
+    }
+    $tmpl->addSubtemplate('personLink');
 }
 
-include 'header.php';
+$output = new Output($tmpl->result());
+$output->send();
 ?>
-<div class="menu">
-   <span><a href="./">Buch suchen</a></span>
-   <span><a href="add.php">Buch anbieten</a></span>
-   <span><a href="help.php">Tipps</a></span>
-   <span><a href="about.php">Impressum</a></span>
-  </div>
-  <?php if (isset($_GET['new'])) { ?>
-  <div class="infobox"><h2>Das Buch wurde erfolgreich eingetragen!</h2>Du bekommst bald eine E-Mail, mit der du das Angebot &auml;ndern und auch l&ouml;schen kannst.<br/>...und so siehts aus:</div>
-  <?php } ?>
-  <?php if ($mail_error) { ?>
-  <div class="infobox"><h2>E-Mailadresse unvollständig!</h2>Trage unten deine komplette E-Mailadresse ein, damit der Buchanbieter dir auch antworten kann.</div>
-  <?php } ?>
-  <?php if (isset($_GET['renew'])) { ?>
-  <div class="infobox">
-  Das Buchangebot wurde
-  <?php if ($_GET['renew'] == 0) { ?>
-  <b>nicht</b>
-  <?php } ?>
-  erneuert.
-  </div>
-  <?php } ?>
-  <?php if (isset($_GET['uploaded'])) { ?>
-  <div class="infobox"><h2>Das Bild wurde erfolgreich gespeichert!</h2>Wenn immernoch das alte Bild zu sehen ist, kommt das aus einem Zwischenspeicher und muss neu geladen werden.</div>
-  <?php } ?>
-  <div class="book">
-   <h2>
-    <?php
-    echo $book['title'];
-    ?>
-   </h2>
-   <?php echo Image::imgTag($book_id); ?>
-   <table align="center">
-    <tr><td>Autorin / Autor:</td><td><?php echo $book['author']; ?></td></tr>
-    <tr><td>Titel:</td><td><?php echo $book['title']; ?></td></tr>
-    <tr title="Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen."><td>Preis:</td><td><?php echo $book['price']; ?> &euro;</td></tr>
-    <tr><td>Erscheinungsjahr:</td><td><?php echo $book['year']; ?></td></tr>
-    <tr><td>Kategorie:</td><td><?php echo $category_string; ?></td></tr>
-    <tr><td colspan="2" style="max-width:35em;"><?php echo nl2br($book['description']); ?></td></tr>
-   </table>
-  </div>
-  <?php if (isset($_GET['booked'])) { ?>
-   <?php  if ($_GET['booked']) { ?>
-   <div class="infobox">Dem Anbieter wurde erfolgreich eine E-Mail gesendet.</div>
-   <?php } else { ?>
-   <div class="infobox">Dem Anbieter konnte keine E-Mail gesendet werden.</div>
-   <?php } ?>
-  <?php } else { ?>
-  <?php if ($user_key) { ?>
-  <?php if (Image::uploadable()) { ?>
-  <form action="upload.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
-    <input type="submit" value="Bild hochladen" />
-  </form>
-  <?php } ?>
-  <form action="edit.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
-    <input type="submit" value="Angebot ändern" />
-  </form>
-  <form action="delete.php?id=<?php echo $book['id']; ?>&amp;key=<?php echo $user_key; ?>" method="post" style="display:inline">
-    <input type="submit" value="Angebot löschen" />
-  </form>
-  <?php } else { ?>
-  <h2>Das will ich haben!</h2>
-  <form action="book.php?id=<?php echo $book['id']; ?>" method="post">
-   <fieldset>
-    <label for="name">Meine E-Mailadresse:</label><input type="text" id="name" name="name" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" size="25" /><!-- placeholder for robots -->
-    <label for="user_text">Nachricht an die / den Anbieter/in:</label><textarea id="user_text" name="user_text" cols="25" rows="7"><?php if (isset($_POST['user_text'])) echo $_POST['user_text']; ?></textarea>
-    <p><input type="submit" value="Dem Anbieter senden" /></p>
-   </fieldset>
-   <p style="width:25em;margin:0px auto;"><em><small>Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen. Oft gibt die Preisangabe jedoch die Verhandlungsbasis an.</small></em></p>
-  </form>
-  <?php } ?>
-  <?php } ?>
-
-  <?php if (isset($_GET['booked']) || !$user_key) { ?>
-  <div class="menu" style="margin-top:1em;">
-   <span><a href="offeror.php?id=<?php echo $book['id']; ?>">Alle Angebote der selben Person</a></span>
-  </div>
-  <?php } ?>
-
-<?php include 'footer.php'; ?>

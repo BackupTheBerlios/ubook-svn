@@ -14,6 +14,9 @@
  $query = 'delete from books where id="'.$id.'" and auth_key="'.$key.'"';
  mysql_query($query);
  $success = mysql_affected_rows();
+ if ($success > 0) {
+     mysql_query('delete from book_cat_rel where book_id="' . $id . '"');
+ }
  if ($success == 0) {
   $result = mysql_query('select 1 from books where id="'.$id.'"');
   if (mysql_num_rows($result) == 0) {

@@ -1,70 +1,78 @@
 <div class="menu">
-   <span><a href="./">Buch suchen</a></span>
-   <span><a href="add.php">Buch anbieten</a></span>
-   <span><a href="help.php">Tipps</a></span>
-   <span><a href="about.php">Impressum</a></span>
-  </div>
-  <!-- begin messageNew -->
-  <div class="infobox"><h2>Das Buch wurde erfolgreich eingetragen!</h2>Du bekommst bald eine E-Mail, mit der du das Angebot &auml;ndern und auch l&ouml;schen kannst.<br/>...und so siehts aus:</div>
-  <!-- end messageNew -->
-  <!-- begin messageError -->
-  <div class="infobox"><h2>E-Mailadresse unvollständig!</h2>Trage unten deine komplette E-Mailadresse ein, damit der Buchanbieter dir auch antworten kann.</div>
-  <!-- end messageError -->
-  <!-- begin messageRenewed -->
-  <div class="infobox">Das Buchangebot wurde erneuert.</div>
-  <!-- end messageRenewed -->
-  <!-- begin messageNotRenewed -->
-  <div class="infobox">Das Buchangebot wurde <em>nicht</em> erneuert.</div>
-  <!-- end messageNotRenewed -->
-  <!-- begin messageUploaded -->
-  <div class="infobox"><h2>Das Bild wurde erfolgreich gespeichert!</h2>Wenn immernoch das alte Bild zu sehen ist, kommt das aus einem Zwischenspeicher und muss neu geladen werden.</div>
-  <!-- end messageUploaded -->
-  <div class="book">
-   <h2>'title'</h2>
-   'img_tag'
-   <table align="center">
-    <tr><td>Autorin / Autor:</td><td>'author'</td></tr>
-    <tr><td>Titel:</td><td>'title'</td></tr>
-    <tr title="Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen.">
-        <td>Preis:</td><td>'price' &euro;</td></tr>
-    <tr><td>Erscheinungsjahr:</td><td>'year'</td></tr>
-    <tr><td>Kategorie:</td><td>'category_string'</td></tr>
-    <tr><td colspan="2" style="max-width:35em;">'nl2br_description'</td></tr>
-   </table>
-  </div>
-   <!-- begin booked -->
-   <div class="infobox">Dem Anbieter wurde erfolgreich eine E-Mail gesendet.</div>
-   <!-- end booked -->
-   <!-- begin bookingFailed -->
-   <div class="infobox">Dem Anbieter konnte keine E-Mail gesendet werden.</div>
-   <!-- end bookingFailed -->
-  <!-- begin uploadButton -->
-  <form action="upload.php?id='id'&amp;key='key'" method="post" style="display:inline">
+    <span><a href="./">Buch suchen</a></span>
+    <span><a href="add.php">Buch anbieten</a></span>
+    <span><a href="help.php">Tipps</a></span>
+    <span><a href="about.php">Impressum</a></span>
+</div>
+<!-- begin messageNotFound -->
+<div class="infobox">
+    <h2>Nicht gefunden!</h2>
+    Dieses Buchangebot gibt es nicht mehr. Es wurde entweder verkauft oder
+    inzwischen gelöscht.
+</div>
+<!-- end messageNotFound -->
+<!-- begin messageNew -->
+<div class="infobox"><h2>Das Buch wurde erfolgreich eingetragen!</h2>Du bekommst bald eine E-Mail, mit der du das Angebot &auml;ndern und auch l&ouml;schen kannst.<br/>...und so siehts aus:</div>
+<!-- end messageNew -->
+<!-- begin messageError -->
+<div class="infobox"><h2>E-Mailadresse unvollständig!</h2>Trage unten deine komplette E-Mailadresse ein, damit der Buchanbieter dir auch antworten kann.</div>
+<!-- end messageError -->
+<!-- begin messageRenewed -->
+<div class="infobox">Das Buchangebot wurde erneuert.</div>
+<!-- end messageRenewed -->
+<!-- begin messageNotRenewed -->
+<div class="infobox">Das Buchangebot wurde <em>nicht</em> erneuert.</div>
+<!-- end messageNotRenewed -->
+<!-- begin messageUploaded -->
+<div class="infobox"><h2>Das Bild wurde erfolgreich gespeichert!</h2>Wenn immernoch das alte Bild zu sehen ist, kommt das aus einem Zwischenspeicher und muss neu geladen werden.</div>
+<!-- end messageUploaded -->
+<!-- begin book -->
+<div class="book">
+    <h2>'title'</h2>
+    'img_tag'
+    <table align="center">
+        <tr><td>Autorin / Autor:</td><td>'author'</td></tr>
+        <tr><td>Titel:</td><td>'title'</td></tr>
+        <tr title="Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen.">
+            <td>Preis:</td><td>'price' &euro;</td></tr>
+        <tr><td>Erscheinungsjahr:</td><td>'year'</td></tr>
+        <tr><td>Kategorie:</td><td>'category_string'</td></tr>
+        <tr><td colspan="2" style="max-width:35em;">'nl2br_description'</td></tr>
+    </table>
+</div>
+<!-- end book -->
+<!-- begin booked -->
+<div class="infobox">Dem Anbieter wurde erfolgreich eine E-Mail gesendet.</div>
+<!-- end booked -->
+<!-- begin bookingFailed -->
+<div class="infobox">Dem Anbieter konnte keine E-Mail gesendet werden.</div>
+<!-- end bookingFailed -->
+<!-- begin uploadButton -->
+<form action="upload.php?id='id'&amp;key='key'" method="post" style="display:inline">
     <input type="submit" value="Bild hochladen" />
-  </form>
-  <!-- end uploadButton -->
-  <!-- begin editAndDelete -->
-  <form action="edit.php?id='id'&amp;key='key'" method="post" style="display:inline">
+</form>
+<!-- end uploadButton -->
+<!-- begin editAndDelete -->
+<form action="edit.php?id='id'&amp;key='key'" method="post" style="display:inline">
     <input type="submit" value="Angebot ändern" />
-  </form>
-  <form action="delete.php?id='id'&amp;key='key'" method="post" style="display:inline">
+</form>
+<form action="delete.php?id='id'&amp;key='key'" method="post" style="display:inline">
     <input type="submit" value="Angebot löschen" />
-  </form>
-  <!-- end editAndDelete -->
-  <!-- begin bookingForm -->
-  <!--h2>Das will ich haben!</h2-->
-  <form action="book.php?id='id'" method="post">
-   <fieldset>
-       <legend>Das will ich haben!</legend>
-    <label for="name">Meine E-Mailadresse:</label><input type="text" id="name" name="name" value="'mail'" size="25" /><!-- placeholder for robots -->
-    <label for="user_text">Nachricht an die / den Anbieter/in:</label><textarea id="user_text" name="user_text" cols="25" rows="7"><?php if (isset($_POST['user_text'])) echo $_POST['user_text']; ?></textarea>
-    <p><input type="submit" value="Dem Anbieter senden" /></p>
-   </fieldset>
-   <p style="width:25em;margin:0px auto;"><em><small>Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen. Oft gibt die Preisangabe jedoch die Verhandlungsbasis an.</small></em></p>
-  </form>
-  <!-- end bookingForm -->
-  <!-- begin personLink -->
-  <div class="menu" style="margin-top:1em;">
-   <span><a href="offeror.php?id='id'">Alle Angebote der selben Person</a></span>
-  </div>
-  <!-- end personLink -->
+</form>
+<!-- end editAndDelete -->
+<!-- begin bookingForm -->
+<form action="book.php?id='id'" method="post">
+    <fieldset>
+        <legend>Das will ich haben!</legend>
+        <label for="name">Meine E-Mailadresse:</label><input type="text" id="name" name="name" value="'user_mail'" size="25" /><!-- placeholder for robots -->
+        <label for="user_text">Nachricht an die / den Anbieter/in:</label><textarea id="user_text" name="user_text" cols="25" rows="7">'user_text'</textarea>
+        <p><input type="submit" value="Dem Anbieter senden" /></p>
+    </fieldset>
+    <p style="width:25em;margin:0px auto;"><em><small>Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen. Oft gibt die Preisangabe jedoch die Verhandlungsbasis an.</small></em></p>
+</form>
+<!-- end bookingForm -->
+<!-- begin personLink -->
+<div class="menu" style="margin-top:1em;">
+    <span><a href="offeror.php?id='id'">Alle Angebote der selben Person</a></span>
+</div>
+<!-- end personLink -->

@@ -126,7 +126,7 @@ class Template {
         if ($content === false) {
             throw new Exception("Could not read template file: " + $filename);
         }
-        return new Template($content);
+        return new self($content);
     }
 
     /**
@@ -152,13 +152,13 @@ class Template {
      * Subtemplates are defined once and will appear in the result zero or more
      * times. Varying content and also sub-subtemplates are possible.
      * @param string $name identifyer of the subtemplate
-     * @return Template a full template instance to customize this subtemplate
+     * @return self a full template instance to customize this subtemplate
      */
     public function addSubtemplate($name) {
         if (!isset($this->subTemplates[$name])) {
             throw new Exception('This subtemplate is not available: ' . $name);
         }
-        $sub = new Template($this->subTemplateStrings[$name]);
+        $sub = new self($this->subTemplateStrings[$name]);
         $this->subTemplates[$name][] = $sub;
         return $sub;
     }
