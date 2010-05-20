@@ -1,83 +1,83 @@
 body {
- text-align: center;
- font-size:10pt;
- background:#ffc;
+    text-align: center;
+    font-size:10pt;
+    background:#ffc;
 }
 
 body, a, a:visited, a:link, div.menu a
 {
-  color: #ac0001;
+    color: #ac0001;
 }
 
 img {
     border-width: 0px;
 }
 
-div.head {
- text-decoration:none;
- color:black;
- margin-bottom:0em;
- display:block;
+h1 {
+    font-size: 120%;
+    text-decoration: none;
+    color: black;
+    margin: 0em;
 }
 
 div.menu {
- margin:0%;
- margin-bottom:0.2em;
+    margin:0%;
+    margin-bottom:0.2em;
 }
 
 div.menu span {
- margin-left:0.3em;
- margin-right:0.3em;
+    margin-left:0.3em;
+    margin-right:0.3em;
 }
 
 form
 {
-  display:inline;
-  font-weight: lighter;
+    display:inline;
+    font-weight: lighter;
 }
 
 .text {
- width:30em;
- margin:0px auto;
- text-align: left;
+    width:30em;
+    margin:0px auto;
+    text-align: left;
 }
 
 td {
- text-align: left;
+    text-align: left;
 }
 
 input#search {
-	width: 20em;
-	margin-bottom: 0.4em;
+    width: 20em;
+    margin-bottom: 0.4em;
 }
 
 div.results table {
- border-width: 0px;
- font-size:120%;
- border-spacing: 0px;
- border-collapse: collapse;
+    border-width: 0px;
+    font-size:120%;
+    border-spacing: 0px;
+    border-collapse: collapse;
 }
 
 div.results th {
-	text-align: center;
-	padding-top: 1em;
+    text-align: center;
+    padding-top: 1em;
 }
 
 div.results td
 {
     text-align:left;
-	padding:0.4em;
-	border: 1px solid #e74;
+    padding:0.4em;
+    border: 1px solid #e74;
     border-left-width: 0px;
     border-right-width: 0px;
 }
 
 div.external_results td {
-	border-color: #c86;
+    border-color: #c86;
 }
 
 div.external_results table, div.external_results a, div.external_results h3 {
-	color: #a55;
+    color: #a55;
 }
 
 div.results a {
@@ -95,94 +95,95 @@ div.results td+td {
 }
 
 div.notificationSubscription {
-	margin-top: 1em;
+    margin-top: 1em;
 }
 
 div.book {
- margin: 1em;
+    margin: 1em;
 }
 
 div.book table {
- width:25em;
- border:1px solid gray;
+    width:25em;
+    border:1px solid gray;
+    margin: 0 auto;
 }
 
 div.book td {
- background:#fff;
- border:1px solid #ccc;
- padding:0.25em;
+    background:#fff;
+    border:1px solid #ccc;
+    padding:0.25em;
 }
 
 td.book_fields {
- width: 9em;
+    width: 9em;
 }
 
 div.categories span {
- margin-left:0.2em;
- margin-right:0.2em;
- line-height:160%;
+    margin-left:0.2em;
+    margin-right:0.2em;
+    line-height:160%;
 }
 
 fieldset {
- display:inline;
- padding:1.25em;
+    display:inline;
+    padding:1.25em;
 }
 
 fieldset legend {
- font-size:12pt;
- font-weight:600;
+    font-size:12pt;
+    font-weight:600;
 }
 
 
 label
 {
-  font-size:10pt;
-  display:block;
-  margin-top:0.5em;
+    font-size:10pt;
+    display:block;
+    margin-top:0.5em;
 }
 
 div.infobox {
- border: 1px solid black;
- background-color:#f0f0ff;
- padding:1em;
- margin:1em;
+    border: 1px solid black;
+    background-color:#f0f0ff;
+    padding:1em;
+    margin:1em;
 }
 
 input, textarea
 {
-  border:1px solid #000;
-  font-size:10pt;
-  cursor:pointer;
+    border:1px solid #000;
+    font-size:10pt;
+    cursor:pointer;
 }
 
 input[type="submit"]
 {
-  padding:0.25em;
-  font-weight:bold;
-  border-style:outset;
-  background:#ac0001;
-  color:#fff;
+    padding:0.25em;
+    font-weight:bold;
+    border-style:outset;
+    background:#ac0001;
+    color:#fff;
 }
 
 input[type="submit"]:hover
 {
-  background:#ec3a09;
+    background:#ec3a09;
 }
 
 .fullsize
 {
-  width:18em;
+    width:18em;
 }
 
 img.bookImage
 {
-	margin-bottom: 0.5em;
-	border: 1px solid black;
+    margin-bottom: 0.5em;
+    border: 1px solid black;
 }
 
 input.boogy {
- position:absolute;
- top: -100%;
- left: -100%;
- visibility:hidden;
+    position:absolute;
+    top: -100%;
+    left: -100%;
+    visibility:hidden;
 }
