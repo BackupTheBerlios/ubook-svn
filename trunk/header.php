@@ -38,7 +38,7 @@ header('Content-Type: text/html;charset=utf-8');
   <link rel="stylesheet" type="text/css" href="style.css" />
   <link rel="shortcut icon" type="image/x-icon" href="uBook_icon.png" />
   <link rel="author" title="Impressum" href="about.php" />
-  <link rel="index" title="Kategorien" href="category.php" />
+  <link rel="index" title="Kategorien" href="./" />
   <link rel="search" title="Suche" href="./" />
   <link rel="help" title="Tipps" href="help.php" />
   <link rel="copyright" title="Urheberrecht" href="COPYING" />
