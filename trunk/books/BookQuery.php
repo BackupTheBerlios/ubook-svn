@@ -14,7 +14,7 @@ class BookQuery {
      * @return MySQL select statement
      */
     public static function searchQuery($searchKey) {
-        $fields = 'concat(author, " ", title, " ", description) ';
+        $fields = 'concat(author, " ", title, " ", isbn, " ", description) ';
         $keys = explode(' ', $searchKey);
         $and = ' ';
         $query = 'select id, author, title, price, year, description, created from books where ';
