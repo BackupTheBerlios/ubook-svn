@@ -1,24 +1,25 @@
-<div class="menu">
-    <span><a href="./">Buch suchen</a></span>
-    <span><a href="add.php">Buch anbieten</a></span>
-    <span><a href="help.php">Tipps</a></span>
-    <span><a href="about.php">Impressum</a></span>
-</div>
-
 <form action="edit.php?id='id'&amp;key='key'" method="post">
-    <table style="width: 20em; border: 1px solid gray; margin-top:1em;" align="center">
-        <tr><td>Isbn:</td><td><input type="text" name="isbn" value="'isbn'" /></td></tr>
-        <tr><td>Autorin / Autor:</td><td><input type="text" name="author" value="'author'" /></td></tr>
-        <tr><td>Titel:</td><td><input type="text" name="title" value="'title'" /></td></tr>
-        <tr><td>Preis:</td><td><input type="text" name="price" value="'price'" size="5" /> Euro</td></tr>
-        <tr><td>Erscheinungsjahr:</td><td><input type="text" name="year" value="'year'" size="4" /></td></tr>
+    <table style="width: 20em; border: 1px solid gray; margin: 0 auto; margin-top:1em;">
+        <tr><td><label for="isbn">Isbn:</label></td>
+            <td><input type="text" id="isbn" name="isbn" value="'isbn'" /></td></tr>
+        <tr><td><label for="author">Autorin / Autor:</label></td>
+            <td><input type="text" id="author" name="author" value="'author'" /></td></tr>
+        <tr><td><label for="title">Titel:</label></td>
+            <td><input type="text" id="title" name="title" value="'title'" /></td></tr>
+        <tr><td><label for="price">Preis:</label></td>
+            <td><input type="text" id="price" name="price" value="'price'" size="5" /> Euro</td></tr>
+        <tr><td><label for="year">Erscheinungsjahr:</label></td>
+            <td><input type="text" id="year" name="year" value="'year'" size="4" /></td></tr>
         <!-- begin categories -->
-        <tr><td>Kategorien:</td><td>'category0'</td></tr>
+        <tr><td><label for="category0">Kategorien:</label></td>
+            <td>'category0'</td></tr>
         <!-- begin category -->
         <tr><td>&nbsp;</td><td>'category'</td></tr>
         <!-- end category -->
         <!-- end categories -->
-        <tr><td colspan="2">Weiteres:<br /><textarea name="desc" cols="25" rows="10">'description'</textarea></td></tr>
+        <tr><td colspan="2"><label for="desc">Weiteres:</label><br />
+                <textarea id="desc" name="desc" cols="25" rows="10">'description'</textarea>
+            </td></tr>
     </table>
     <p><input type="submit" value="Speichern" /></p>
 </form>

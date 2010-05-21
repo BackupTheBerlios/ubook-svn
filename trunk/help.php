@@ -9,7 +9,8 @@ require_once 'tools/Template.php';
 
 $helpTpl = Template::fromFile('view/help.html');
 
-$output = new Output($helpTpl->result());
+$output = new Output();
 $output->setExpires(43200);
-$output->send();
+$output->unlinkMenuEntry('Tipps');
+$output->send($helpTpl->result());
 ?>

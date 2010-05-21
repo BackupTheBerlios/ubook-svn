@@ -23,11 +23,16 @@ h1 {
 div.menu {
     margin:0%;
     margin-bottom:0.2em;
+    font-weight: bolder;
 }
 
 div.menu span {
     margin-left:0.3em;
     margin-right:0.3em;
+}
+
+div.menu a {
+    font-weight: normal;
 }
 
 form

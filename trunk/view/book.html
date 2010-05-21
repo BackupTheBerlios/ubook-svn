@@ -1,9 +1,3 @@
-<div class="menu">
-    <span><a href="./">Buch suchen</a></span>
-    <span><a href="add.php">Buch anbieten</a></span>
-    <span><a href="help.php">Tipps</a></span>
-    <span><a href="about.php">Impressum</a></span>
-</div>
 <!-- begin messageNotFound -->
 <div class="infobox">
     <h2>Nicht gefunden!</h2>
@@ -36,6 +30,7 @@
         <tr title="Dies ist eine lokale Bücherbörse. Falls du von außerhalb kommst, musst du den Versand vermutlich zusätzlich zahlen.">
             <td>Preis:</td><td>'price' &euro;</td></tr>
         <tr><td>Erscheinungsjahr:</td><td>'year'</td></tr>
+        <tr><td>ISBN:</td><td>'isbn'</td></tr>
         <tr><td>Kategorie:</td><td>'category_string'</td></tr>
         <tr><td colspan="2" style="max-width:35em;">'nl2br_description'</td></tr>
     </table>
@@ -48,16 +43,22 @@
 <div class="infobox">Dem Anbieter konnte keine E-Mail gesendet werden.</div>
 <!-- end bookingFailed -->
 <!-- begin uploadButton -->
-<form action="upload.php?id='id'&amp;key='key'" method="post" style="display:inline">
-    <input type="submit" value="Bild hochladen" />
+<form action="upload.php?id='id'&amp;key='key'" method="post">
+    <div style="display:inline">
+        <input type="submit" value="Bild hochladen" />
+    </div>
 </form>
 <!-- end uploadButton -->
 <!-- begin editAndDelete -->
-<form action="edit.php?id='id'&amp;key='key'" method="post" style="display:inline">
-    <input type="submit" value="Angebot ändern" />
+<form action="edit.php?id='id'&amp;key='key'" method="post">
+    <div style="display:inline">
+        <input type="submit" value="Angebot ändern" />
+    </div>
 </form>
-<form action="delete.php?id='id'&amp;key='key'" method="post" style="display:inline">
-    <input type="submit" value="Angebot löschen" />
+<form action="delete.php?id='id'&amp;key='key'" method="post">
+    <div style="display:inline">
+        <input type="submit" value="Angebot löschen" />
+    </div>
 </form>
 <!-- end editAndDelete -->
 <!-- begin bookingForm -->

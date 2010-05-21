@@ -65,6 +65,9 @@ if (isset($_POST['author'])) {
 require_once 'tools/Output.php';
 require_once 'tools/Template.php';
 
+$output = new Output();
+$output->setExpires('43200');
+$output->addNavigationLink('first', 'Erste', 'add.php');
 $addForm = Template::fromFile('view/add_form.html');
 
 if (isset($_POST['isbn'])) {
@@ -75,6 +78,10 @@ if (isset($_POST['isbn'])) {
     } catch (Exception $ex) {
         // forget it
     }
+    $output->setFocus('author');
+} else {
+    $output->unlinkMenuEntry('Buch anbieten');
+    $output->setFocus('isbn');
 }
 
 if (!isset($book)) $book = new Book();
@@ -85,10 +92,5 @@ $categoryString = implode(' ', $selectableCategories->createSelectArray());
 $addForm->assign('categories', $categoryString);
 $addForm->assign('isbn', $book->get('isbn'));
 $addForm->addSubtemplate('isbnSubmit');
-$tmpl = Template::fromFile('view/add.html');
-$tmpl->assign('add_form', $addForm->result());
-$output = new Output($tmpl->result());
-$output->setExpires('43200');
-$output->addNavigationLink('first', 'Erste', 'add.php');
-$output->send();
+$output->send($addForm->result());
 ?>

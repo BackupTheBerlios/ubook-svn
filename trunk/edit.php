@@ -44,6 +44,7 @@ if (mysql_num_rows($result) == 0) {
   		author = "'.$_POST['author'].'",
   		title = "'.$_POST['title'].'",
   		year = "'.$_POST['year'].'",
+  		isbn = "'.$_POST['isbn'].'",
   		price = "'.str_replace(',','.',$_POST['price']).'",
   		description = "'.$_POST['desc'].'"
 	     where id="'.$id.'" and auth_key="'.$key.'"';
@@ -65,8 +66,8 @@ if (mysql_num_rows($result) == 0) {
         $tmpl->assign($name, $value);
     }
     assignSelectableCategories($selectableCategories, $tmpl);
-    $output = new Output($tmpl->result());
-    $output->send();
+    $output = new Output();
+    $output->send($tmpl->result());
 }
 
 ?>

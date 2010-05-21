@@ -24,8 +24,6 @@ function import_book($bookString, Template $tmpl) {
 }
 
 
-$menuTmpl = Template::fromFile('view/menu.html');
-
 if (isset($_POST['book_data'])) {
     $tmpl = Template::fromFile('view/add_form.html');
     import_book($_POST['book_data'], $tmpl);
@@ -45,7 +43,6 @@ if (isset($_POST['book_data'])) {
     }
 }
 
-$content = $menuTmpl->result() . $tmpl->result();
-$output = new Output($content);
-$output->send();
+$output = new Output();
+$output->send($tmpl->result());
 ?>

@@ -8,125 +8,154 @@ require_once 'mysql_conn.php';
 require_once 'tools/BookFetcher.php';
 require_once 'tools/Parser.php';
 require_once 'tools/Image.php';
-
-/*
- * Checks POST data and sends E-Mail, if everything is correct.
-*/
-function send($book) {
-    /*
-	 * $_POST['name'] should contain a mail address.
-	 * It is named 'name' to trick robots.
-    */
-    if (!isset($_POST['name'])) return false;
-    $user_mail = stripslashes($_POST['name']);
-    if (!strstr($user_mail,'@')) return true;
-    require_once 'tools/Mailer.php';
-    $subject = 'Anfrage: ';
-    $message = 'Es hat jemand mit der E-Mailadresse "'.$user_mail.'" Interesse für das unten stehende Buch bekundet.';
-    if (isset($_POST['user_text']) && $_POST['user_text']) {
-        $message .= ' Folgende Nachricht wurde mitgesandt:'."\n\n";
-        $message .= stripslashes($_POST['user_text'])."\n";
-    }
-    $booked = Mailer::send($book['id'],$subject,$message,$user_mail);
-    header('Location: book.php?id='.$book['id'].'&booked='.$booked);
-    exit;
-}
-
-
-if (!isset($_GET['id'])) exit;
-$book_id = (int) $_GET['id'];
-
-/*** begin computing output ***/
 require_once 'tools/Output.php';
 require_once 'tools/Template.php';
 
-$tmpl = Template::fromFile('view/book.html');
+/**
+ * Structures the display of a book.
+ */
+class bookPage {
 
-$tmpl->assign('id', $book_id);
+    private $bookId;
+    private $tmpl;
+    private $output;
+    private $bookArray;
 
-$result = mysql_query('select id,author,title,year,price,description,auth_key,mail from books where id="'.$book_id.'"');
-if (mysql_num_rows($result) != 1) {
-    $tmpl->addSubtemplate('messageNotFound');
-    $output = new Output($tmpl->result());
+    public function __construct($bookId, $output) {
+        $this->bookId = $bookId;
+        $this->output = $output;
+        $this->tmpl = Template::fromFile('view/book.html');
+        $this->bookArray = $this->selectBook($bookId);
+        $this->tmpl->assign('id', $bookId);
+    }
+
+    /**
+     * Checks POST data and sends E-Mail, if everything is correct.
+     * @return bool true, if mail variable doesn't contain an @.
+     */
+    public function sendMailIfRequested() {
+        /*
+	     * $_POST['name'] should contain a mail address.
+	     * It is named 'name' to trick robots.
+        */
+        if (!isset($_POST['name'])) return false;
+        $user_mail = stripslashes($_POST['name']);
+        if (!strstr($user_mail,'@')) return true;
+        require_once 'tools/Mailer.php';
+        $subject = 'Anfrage: ';
+        $message = 'Es hat jemand mit der E-Mailadresse "'.$user_mail.'" Interesse für das unten stehende Buch bekundet.';
+        if (isset($_POST['user_text']) && $_POST['user_text']) {
+            $message .= ' Folgende Nachricht wurde mitgesandt:'."\n\n";
+            $message .= stripslashes($_POST['user_text'])."\n";
+        }
+        $booked = Mailer::send($this->bookId,$subject,$message,$user_mail);
+        header('Location: book.php?id='.$this->bookId.'&booked='.$booked);
+        exit;
+    }
+
+    public function showBook() {
+        $bookTmpl = $this->tmpl->addSubtemplate('book');
+        $bookTmpl->assign('img_tag', Image::imgTag($this->bookId));
+        // TODO check usage of htmlbook
+        Parser::htmlbook($this->bookArray);
+        foreach ($this->bookArray as $name => $value) {
+            $bookTmpl->assign($name, $value);
+        }
+        $desc = nl2br($this->bookArray['description']);
+        $bookTmpl->assign('nl2br_description', $desc);
+        $categoryArray = array();
+        $result = mysql_query('select category from book_cat_rel where'
+                . ' book_id="' . $this->bookId . '"');
+        while ($row = mysql_fetch_array($result)) {
+            $categoryArray[] = $row['category'];
+        }
+        $bookTmpl->assign('category_string', implode(', ', $categoryArray));
+    }
+
+    public function showNormalElements() {
+        $showBookForm = true;
+        if (isset($_GET['booked'])) {
+            if ($_GET['booked']) {
+                $tmpl->addSubtemplate('booked');
+                $showBookForm = false;
+            } else {
+                $this->tmpl->addSubtemplate('bookingFailed');
+            }
+        }
+        if ($showBookForm) {
+            $form = $this->tmpl->addSubtemplate('bookingForm');
+            if (isset($_POST['name'])) {
+                $form->assign('user_mail', $_POST['name']);
+            } else {
+                $form->assign('user_mail', '');
+            }
+            if (isset($_POST['user_text'])) {
+                $form->assign('user_text', $_POST['user_text']);
+            } else {
+                $form->assign('user_text', '');
+            }
+        }
+        $this->tmpl->addSubtemplate('personLink');
+    }
+
+    public function showAdminElements($userKey) {
+        $this->tmpl->assign('key', $_GET['key']);
+        $this->tmpl->addSubtemplate('editAndDelete');
+        if (Image::uploadable()) {
+            $this->tmpl->addSubtemplate('uploadButton');
+        }
+        if (isset($_GET['new'])) {
+            $this->tmpl->addSubtemplate('messageNew');
+        }
+        if (isset($_GET['renew'])) {
+            if ($_GET['renew']) {
+                $this->tmpl->addSubtemplate('messageRenewed');
+            } else {
+                $this->tmpl->addSubtemplate('messageNotRenewed');
+            }
+        }
+        if (isset($_GET['uploaded'])) {
+            $this->tmpl->addSubtemplate('messageUploaded');
+        }
+    }
+
+    public function send() {
+        $this->output->send($this->tmpl->result());
+    }
+
+    private function selectBook($bookId) {
+        $result = mysql_query('select id, author, title, year, price, isbn,'
+                . ' description, auth_key, mail from books where id="'
+                . $bookId . '"');
+        if (mysql_num_rows($result) != 1) {
+            $this->tmpl->addSubtemplate('messageNotFound');
+            $this->output->sendNotFound($this->tmpl->result());
+            exit;
+        }
+        return BookFetcher::fetch($result);
+    }
+}
+
+
+$output = new Output();
+
+if (!isset($_GET['id'])) {
     $output->sendNotFound();
     exit;
 }
 
-$book = BookFetcher::fetch($result);
+$page = new bookPage((int) $_GET['id'], $output);
 
 /* checks mail sending, no returning on success */
-$mail_error = send($book);
+$page->sendMailIfRequested();
 
-$bookTmpl = $tmpl->addSubtemplate('book');
-
-if ($mail_error) {
-    $tmpl->addSubtemplate('bookingFailed');
-}
-
-if (isset($_GET['new'])) {
-    $tmpl->addSubtemplate('messageNew');
-}
-
-if (isset($_GET['renew'])) {
-    if ($_GET['renew']) {
-        $tmpl->addSubtemplate('messageRenewed');
-    } else {
-        $tmpl->addSubtemplate('messageNotRenewed');
-    }
-}
-
-if (isset($_GET['uploaded'])) {
-    $tmpl->addSubtemplate('messageUploaded');
-}
-
-$tmpl->assign('img_tag', Image::imgTag($book_id));
-
-Parser::htmlbook($book);
-foreach ($book as $name => $value) {
-    $bookTmpl->assign($name, $value);
-}
-$bookTmpl->assign('nl2br_description', nl2br($book['description']));
-
-$categoryArray = array();
-$result = mysql_query('select category from book_cat_rel where book_id="'.$book_id.'"');
-while ($row = mysql_fetch_array($result)) {
-    $categoryArray[] = $row['category'];
-}
-$bookTmpl->assign('category_string', implode(', ', $categoryArray));
+$page->showBook();
 
 if (isset($_GET['key'])) {
-    $bookTmpl->assign('id', $_GET['id']);
-    $bookTmpl->assign('key', $_GET['key']);
-    $tmpl->addSubtemplate('editAndDelete');
-    if (Image::uploadable()) {
-        $tmpl->addSubtemplate('uploadButton');
-    }
+    $page->showAdminElements($_GET['key']);
 } else {
-    $showBookForm = true;
-    if (isset($_GET['booked'])) {
-        if ($_GET['booked']) {
-            $tmpl->addSubtemplate('booked');
-            $showBookForm = false;
-        } else {
-            $tmpl->addSubtemplate('bookingFailed');
-        }
-    }
-    if ($showBookForm) {
-        $form = $tmpl->addSubtemplate('bookingForm');
-        if (isset($_POST['name'])) {
-            $form->assign('user_mail', $_POST['name']);
-        } else {
-            $form->assign('user_mail', '');
-        }
-        if (isset($_POST['user_text'])) {
-            $form->assign('user_text', $_POST['user_text']);
-        } else {
-            $form->assign('user_text', '');
-        }
-    }
-    $tmpl->addSubtemplate('personLink');
+    $page->showNormalElements();
 }
 
-$output = new Output($tmpl->result());
-$output->send();
+$page->send();
 ?>
