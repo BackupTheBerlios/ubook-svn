@@ -11,8 +11,8 @@
  * result of studying several other template engines and tries to merge all
  * advantages. This text explains you two things:
  *
- * 1. how to use, some examples
- * 2. why this way, good reasons for the syntax and the API
+ * 1. How To Use - some examples
+ * 2. Why This Way - good reasons for the syntax and the API
  *
  * == How To Use ==
  *
@@ -56,8 +56,8 @@
  * == Why This Way ==
  *
  * This class was written for a simple project. It's just one class, not a whole
- * framework with caching and so on. Providing only three methods it supports
- * everything, that a simple template engine should support. But not more.
+ * framework with caching and so on. It supports everything, that a simple
+ * template engine should support. But not more.
  * Keep it simple.
  *
  * Why do you use single quotes for variables?
@@ -72,9 +72,14 @@
  * Besides, if you like another syntax, just change the constants in the script.
  * It's free software.
  *
- * Why don't you provide an assign-method for arrays?
- * - It's no good idea to store everything in an array. Assigning one variable
- * to the template is not more complicated than a new entry in an array.
+ * Why don't you recommend the assignArray-method?
+ * - It's no good idea to store everything in an array. The more complex your
+ * application becomes, the harder it is to remember all the array structures.
+ * Additionally some IDEs (e.g. NetBeans) support the correct renaming of
+ * variables, but not of array indices, of course.
+ * Assigning one variable to the template is not more complicated than a new
+ * entry in an array.
+ * And most IMPORTANT:
  * Perhaps you have a full array of data from mysql_fetch_array(). But you
  * should not insert this into a template. Normally you have more data in there
  * than you want to present the user. And you have to encode the user data to
@@ -87,9 +92,22 @@
  *         $template->assign($key, $encoded);
  *     }
  * ?>
- * But this depends on your application. Better to write your own code based on
- * minimalistic work of others than including huge, complex frameworks and using
- * only one percent of it.
+ * But this depends on your application.
+ *
+ * Wouldn't it be nice to define conditions for subtemplates or provide
+ * something like a for-loop syntax?
+ * - No. It's a good idea to seperate PHP and HTML cleanly. So you have all your
+ * application logic in your PHP code. Your template files only define, what can
+ * be displayed and how. If you really want to script within your HTML, then you
+ * can just use PHP itself:
+ * (german) http://php-coding-standard.de/php_template_engine.php
+ *
+ * What is the other way?
+ * - Other interesting template classes:
+ * * http://articles.sitepoint.com/article/beyond-template-engine
+ * * http://template.ecoware.de/
+ * * http://www.phpbar.de/w/P.E.T.
+ * * http://kuerbis.org/asap/article/12/
 */
 class Template {
 
@@ -122,6 +140,9 @@ class Template {
      * @param string $filename path to the template
      */
     public static function fromFile($filename) {
+        if (!is_file($filename)) {
+            throw new Exception("That's no file: " + $filename);
+        }
         $content = file_get_contents($filename);
         if ($content === false) {
             throw new Exception("Could not read template file: " + $filename);
@@ -143,9 +164,18 @@ class Template {
      * @param string $name tag identifier in the template
      * @param string $value new value in the document
      */
-    public function assign($name, $value) {
-        $this->assignments[$name] = $value;
+    public function assign($name, $value = '') {
+        $this->assignments[(string) $name] = $value;
+    }
 
+    /**
+     * Assigns all values of the given array to the keys of the array.
+     * Warning: This function is seldom usefull. Don't assign arrays from your
+     * database without encoding the data. See documentation above.
+     * @param array $associativeArray of the form array( 'tag_name' => 'value' )
+     */
+    public function assignArray($associativeArray) {
+        $this->assignments = array_merge($this->assignments, $associativeArray);
     }
 
     /**
@@ -179,6 +209,10 @@ class Template {
             $key = $matches[0][$i];
             $name = $matches[1][$i];
             $substring = $matches[2][$i];
+            if (isset($this->subTemplates[$name])) {
+                throw new Exception('This template contains more than one'
+                        . ' subtemplate with one name: ' + $name);
+            }
             $this->subTemplateKeys[$name] = $key;
             $this->subTemplateStrings[$name] = $substring;
             $this->subTemplates[$name] = array();

@@ -37,7 +37,7 @@ class ExternalBookList extends AbstractBookList {
 			}
 			$books_string .= $book->getTitle();
 			$books_string .= '</a>';
-			$books_string .= '</td><td>'.$book->getPrice().' &euro;</td></tr>'."\n";
+			$books_string .= '</td><td>'.$book->getPrice().'&nbsp;&euro;</td></tr>'."\n";
 		}
 		parent::setHtmlRows($books_string);
 	}

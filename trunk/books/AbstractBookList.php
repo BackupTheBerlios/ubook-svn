@@ -41,7 +41,7 @@ abstract class AbstractBookList implements BookList {
 				$html .= $book['author'] . ': ';
 			}
 			$html .= $book['title'] . '</a>'
-			. '</td><td>'.$book['price'].' &euro;</td></tr>'."\n";
+			. '</td><td>'.$book['price'].'&nbsp;&euro;</td></tr>'."\n";
 		}
 		return $html;
 	}

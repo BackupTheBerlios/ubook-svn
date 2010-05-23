@@ -47,13 +47,18 @@ form
     text-align: left;
 }
 
+table {
+    margin: 0 auto;
+}
+
 td {
     text-align: left;
 }
 
 input#search {
     width: 20em;
-    margin-bottom: 0.4em;
+    display: block;
+    margin: 0.4em auto;
 }
 
 div.results table {
@@ -110,7 +115,6 @@ div.book {
 div.book table {
     width:25em;
     border:1px solid gray;
-    margin: 0 auto;
 }
 
 div.book td {

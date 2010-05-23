@@ -56,6 +56,11 @@ class Output {
         $focus->assign('elementWithFocus', $elementId);
     }
 
+    public function addFeedLink($feedUrl) {
+        $feedLink = $this->template->addSubtemplate('feedLink');
+        $feedLink->assign('feedUrl', $feedUrl);
+    }
+
     public function send($content) {
         $this->configureTemplate();
         $this->template->assign('content', $content);

@@ -46,17 +46,6 @@ header('Content-Type: text/html;charset=utf-8');
   <link rel="up" title="Hoch" href="./" />
 <?php echo_navigation(); ?>
 <?php if (isset($feedLink)) echo $feedLink; ?>
-<?php if (defined('FOCUS')) {?>
-  <script type="text/javascript" src="focus.js"></script>
-<?php }?>
-<?php if (defined('AUTOCOMPLETER')) {?>
-  <link rel="stylesheet" type="text/css" href="autocompleter/Autocompleter.css" />
-  <script type="text/javascript" src="autocompleter/mootools-1.2.1-core.js"></script>
-  <script type="text/javascript" src="autocompleter/Autocompleter.js"></script>
-  <script type="text/javascript" src="autocompleter/Autocompleter.Request.js"></script>
-  <script type="text/javascript" src="autocompleter/Observer.js"></script>
-  <script type="text/javascript" src="autocompleter/load_autocompleter.js"></script>
-<?php }?>
   <title>uBook</title>
  </head>
  <body>

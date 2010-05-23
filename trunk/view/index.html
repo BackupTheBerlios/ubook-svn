@@ -1,0 +1,75 @@
+<form action="./" method="get">
+    <div>
+        <input type="text" name="search" id="search" title="Suchworte"
+               value="'htmlSearchKey'" />
+        <input type="submit" value="Suchen" />
+        <input type="submit" name="new" value="Neues" />
+        <input type="submit" name="random" value="Zufälliges" />
+    </div>
+</form>
+<!-- begin searchSaved -->
+<div class="infobox">Die Suche nach "'htmlSearchKey'" wurde abonniert.</div>
+<!-- end searchSaved -->
+<!-- begin searchDeleted -->
+<div class="infobox">Das Abonnement für diese Suche wurde beendet.</div>
+<!-- end searchDeleted -->
+<!-- begin searchResults -->
+<h2>Suchergebnisse:</h2>
+<div class="results">
+    <table>
+        'HtmlRows'
+    </table>
+    <div style="margin-top: 0.3em;" title="Summe gefundener Bücher / Summe aller Bücher insgesamt">
+        [ Gefunden: 'found' ][ Insgesamt: 'numberOfAllBooks' ]
+    </div>
+</div>
+<!-- end searchResults -->
+<!-- begin externalSearch -->
+<h2>Suchergebnisse aus anderen Orten:</h2>
+<div>Hier wurden keine Bücher gefunden. Stattdessen werden Suchergebnisse
+    von anderen Standorten angezeigt.</div>
+<div class="results">
+    <div class="external_results">
+        <table title="Suchergebnisse aus anderen Orten">
+            <!-- begin externalResultSet -->
+            <tr><th colspan="2">'locationName'</th></tr>
+            'HtmlRows'
+            <!-- end externalResultSet -->
+        </table>
+    </div>
+</div>
+<!-- end externalSearch -->
+<!-- begin noResults -->
+<h2>Keine Bücher gefunden</h2>
+<p>Es wurden keine Bücher gefunden.</p>
+<!-- end noResults -->
+<!-- begin searchAsRss -->
+<div class="notificationSubscription">
+    <a href="'feedUrl'">Diese Suche als RSS-Feed</a>
+</div>
+<!-- end searchAsRss -->
+<!-- begin saveSearch -->
+<form action="save_search.php" method="get">
+    <div class="notificationSubscription">
+        <input type="hidden" name="search" value="'htmlSearchKey'" />
+        <input type="submit" value="Diese Suche abonnieren" />
+    </div>
+</form>
+<!-- end saveSearch -->
+'categoryMenu'
+<!-- begin categorySearch -->
+<h2><?php echo $category ?></h2>
+<!-- begin categoryResults -->
+<div class="results">
+    <table>
+        'HtmlRows'
+    </table>
+    <div style="margin-top: 0.3em;" title="Summe gefundener Bücher / Summe aller Bücher insgesamt">
+        [ Gefunden: 'found' ][ Insgesamt: 'numberOfAllBooks' ]
+    </div>
+</div>
+<!-- end categoryResults -->
+<!-- begin noCategoryResults -->
+<div>In dieser Kategorie gibt es zur Zeit keine Bücher.</div>
+<!-- end noCategoryResults -->
+<!-- end categorySearch -->

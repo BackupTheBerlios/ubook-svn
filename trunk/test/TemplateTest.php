@@ -21,10 +21,11 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
     function testFromFileFailing() {
         try {
             Template::fromFile('/');
-            $this->fail('Exception expected.');
-        } catch (Exception $ex) {
+        } catch (Exception $expected) {
             // This should happen
+            return;
         }
+        $this->fail('Exception expected.');
     }
 
     function testTemplate() {
@@ -41,14 +42,24 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($text, $t->result());
     }
 
+    function testAssignArray() {
+        $expected = 'This is new text, from hell.';
+        $tText = "This is 'a template', 'not more'.";
+        $t = new Template($tText);
+        $t->assign('a template', 'just text');
+        $a = array('a template' => 'new text', 'not more' => 'from hell');
+        $t->assignArray($a);
+        $this->assertEquals($expected, $t->result());
+    }
+
     function testAddSubtemplate() {
         $tText = 'Hello World.'
-        . '<!-- BEGIN subtemplate -->'
-        . " I love 'you'!"
-        . '<!-- END subtemplate -->'
-        . '<!-- BEGIN subNotToUse -->'
-        . ' Ayayayayyyy!'
-        . '<!-- END subNotToUse -->';
+                . '<!-- BEGIN subtemplate -->'
+                . " I love 'you'!"
+                . '<!-- END subtemplate -->'
+                . '<!-- BEGIN subNotToUse -->'
+                . ' Ayayayayyyy!'
+                . '<!-- END subNotToUse -->';
         $expText = 'Hello World.';
         $t = new Template($tText);
         $s = $t->addSubtemplate('subtemplate');
@@ -67,21 +78,39 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $t = new Template($tText);
         try {
             $t->addSubtemplate('kokoloris');
-            $this->fail('Exception expected.');
         } catch (Exception $ex) {
             // this should happen
+            return;
         }
+        $this->fail('Exception expected.');
     }
 
     function testSubstitutionInSubtemplate() {
         $tText = 'Hello World.'
-        . '<!-- BEGIN subtemplate -->'
-        . " I love 'you'!"
-        . '<!-- END subtemplate -->';
+                . '<!-- BEGIN subtemplate -->'
+                . " I love 'you'!"
+                . '<!-- END subtemplate -->';
         $expText = 'Hello World.';
         $t = new Template($tText);
         $t->assign('you', 'bugs');
         $this->assertEquals($expText, $t->result());
+    }
+
+    function testAmbigiousSubtemplates() {
+        $tText = 'Hello World.'
+                . '<!-- BEGIN subtemplate -->'
+                . 'a text'
+                . '<!-- END subtemplate -->'
+                . '<!-- BEGIN subtemplate -->'
+                . 'a different text'
+                . '<!-- END subtemplate -->';
+        try {
+            new Template($tText);
+        } catch (Exception $expected) {
+            $this->assertNotNull($expected->getMessage());
+            return;
+        }
+        $this->fail('An invalid template was accepted.');
     }
 
 }
