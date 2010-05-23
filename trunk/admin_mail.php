@@ -45,11 +45,11 @@ Administrationsübersicht</a></span></div>
   <legend>Mail an alle NutzerInnen verschicken...&nbsp;</legend>
   <form action="admin_mail.php" method="post">
     <label>Betreff<br/>
-    <input type="text" name="subject" value="" class="fullsize" />
+    <input type="text" name="subject" value=""/>
     </label>
 
     <label>Text<br/>
-    <textarea name="text" cols="24" rows="10" class="fullsize"></textarea>
+    <textarea name="text" cols="24" rows="10"></textarea>
     </label>
     <br/>
       <input type="submit" value="Verschicken" />

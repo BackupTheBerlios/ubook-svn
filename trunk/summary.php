@@ -43,7 +43,7 @@ include 'header.php';
    An die angegebene E-Mailadresse konnte keine Nachricht versendet werden.
   </div>
    <form action="summary.php" method="post">
-    <input name="mail" type="text" value="<?php echo $_POST['mail']; ?>" class="fullsize" /><br />
+    <input name="mail" type="text" value="<?php echo $_POST['mail']; ?>"/><br />
     <input type="submit" value="Erneut versuchen" />
    </form>
 <?php } ?>

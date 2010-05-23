@@ -1,7 +1,7 @@
 body {
     text-align: center;
-    font-size:10pt;
-    background:#ffc;
+    font-size: 10pt;
+    background: #ffc;
 }
 
 body, a, a:visited, a:link, div.menu a
@@ -20,8 +20,9 @@ h1 {
     margin: 0em;
 }
 
+/*** main menu ***/
 div.menu {
-    margin:0%;
+    margin: 0%;
     margin-bottom:0.2em;
     font-weight: bolder;
 }
@@ -35,24 +36,62 @@ div.menu a {
     font-weight: normal;
 }
 
-form
-{
+/*** category menu ***/
+div.categories span {
+    margin-left:0.2em;
+    margin-right:0.2em;
+    line-height:160%;
+}
+
+/*** forms ***/
+form {
+/*    font-weight: lighter;*/
+}
+
+fieldset {
     display:inline;
-    font-weight: lighter;
+    padding: 1.25em;
 }
 
-.text {
-    width:30em;
-    margin:0px auto;
-    text-align: left;
+fieldset legend {
+    font-size: larger;
+    font-weight: bolder;
 }
 
-table {
+label {
+    display: block;
+    margin-top: 0.5em;
+}
+
+input.block, textarea, select {
+    display: block;
     margin: 0 auto;
 }
 
-td {
-    text-align: left;
+input, textarea {
+    border: 1px solid #000;
+    font-size: 100%;
+    cursor: pointer;
+}
+
+input[type="text"], textarea {
+    width: 18em;
+}
+
+input[size] {
+    width: inherit;
+}
+
+input[type="submit"] {
+    padding: 0.25em;
+    font-weight: bolder;
+    border-style: outset;
+    background: #ac0001;
+    color: #fff;
+}
+
+input[type="submit"]:hover {
+    background: #ec3a09;
 }
 
 input#search {
@@ -61,6 +100,37 @@ input#search {
     margin: 0.4em auto;
 }
 
+input.boogy {
+    position:absolute;
+    top: -100%;
+    left: -100%;
+    visibility:hidden;
+}
+
+/*** tables ***/
+table {
+    margin: 0 auto;
+}
+
+td {
+    text-align: left;
+}
+
+/*** text ***/
+.text {
+    width:30em;
+    margin:0px auto;
+    text-align: left;
+}
+
+div.infobox {
+    border: 1px solid black;
+    background-color:#f0f0ff;
+    padding:1em;
+    margin:1em;
+}
+
+/*** result sets ***/
 div.results table {
     border-width: 0px;
     font-size:120%;
@@ -108,6 +178,13 @@ div.notificationSubscription {
     margin-top: 1em;
 }
 
+/*** book description ***/
+img.bookImage
+{
+    margin-bottom: 0.5em;
+    border: 1px solid black;
+}
+
 div.book {
     margin: 1em;
 }
@@ -127,72 +204,3 @@ td.book_fields {
     width: 9em;
 }
 
-div.categories span {
-    margin-left:0.2em;
-    margin-right:0.2em;
-    line-height:160%;
-}
-
-fieldset {
-    display:inline;
-    padding:1.25em;
-}
-
-fieldset legend {
-    font-size:12pt;
-    font-weight:600;
-}
-
-
-label
-{
-    font-size:10pt;
-    display:block;
-    margin-top:0.5em;
-}
-
-div.infobox {
-    border: 1px solid black;
-    background-color:#f0f0ff;
-    padding:1em;
-    margin:1em;
-}
-
-input, textarea
-{
-    border:1px solid #000;
-    font-size:10pt;
-    cursor:pointer;
-}
-
-input[type="submit"]
-{
-    padding:0.25em;
-    font-weight:bold;
-    border-style:outset;
-    background:#ac0001;
-    color:#fff;
-}
-
-input[type="submit"]:hover
-{
-    background:#ec3a09;
-}
-
-.fullsize
-{
-    width:18em;
-}
-
-img.bookImage
-{
-    margin-bottom: 0.5em;
-    border: 1px solid black;
-}
-
-input.boogy {
-    position:absolute;
-    top: -100%;
-    left: -100%;
-    visibility:hidden;
-}

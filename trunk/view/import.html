@@ -1,23 +1,21 @@
-<fieldset class="fullsize"><legend>Buch importieren...&nbsp;</legend>
-    <p class="text">
-        So importierst du ein gelöschtes Buch einfach wieder:
-    </p>
-    <ol class="text">
-        <li>
-            Aus der E-Mail den Text-Block mit der Buchbeschreibung kopieren: Von
-            'Autor: ...' bis zum letzten Wort deiner Beschreibung.
-        </li>
-        <li>Diesen Text in das Textfeld unten einfügen.</li>
-        <li>Auf importieren klicken.</li>
-    </ol>
-    <form action="import.php" method="post">
+<form action="import.php" method="post">
+    <fieldset><legend>Buch importieren...&nbsp;</legend>
+        <p class="text">
+            So importierst du ein gelöschtes Buch einfach wieder:
+        </p>
+        <ol class="text">
+            <li>
+                Aus der E-Mail den Text-Block mit der Buchbeschreibung kopieren: Von
+                'Autor: ...' bis zum letzten Wort deiner Beschreibung.
+            </li>
+            <li>Diesen Text in das Textfeld unten einfügen.</li>
+            <li>Auf importieren klicken.</li>
+        </ol>
         <!-- begin mail -->
         <input type="hidden" name="mail" value="'mail'" />
         <!-- end mail -->
-        <label>Importfeld<br />
-            <textarea name="book_data" cols="30" rows="20" class="text"></textarea>
-        </label> <br />
-        <input type="submit" value="Importieren" /></form>
-    <form action="./" method="get"><input type="submit" value="Abbrechen" />
-    </form>
-</fieldset>
+        <label for="book_data">Importfeld</label>
+        <textarea id="book_data" name="book_data" cols="30" rows="20" class="text"></textarea>
+        <input type="submit" value="Importieren" />
+    </fieldset>
+</form>

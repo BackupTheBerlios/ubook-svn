@@ -194,11 +194,12 @@ aktiv &harr; <a href="admin_servers.php?add_suggested=0">deaktivieren</a>
 <h3>Aktive Standorte: <?php echo $activeServers->size(); ?></h3>
 <ul class="text">
 <?php echo $activeList; ?>
-	<li>
-	<form action="admin_servers.php" method="post"><input type="text"
-		name="new_url" value="http://" class="fullsize" /><input type="submit"
-		value="Eintragen" /></form>
-	</li>
+    <li>
+        <form action="admin_servers.php" method="post">
+            <input type="text" name="new_url" value="http://"/>
+            <input type="submit" value="Eintragen" />
+        </form>
+    </li>
 </ul>
 
 <h3>Unbekannte Standorte: <?php echo $unknownServers->size(); ?></h3>
