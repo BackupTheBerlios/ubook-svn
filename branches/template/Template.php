@@ -21,6 +21,8 @@
  * - {@link http://svn.berlios.de/svnroot/repos/ubook/branches/template/}
  * - {@link http://svn.berlios.de/viewvc/ubook/branches/template/}
  *
+ * Feedback is very welcome: ubook-info@lists.berlios.de
+ *
  * <b>How To Use</b>
  *
  * Begin to create pure HTML. It could be like this:
@@ -36,6 +38,7 @@
  *         &lt;!-- END item --&gt;
  *     &lt;/ul&gt;
  * </pre>
+ * 
  * Now we have the template. Let's write code to fill it with data.
  *
  * <code>
@@ -113,17 +116,18 @@
  * application logic in your PHP code. Your template files only define, what can
  * be displayed and how. If you really want to script within your HTML, then you
  * can just use PHP itself:
+ * - {@link http://articles.sitepoint.com/article/beyond-template-engine}
  * - {@link http://php-coding-standard.de/php_template_engine.php} (german)
  *
  * <i>What is the other way?</i>
  *
  * Other interesting template classes:
  * - {@link http://articles.sitepoint.com/article/beyond-template-engine}
- * - {@link http://template.ecoware.de/}
- * - {@link http://www.phpbar.de/w/P.E.T.}
+ * - {@link http://template.ecoware.de/en/}
+ * - {@link http://www.phpbar.de/w/P.E.T.} (german)
  * - {@link http://kuerbis.org/asap/article/12/}
  *
- * @author Maikel Linke
+ * @author Maikel Linke (ubook-info@lists.berlios.de)
  * @version 2010-05-23
 */
 class Template {

@@ -24,7 +24,7 @@
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Substitutes special template tags with given content.</p>
-<p class="description"><p>This is just another template class for HTML/XML templates. BUT it is the  result of studying several other template engines and tries to merge all  advantages. This text explains you two things:</p><p><ol><li>How To Use - some examples</li><li>Why This Way - good reasons for the syntax and the API</li></ol>  You can download this class as archive with documentation: <ul><li><a href="http://ubook.berlios.de/template/Template.zip">http://ubook.berlios.de/template/Template.zip</a></li></ul> Or you can directly browse in the source code at BerliOS: <ul><li><a href="http://svn.berlios.de/svnroot/repos/ubook/branches/template/">http://svn.berlios.de/svnroot/repos/ubook/branches/template/</a></li><li><a href="http://svn.berlios.de/viewvc/ubook/branches/template/">http://svn.berlios.de/viewvc/ubook/branches/template/</a></li></ul>  <strong>How To Use</strong></p><p>Begin to create pure HTML. It could be like this:  <pre>     &lt;p&gt;Hello, this is normal text. But it is also possible to insert
+<p class="description"><p>This is just another template class for HTML/XML templates. BUT it is the  result of studying several other template engines and tries to merge all  advantages. This text explains you two things:</p><p><ol><li>How To Use - some examples</li><li>Why This Way - good reasons for the syntax and the API</li></ol>  You can download this class as archive with documentation: <ul><li><a href="http://ubook.berlios.de/template/Template.zip">http://ubook.berlios.de/template/Template.zip</a></li></ul> Or you can directly browse in the source code at BerliOS: <ul><li><a href="http://svn.berlios.de/svnroot/repos/ubook/branches/template/">http://svn.berlios.de/svnroot/repos/ubook/branches/template/</a></li><li><a href="http://svn.berlios.de/viewvc/ubook/branches/template/">http://svn.berlios.de/viewvc/ubook/branches/template/</a></li></ul>  Feedback is very welcome: ubook-info@lists.berlios.de</p><p><strong>How To Use</strong></p><p>Begin to create pure HTML. It could be like this:  <pre>     &lt;p&gt;Hello, this is normal text. But it is also possible to insert
         variable text here. For example the time: 'time'.&lt;/p&gt;
      &lt;p&gt;Okay, this is easy. It's just a string replacement. But now follows
         a subtemplate. It allows you to repeat some code over and over again,
@@ -33,7 +33,7 @@
          &lt;!-- BEGIN item --&gt;
          &lt;li&gt;'name'&lt;/li&gt;
          &lt;!-- END item --&gt;
-     &lt;/ul&gt;</pre>  Now we have the template. Let's write code to fill it with data.</p><p><div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$template&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../default/Template.html">Template</a></span><span class="src-sym">(</span><span class="src-var">$theHtmlCodeAsString</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+     &lt;/ul&gt;</pre></p><p>Now we have the template. Let's write code to fill it with data.</p><p><div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$template&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../default/Template.html">Template</a></span><span class="src-sym">(</span><span class="src-var">$theHtmlCodeAsString</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">//&nbsp;or</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$template&nbsp;</span>=&nbsp;<span class="src-id"><a href="../default/Template.html">Template</a></span><span class="src-sym">::</span><a href="../default/Template.html#methodfromFile">fromFile</a><span class="src-sym">(</span><span class="src-var">$filenameOfTemplate</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;</div></li>
@@ -59,13 +59,13 @@
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$template</span><span class="src-sym">-&gt;</span><a href="../default/Template.html#methodassign">assign</a><span class="src-sym">(</span><span class="src-var">$key</span><span class="src-sym">,&nbsp;</span><span class="src-var">$encoded</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
 </ol></div></p><p>But this depends on your application.</p><p><em>Wouldn't it be nice to define conditions for subtemplates or provide
- something like a for-loop syntax?</em></p><p>No. It's a good idea to seperate PHP and HTML cleanly. So you have all your  application logic in your PHP code. Your template files only define, what can  be displayed and how. If you really want to script within your HTML, then you  can just use PHP itself: <ul><li><a href="http://php-coding-standard.de/php_template_engine.php">http://php-coding-standard.de/php_template_engine.php</a> (german)</li></ul>  <em>What is the other way?</em></p><p>Other interesting template classes: <ul><li><a href="http://articles.sitepoint.com/article/beyond-template-engine">http://articles.sitepoint.com/article/beyond-template-engine</a></li><li><a href="http://template.ecoware.de/">http://template.ecoware.de/</a></li><li><a href="http://www.phpbar.de/w/P.E.T.">http://www.phpbar.de/w/P.E.T.</a></li><li><a href="http://kuerbis.org/asap/article/12/">http://kuerbis.org/asap/article/12/</a></li></ul></p></p>
+ something like a for-loop syntax?</em></p><p>No. It's a good idea to seperate PHP and HTML cleanly. So you have all your  application logic in your PHP code. Your template files only define, what can  be displayed and how. If you really want to script within your HTML, then you  can just use PHP itself: <ul><li><a href="http://articles.sitepoint.com/article/beyond-template-engine">http://articles.sitepoint.com/article/beyond-template-engine</a></li><li><a href="http://php-coding-standard.de/php_template_engine.php">http://php-coding-standard.de/php_template_engine.php</a> (german)</li></ul>  <em>What is the other way?</em></p><p>Other interesting template classes: <ul><li><a href="http://articles.sitepoint.com/article/beyond-template-engine">http://articles.sitepoint.com/article/beyond-template-engine</a></li><li><a href="http://template.ecoware.de/en/">http://template.ecoware.de/en/</a></li><li><a href="http://www.phpbar.de/w/P.E.T.">http://www.phpbar.de/w/P.E.T.</a> (german)</li><li><a href="http://kuerbis.org/asap/article/12/">http://kuerbis.org/asap/article/12/</a></li></ul></p></p>
 	<ul class="tags">
-				<li><span class="field">author:</span> Maikel Linke</li>
+				<li><span class="field">author:</span> Maikel Linke (ubook-info@lists.berlios.de)</li>
 				<li><span class="field">version:</span> 2010-05-23</li>
 			</ul>
 		<p class="notes">
-			Located in <a class="field" href="_Template.php.html">/Template.php</a> (line <span class="field">129</span>)
+			Located in <a class="field" href="_Template.php.html">/Template.php</a> (line <span class="field">133</span>)
 		</p>
 		
 				
@@ -170,7 +170,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static method fromFile</span> (line <span class="line-number">162</span>)
+		<span class="method-title">static method fromFile</span> (line <span class="line-number">166</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -203,7 +203,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">178</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">182</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -233,7 +233,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">addSubtemplate</span> (line <span class="line-number">209</span>)
+		<span class="method-title">addSubtemplate</span> (line <span class="line-number">213</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -264,7 +264,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">assign</span> (line <span class="line-number">188</span>)
+		<span class="method-title">assign</span> (line <span class="line-number">192</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -296,7 +296,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">assignArray</span> (line <span class="line-number">198</span>)
+		<span class="method-title">assignArray</span> (line <span class="line-number">202</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -326,7 +326,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">result</span> (line <span class="line-number">222</span>)
+		<span class="method-title">result</span> (line <span class="line-number">226</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -372,7 +372,7 @@
 		<span class="const-title">
 			<span class="const-name">SUB_PATTERN</span>
 			 = <span class="const-default"> '/&lt;!--\s*BEGIN\s+([a-z0-9_\-]+)\s*--&gt;(.*?)&lt;!--\s*END\s+\\1\s*--&gt;/ims'</span>
-			(line <span class="line-number">147</span>)
+			(line <span class="line-number">151</span>)
 		</span>
 	</div>
 
@@ -390,7 +390,7 @@
 		<span class="const-title">
 			<span class="const-name">TAG_END</span>
 			 = <span class="const-default"> &quot;'&quot;</span>
-			(line <span class="line-number">138</span>)
+			(line <span class="line-number">142</span>)
 		</span>
 	</div>
 
@@ -407,7 +407,7 @@
 		<span class="const-title">
 			<span class="const-name">TAG_START</span>
 			 = <span class="const-default"> &quot;'&quot;</span>
-			(line <span class="line-number">134</span>)
+			(line <span class="line-number">138</span>)
 		</span>
 	</div>
 
@@ -421,7 +421,7 @@
 	</div>
 
 	<p class="notes" id="credit">
-		Documentation generated on Sun, 23 May 2010 18:50:51 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Sun, 23 May 2010 20:56:18 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
