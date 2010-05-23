@@ -6,18 +6,15 @@
 
 class Book {
 
-    private $data;
+    private static $keys =
+            array('isbn', 'author', 'title', 'year', 'price', 'description');
 
-    public function __construct($author = '', $title = '', $year = '',
-            $price = '', $isbn = '', $description = '') {
-        $this->data = array(
-                'isbn' => $isbn,
-                'author' => $author,
-                'title' => $title,
-                'year' => $year,
-                'price' => $price,
-                'description' => ''
-        );
+    private $data = array();
+
+    public function __construct($assocArray = array()) {
+        foreach (self::$keys as $k) {
+            $this->data[$k] = isset($assocArray[$k]) ? $assocArray[$k] : '';
+        }
     }
 
     public function get($field) {
@@ -35,9 +32,7 @@ class Book {
     }
 
     public function assignToTemplate(Template $tmpl) {
-        foreach ($this->data as $key => $value) {
-            $tmpl->assign($key, $value);
-        }
+        $tmpl->assignArray($this->data);
     }
 
 }

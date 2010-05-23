@@ -34,7 +34,12 @@ class UBKarlsruheProvider implements IsbnDbProvider {
         list($number, $titleAuthorYear) = explode(' ', $line, 2);
         list($title, $authorYear) = explode(' / ', $titleAuthorYear);
         list($author, $year) = explode(' , ', $authorYear);
-        $this->book = new Book($author, $title, $year, '', $this->isbn);
+        $this->book = new Book(array(
+                        'author' => $author,
+                        'title' => $title,
+                        'year' => $year,
+                        'isbn' => $this->isbn
+        ));
     }
 
     public function getBook() {

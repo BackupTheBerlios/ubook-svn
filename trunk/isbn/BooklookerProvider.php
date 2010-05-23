@@ -25,27 +25,27 @@ class BooklookerProvider implements IsbnDbProvider {
 
     public function urlFor($isbn) {
         $urlString = 'http://www.booklooker.de/interface/search.php'
-        . '?pid=' . $this->pid . '&medium=book&isbn='.$isbn;
+                . '?pid=' . $this->pid . '&medium=book&isbn='.$isbn;
         return new HttpUrl($urlString);
     }
 
     public function process($xmlString) {
-		try {
-			$xml = @new SimpleXMLElement($xmlString);
-		} catch (Exception $ex) {
-			// malformed xml
-			return;
-		}
+        try {
+            $xml = @new SimpleXMLElement($xmlString);
+        } catch (Exception $ex) {
+            // malformed xml
+            return;
+        }
         if (!isset($xml->Book)) return;
         $xmlBook = $xml->Book[0];
-        $this->book = new Book(
-                (string) $xmlBook->Author,
-                (string) $xmlBook->Title,
-                (string) $xmlBook->Year,
-                '',
-                (string) $xmlBook->ISBN);
+        $this->book = new Book(array(
+                        'author' => (string) $xmlBook->Author,
+                        'title' => (string) $xmlBook->Title,
+                        'year' => (string) $xmlBook->Year,
+                        'isbn' => (string) $xmlBook->ISBN
+        ));
     }
-
+    
     public function getBook() {
         return $this->book;
     }

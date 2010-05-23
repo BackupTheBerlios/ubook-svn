@@ -25,26 +25,26 @@ class IsbnDbDotComProvider implements IsbnDbProvider {
 
     public function urlFor($isbn) {
         $urlString = 'http://isbndb.com/api/books.xml?'
-        . 'access_key=' . $this->accessKey . '&index1=isbn&value1='.$isbn;
+                . 'access_key=' . $this->accessKey
+                . '&index1=isbn&value1=' . $isbn;
         return new HttpUrl($urlString);
     }
 
     public function process($xmlString) {
-		try {
-			$xml = @new SimpleXMLElement($xmlString);
-		} catch (Exception $ex) {
-			// malformed xml
-			return;
-		}
+        try {
+            $xml = @new SimpleXMLElement($xmlString);
+        } catch (Exception $ex) {
+            // malformed xml
+            return;
+        }
         if (!isset($xml->BookList)) return;
         if (!isset($xml->BookList->BookData)) return;
         $xmlBook = $xml->BookList->BookData[0];
-        $this->book = new Book(
-                (string) $xmlBook->AuthorsText,
-                (string) $xmlBook->Title,
-                '',
-                '',
-                (string) $xmlBook['isbn']);
+        $this->book = new Book(array(
+                        'author' => (string) $xmlBook->AuthorsText,
+                        'title' => (string) $xmlBook->Title,
+                        'isbn' => (string) $xmlBook['isbn']
+        ));
     }
 
     public function getBook() {

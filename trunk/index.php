@@ -7,10 +7,8 @@
  * TODO and further ideas
  * A collection of ideas, what should or could be done in the future.
  *
- * - new column in the book table: isbn
  * - upload.php: error-reporting for the user
- * - mirgration from XHTML 1.0 to 1.1
- * - Sending HTTP Not Changed answers (template engine?)
+ * - Sending HTTP Not Changed answers
  * - feedback, if a wrong mail address was typed in
  * - statistics:
  *   - percentage of books with image

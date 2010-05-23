@@ -18,13 +18,11 @@ class IsbnDbDotComProviderTest extends PHPUnit_Framework_TestCase {
             $this->markTestSkipped('Auth key for isbndb.com required.');
         }
         $isbn = '0596002068';
-        $expected = new Book(
-                'Randy J. Ray and Pavel Kulchenko',
-                'Programming Web services with Perl',
-                '',
-                '',
-                $isbn
-        );
+        $expected = new Book(array(
+                        'author' => 'Randy J. Ray and Pavel Kulchenko',
+                        'title' => 'Programming Web services with Perl',
+                        'isbn' => $isbn
+        ));
         $prov = new IsbnDbDotComProvider(self::$authKey);
         ThreadedDownloader::startDownload($prov->urlFor($isbn), $prov);
         ThreadedDownloader::finishAll();

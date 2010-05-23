@@ -13,13 +13,12 @@ class UBKarlsruheProviderTest extends PHPUnit_Framework_TestCase {
 
     function testUBKarlsruhe() {
         $isbn13 = '978-3897215429';
-        $expected = new Book(
-                'Günther, Karsten',
-                'LaTeX',
-                '2008',
-                '',
-                $isbn13
-        );
+        $expected = new Book(array(
+                        'author' => 'Günther, Karsten',
+                        'title' => 'LaTeX',
+                        'year' => '2008',
+                        'isbn' => $isbn13
+        ));
         $prov = new UBKarlsruheProvider();
         ThreadedDownloader::startDownload($prov->urlFor($isbn13), $prov);
         ThreadedDownloader::finishAll();

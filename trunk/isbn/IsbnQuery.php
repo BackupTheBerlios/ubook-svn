@@ -29,7 +29,9 @@ class IsbnQuery {
                 return $book;
             }
         }
-        return new Book('', '', '', '', $isbn->toString());
+        return new Book(array(
+                        'isbn' => $isbn->toString()
+        ));
     }
 
 }
