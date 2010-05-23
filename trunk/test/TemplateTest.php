@@ -96,7 +96,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expText, $t->result());
     }
 
-    function testAmbigiousSubtemplates() {
+    function testAmbiguousSubtemplates() {
         $tText = 'Hello World.'
                 . '<!-- BEGIN subtemplate -->'
                 . 'a text'
