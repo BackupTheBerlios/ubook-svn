@@ -90,7 +90,7 @@ class indexPage {
         $menu =	'<div class="categories" style="width:30em; margin:0px auto; margin-top:1em;">Kategorien: ';
         foreach ($cat_arr as $index => $category) {
             $menu .= '<span><a href="?cat=';
-            $menu .= $category;
+            $menu .= urlencode($category);
             $menu .= '">';
             $menu .= $category;
             $menu .= '</a></span> ';
