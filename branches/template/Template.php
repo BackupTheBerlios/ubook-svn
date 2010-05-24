@@ -38,7 +38,7 @@
  *         &lt;!-- END item --&gt;
  *     &lt;/ul&gt;
  * </pre>
- * 
+ *
  * Now we have the template. Let's write code to fill it with data.
  *
  * <code>
@@ -92,7 +92,7 @@
  *
  * Assigning one variable to the template is not more complicated than a new
  * entry in an array.
- * 
+ *
  * And most <i>important</i>:
  * Perhaps you have a full array of data from mysql_fetch_array(). But you
  * should not insert this into a template. Normally you have more data in there
@@ -128,7 +128,7 @@
  * - {@link http://kuerbis.org/asap/article/12/}
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
- * @version 2010-05-23
+ * @version 2010-05-24
 */
 class Template {
 
@@ -154,7 +154,7 @@ class Template {
     private $assignments = array();
     private $subTemplates = array();
     private $subTemplateKeys = array();
-    private $subTemplateStrings = array();
+    private $subTemplateSources = array();
 
     /**
      * Loads the content of a template file.
@@ -214,7 +214,13 @@ class Template {
         if (!isset($this->subTemplates[$name])) {
             throw new Exception('This subtemplate is not available: ' . $name);
         }
-        $sub = new self($this->subTemplateStrings[$name]);
+        $source = $this->subTemplateSources[$name];
+        if (is_a($source, 'Template')) {
+            $sub = clone $source;
+        } else {
+            $sub = new self($source);
+            $this->subTemplateSources[$name] = clone $sub;
+        }
         $this->subTemplates[$name][] = $sub;
         return $sub;
     }
@@ -244,7 +250,7 @@ class Template {
                         . ' subtemplate with one name: ' + $name);
             }
             $this->subTemplateKeys[$name] = $key;
-            $this->subTemplateStrings[$name] = $substring;
+            $this->subTemplateSources[$name] = $substring;
             $this->subTemplates[$name] = array();
         }
     }
