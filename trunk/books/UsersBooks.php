@@ -5,7 +5,7 @@
  */
 
 require_once 'mysql_conn.php';
-require_once 'tools/BookFetcher.php';
+require_once 'books/Book.php';
 require_once 'tools/Mailer.php';
 
 /**
@@ -33,10 +33,10 @@ class UsersBooks {
 		$bookListResult = mysql_query($query);
 		$this->bookCount = mysql_num_rows($bookListResult);
 		$listString = "\n";
-		while ($book = BookFetcher::fetch($bookListResult)) {
+		while ($book = Book::fromMySql($bookListResult)) {
 			$listString .= "\n";
-			$listString .= $book['author'].': '.$book['title']."\n";
-			$listString .= Mailer::edit_link($book['id'], $book['auth_key'])."\n";
+			$listString .= $book->get('author').': '.$book->get('title')."\n";
+			$listString .= Mailer::edit_link($book->get('id'), $book->get('auth_key'))."\n";
 		}
 		$this->bookListString = $listString;
 	}

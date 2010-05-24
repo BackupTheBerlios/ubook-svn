@@ -4,7 +4,7 @@
  * It's licensed under the GNU General Public License.
  * Copyright (C) 2010 Maikel Linke
 */
-
+// TODO: checkout 'clone' :-)
 /**
  * Substitutes special template tags with given content.
  *

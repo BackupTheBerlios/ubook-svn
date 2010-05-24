@@ -86,7 +86,7 @@ if (isset($_POST['isbn'])) {
 
 if (!isset($book)) $book = new Book();
 
-$book->assignToTemplate($addForm);
+$book->assignHtmlToTemplate($addForm);
 
 $categoryString = implode(' ', $selectableCategories->createSelectArray());
 $addForm->assign('categories', $categoryString);

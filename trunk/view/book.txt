@@ -1,0 +1,6 @@
+ Autor: 'author'
+ Titel: 'title'
+ Preis: 'price' Euro
+ Erscheinungsjahr: 'year'
+ Beschreibung:
+'description'

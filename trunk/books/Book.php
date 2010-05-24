@@ -4,12 +4,27 @@
  * Copyright (C) 2010 Maikel Linke
 */
 
+require_once 'tools/Parser.php';
+require_once 'tools/Template.php';
+
 class Book {
 
-    private static $keys =
-            array('isbn', 'author', 'title', 'year', 'price', 'description');
+    private static $keys = array('id', 'isbn', 'author', 'title', 'year',
+            'price', 'description', 'mail', 'auth_key', 'created');
 
     private $data = array();
+
+    /**
+     * Tries to fetch a Book from the result set.
+     * @param resource $result MySQL resource
+     * @return Book with data from MySQL or null
+     */
+    public static function fromMySql(&$result) {
+        $bookArray = mysql_fetch_array($result);
+        if (!$bookArray) return null;
+        $bookArray['price'] = str_replace('.', ',', $bookArray['price']);
+        return new self($bookArray);
+    }
 
     public function __construct($assocArray = array()) {
         foreach (self::$keys as $k) {
@@ -31,8 +46,18 @@ class Book {
         $this->data[$field] = $value;
     }
 
-    public function assignToTemplate(Template $tmpl) {
-        $tmpl->assignArray($this->data);
+    public function assignHtmlToTemplate(Template $tmpl) {
+        foreach ($this->data as $k => $v) {
+            $tmpl->assign($k, Parser::text2html($v));
+        }
+    }
+
+    public function asText() {
+        $tmpl = Template::fromFile('view/book.txt');
+        foreach ($this->data as $k => $v) {
+            $tmpl->assign($k, $v);
+        }
+        return $tmpl->result();
     }
 
 }

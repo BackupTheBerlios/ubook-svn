@@ -5,7 +5,7 @@
 */
 
 require_once 'mysql_conn.php';
-require_once 'tools/BookFetcher.php';
+require_once 'books/Book.php';
 require_once 'tools/Parser.php';
 require_once 'tools/Image.php';
 require_once 'tools/Output.php';
@@ -19,13 +19,13 @@ class bookPage {
     private $bookId;
     private $tmpl;
     private $output;
-    private $bookArray;
+    private $book;
 
     public function __construct($bookId, $output) {
         $this->bookId = $bookId;
         $this->output = $output;
         $this->tmpl = Template::fromFile('view/book.html');
-        $this->bookArray = $this->selectBook($bookId);
+        $this->book = $this->selectBook($bookId);
         $this->tmpl->assign('id', $bookId);
     }
 
@@ -56,12 +56,8 @@ class bookPage {
     public function showBook() {
         $bookTmpl = $this->tmpl->addSubtemplate('book');
         $bookTmpl->assign('img_tag', Image::imgTag($this->bookId));
-        // TODO check usage of htmlbook
-        Parser::htmlbook($this->bookArray);
-        foreach ($this->bookArray as $name => $value) {
-            $bookTmpl->assign($name, $value);
-        }
-        $desc = nl2br($this->bookArray['description']);
+        $this->book->assignHtmlToTemplate($bookTmpl);
+        $desc = nl2br($this->book->get('description'));
         $bookTmpl->assign('nl2br_description', $desc);
         $categoryArray = array();
         $result = mysql_query('select category from book_cat_rel where'
@@ -132,7 +128,7 @@ class bookPage {
             $this->output->sendNotFound($this->tmpl->result());
             exit;
         }
-        return BookFetcher::fetch($result);
+        return Book::fromMySql($result);
     }
 }
 
