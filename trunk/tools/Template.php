@@ -4,7 +4,7 @@
  * It's licensed under the GNU General Public License.
  * Copyright (C) 2010 Maikel Linke
 */
-// TODO: checkout 'clone' :-)
+
 /**
  * Substitutes special template tags with given content.
  *
@@ -128,7 +128,7 @@
  * - {@link http://kuerbis.org/asap/article/12/}
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
- * @version 2010-05-23
+ * @version 2010-05-24
 */
 class Template {
 
@@ -154,7 +154,7 @@ class Template {
     private $assignments = array();
     private $subTemplates = array();
     private $subTemplateKeys = array();
-    private $subTemplateStrings = array();
+    private $subTemplateSources = array();
 
     /**
      * Loads the content of a template file.
@@ -214,7 +214,13 @@ class Template {
         if (!isset($this->subTemplates[$name])) {
             throw new Exception('This subtemplate is not available: ' . $name);
         }
-        $sub = new self($this->subTemplateStrings[$name]);
+        $source = $this->subTemplateSources[$name];
+        if (is_a($source, 'Template')) {
+            $sub = clone $source;
+        } else {
+            $sub = new self($source);
+            $this->subTemplateSources[$name] = clone $sub;
+        }
         $this->subTemplates[$name][] = $sub;
         return $sub;
     }
@@ -244,7 +250,7 @@ class Template {
                         . ' subtemplate with one name: ' + $name);
             }
             $this->subTemplateKeys[$name] = $key;
-            $this->subTemplateStrings[$name] = $substring;
+            $this->subTemplateSources[$name] = $substring;
             $this->subTemplates[$name] = array();
         }
     }
