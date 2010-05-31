@@ -123,6 +123,10 @@ td {
     text-align: left;
 }
 
+p.text {
+    margin: 1em auto;
+}
+
 div.infobox {
     border: 1px solid black;
     background-color:#f0f0ff;

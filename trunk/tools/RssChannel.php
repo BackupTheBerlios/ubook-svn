@@ -60,6 +60,8 @@ class RssChannel {
 
     private function createRssDoc() {
         $doc = new DOMDocument('1.0', 'UTF-8');
+        $style = $doc->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="RssStyle.xsl"');
+        $doc->appendChild($style);
         $rss = $doc->createElement('rss');
         $rss->setAttribute('version', '2.0');
         $doc->appendChild($rss);
