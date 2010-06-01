@@ -7,7 +7,6 @@
  * TODO and further ideas
  * A collection of ideas, what should or could be done in the future.
  *
- * - upload.php: error-reporting for the user
  * - Sending HTTP Not Changed answers
  * - feedback, if a wrong mail address was typed in
  * - statistics:
