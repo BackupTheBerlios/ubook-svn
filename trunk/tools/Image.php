@@ -12,6 +12,10 @@ class Image {
      * @var String PATH of image folder.
      */
     const PATH = 'img/';
+    /**
+     * @var String FILE_INDEX used name of input field for image uploads
+     */
+    const FILE_INDEX = 'image';
 
     /**
      * Tests wether the upload-function is available.
@@ -20,6 +24,32 @@ class Image {
     public static function uploadable() {
         if (!is_writable(self::PATH)) return false;
         if (!defined('GD_VERSION')) return false;
+        return true;
+    }
+
+    /**
+     * Checks, wether a file was uploaded.
+     * @return boolean true, if a file was uploaded
+     */
+    public static function wasUploaded() {
+        if (self::upladedFileName()) return true;
+        else return false;
+    }
+
+    /**
+     * Guesses, if this image can be stored in the memory.
+     * @return boolean true, if the file can be stored (probably)
+     */
+    public static function isStorable() {
+        $imageSize = getimagesize(self::upladedFileName());
+        /* How many bytes needs this image in the memory? */
+        $imagePixels = $imageSize[0] * $imageSize[1];
+        $bytesPerPixel = $imageSize['bits'] / 8;
+        $imageBytes = $imagePixels * $bytesPerPixel * $imageSize['channels'];
+        /* How many bytes needs the calling script? We guess 1MB. */
+        $scriptBytes = (int) 1E6;
+        $memoryLimit = self::returnBytes(ini_get('memory_limit'));
+        if (($scriptBytes + $imageBytes) > $memoryLimit) return false;
         return true;
     }
 
@@ -44,6 +74,15 @@ class Image {
         return $tag;
     }
 
+    private static function upladedFileName() {
+        // TODO: static $tmp_name;
+        if (count($_FILES) != 1) return null;
+        if (!isset($_FILES[self::FILE_INDEX])) return null;
+        $tmp_name = $_FILES[self::FILE_INDEX]['tmp_name'];
+        if (!is_uploaded_file($tmp_name)) return null;
+        return $tmp_name;
+    }
+
     private $id;
 
     /**
@@ -61,19 +100,10 @@ class Image {
      * @return boolean True on success.
      */
     public function moveUploaded() {
-        if (count($_FILES) != 1) return false;
-        if (!isset($_FILES['image'])) return false;
-        $tmp_name = $_FILES['image']['tmp_name'];
-        if (!is_uploaded_file($tmp_name)) return false;
+        $tmp_name = self::upladedFileName();
+        if ($tmp_name == null) return;
+        if (!self::isStorable()) return;
         $imageSize = getimagesize($tmp_name);
-        /* How many bytes needs this image in the memory? */
-        $imagePixels = $imageSize[0] * $imageSize[1];
-        $bytesPerPixel = $imageSize['bits'] / 8;
-        $imageBytes = $imagePixels * $bytesPerPixel * $imageSize['channels'];
-        /* How many bytes needs the calling script? We guess 1MB. */
-        $scriptBytes = (int) 1E6;
-        $memoryLimit = self::returnBytes(ini_get('memory_limit'));
-        if (($scriptBytes + $imageBytes) > $memoryLimit) return false;
         switch ($imageSize[2]) {
             case IMAGETYPE_GIF:
                 $image = imagecreatefromgif($tmp_name);
@@ -85,7 +115,7 @@ class Image {
                 $image = imagecreatefrompng($tmp_name);
                 break;
             default:
-                return false;
+                return;
         }
         $this->delete();
         imagepng($image, self::PATH . $this->id . '.png');

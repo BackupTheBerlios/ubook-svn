@@ -1,0 +1,34 @@
+  <div>'imgTag'</div>
+  <!-- begin deleteConfirmation -->
+  <div class="infobox">Soll das Bild komplett entfernt werden?</div>
+  <form action="upload.php?id='id'&amp;key='key'&amp;delete=1" method="post">
+   <input type="submit" value="Löschen" />
+  </form>
+  <form action="upload.php?id='id'&amp;key='key'" method="post">
+   <input type="submit" value="Abbrechen" />
+  </form>
+  <!-- end deleteConfirmation -->
+  <!-- begin deleted -->
+  <div class="infobox">Das Bild wurde entfernt.</div>
+  <!-- end deleted -->
+  <!-- begin notStorable -->
+  <div class="infobox">Das Bild konnte nicht gespeichert werden. Es ist zu groß.</div>
+  <!-- end notStorable -->
+  <!-- begin processingError -->
+  <div class="infobox">Das Bild konnte nicht gespeichert werden.
+      Es werden nur folgende Bildformate unterstützt: JPEG, GIF, PNG</div>
+  <!-- end processingError -->
+  <!-- begin unknownError -->
+  <div class="infobox">Das Bild konnte nicht hochgeladen werden.
+      Vielleicht ist es zu groß.</div>
+  <!-- end unknownError -->
+  <!-- begin forms -->
+  <form action="upload.php?id='id'&amp;key='key'&amp;upload=0" method="post" enctype="multipart/form-data">
+   <input name="image" type="file" size="50" accept="image/gif, image/jpeg, image/png" style="border: 0;" /><br />
+   <input type="submit" name="imageSubmit" value="Hochladen" />
+  </form>
+  <form action="upload.php?id='id'&amp;key='key'&amp;delete=0" method="post">
+   <input type="submit" value="Löschen" />
+  </form>
+  <!-- end forms -->
+  <p><a href="book.php?id='id'&amp;key='key'">&larr; Zurück zum Buch</a></p>

@@ -1,11 +1,13 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2008 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 require_once 'mysql_conn.php';
 require_once 'tools/Image.php';
+require_once 'tools/Output.php';
+require_once 'tools/Template.php';
 
 if (!isset($_GET['id'])) exit;
 if (!isset($_GET['key'])) exit;
@@ -19,45 +21,48 @@ $result = mysql_query($query);
 if (mysql_num_rows($result) != 1) exit;
 // now we have valid access
 
-$image = new Image($id);
-if ($image->moveUploaded()) {
-	header('Location: book.php?id='.$id.'&key='.$key.'&uploaded=true');
-}
+$output = new Output();
 
-if (isset($_GET['delete'])) {
-	$delete = (bool) $_GET['delete'];
-	if ($delete == true) {
-		$image->delete();
+$tmpl = Template::fromFile('view/upload.html');
+$tmpl->assign('id', $id);
+$tmpl->assign('key', $key);
+
+if (isset($_GET['upload'])) {
+	if (Image::wasUploaded()) {
+		if (Image::isStorable()) {
+			$image = new Image($id);
+			if ($image->moveUploaded()) {
+				header('Location: book.php?id='.$id.'&key='.$key.'&uploaded=true');
+			} else {
+				$tmpl->addSubtemplate('processingError');
+			}
+		} else {
+			$tmpl->addSubtemplate('notStorable');
+		}
+	} else {
+		$tmpl->addSubtemplate('unknownError');
+	}
+} else {
+	if (isset($_GET['delete'])) {
+		$delete = (bool) $_GET['delete'];
+		if ($delete == true) {
+			$image = new Image($id);
+			$image->delete();
+			$tmpl->addSubtemplate('deleted');
+		} else {
+			$tmpl->assign('imgTag', Image::imgTag($id));
+			$tmpl->addSubtemplate('deleteConfirmation');
+			$output->send($tmpl->result());
+			exit;
+		}
+	} else {
+		if (isset($_FILES['image'])) {
+			$tmpl->addSubtemplate('uploadError');
+		}
 	}
 }
 
-include 'header.php';
+$tmpl->assign('imgTag', Image::imgTag($id));
+$tmpl->addSubtemplate('forms');
+$output->send($tmpl->result());
 ?>
-  <div class="menu">
-   <span><a href="./">Buch suchen</a></span>
-   <span><a href="add.php">Buch anbieten</a></span>
-   <span><a href="help.php">Tipps</a></span>
-   <span><a href="about.php">Impressum</a></span>
-  </div>
-  <div><?php echo $image->imgTag($id); ?></div>
-  <?php if (isset($delete) && $delete == false) { ?>
-  <div class="infobox">Soll das Bild komplett entfernt werden?</div>
-  <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>&amp;delete=1" method="post">
-   <input type="submit" value="Löschen" />
-  </form>
-  <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post">
-   <input type="submit" value="Abbrechen" />
-  </form>
-  <?php } else { ?>
-  <?php if (isset($delete) && $delete == true) { ?>
-  <div class="infobox">Das Bild wurde entfernt.</div>
-  <?php } ?>
-  <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>" method="post" enctype="multipart/form-data">
-   <input name="image" type="file" size="50" accept="image/gif, image/jpeg, image/png" style="border: 0;" /><br />
-   <input type="submit" value="Hochladen" />
-  </form>
-  <form action="upload.php?id=<?php echo $_GET['id']; ?>&amp;key=<?php echo $_GET['key']; ?>&amp;delete=0" method="post">
-   <input type="submit" value="Löschen" />
-  </form>
-  <?php } ?>
-<?php include 'footer.php'; ?>
