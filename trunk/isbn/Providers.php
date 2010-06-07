@@ -5,6 +5,7 @@
  */
 
 require_once 'BooklookerProvider.php';
+require_once 'GoogleProvider.php';
 require_once 'IsbnDbDotComProvider.php';
 require_once 'UBKarlsruheProvider.php';
 
@@ -16,6 +17,7 @@ class Providers {
 
 	public static function createProviders() {
         $list = array();
+        $list[] = new GoogleProvider();
         $list[] = new UBKarlsruheProvider();
         //$list[] = new BooklookerProvider('key needed');
         //$list[] = new IsbnDbDotComProvider('key needed');
