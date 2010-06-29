@@ -72,7 +72,7 @@ class bookPage {
         $showBookForm = true;
         if (isset($_GET['booked'])) {
             if ($_GET['booked']) {
-                $tmpl->addSubtemplate('booked');
+                $this->tmpl->addSubtemplate('booked');
                 $showBookForm = false;
             } else {
                 $this->tmpl->addSubtemplate('bookingFailed');
