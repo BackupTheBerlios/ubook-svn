@@ -37,7 +37,6 @@ if (mysql_num_rows($result) == 0) {
     $selectableCategories = new SelectableCategories($id);
 
     if (isset($_POST['author'])) {
-        // TODO: standard importing of book vars with type checking.
         /* update base book data */
         $query = 'update books set
   		author = "'.$_POST['author'].'",

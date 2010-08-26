@@ -1,8 +1,9 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
-*/
+ */
 
 require_once 'magic_quotes.php';
 require_once 'books/Book.php';
@@ -11,18 +12,19 @@ require_once 'tools/Template.php';
 require_once 'tools/SelectableCategories.php';
 
 function import_book($bookString, Template $tmpl) {
-    $labels = array('Autor', 'Titel', 'Preis', 'Erscheinungsjahr', 'Beschreibung');
-    $indices = array('author', 'title', 'price', 'year', 'description');
+    $labels = array('Autor', 'Titel', 'Preis', 'Erscheinungsjahr', 'ISBN', 'Beschreibung');
+    $indices = array('author', 'title', 'price', 'year', 'isbn', 'description');
     $bookString = trim($bookString);
     $bookLines = split("\n", $bookString, sizeof($labels));
-    if (sizeof($bookLines) < sizeof($labels)) return;
+    if (sizeof($bookLines) < sizeof($labels))
+        return;
     for ($i = 0; $i < sizeof($labels); $i++) {
         list($label, $value) = split(':', $bookLines[$i], 2);
-        if (trim($label) != $labels[$i]) return;
+        if (trim($label) != $labels[$i])
+            return;
         $tmpl->assign($indices[$i], trim($value));
     }
 }
-
 
 if (isset($_POST['book_data'])) {
     $tmpl = Template::fromFile('view/add_form.html');
@@ -30,8 +32,6 @@ if (isset($_POST['book_data'])) {
     if (isset($_POST['mail'])) {
         $tmpl->assign('mail', $_POST['mail']);
     }
-    // TODO: isbn
-    $tmpl->assign('isbn', '');
     $selectableCategories = new SelectableCategories();
     $categoryString = implode(' ', $selectableCategories->createSelectArray());
     $tmpl->assign('categories', $categoryString);
