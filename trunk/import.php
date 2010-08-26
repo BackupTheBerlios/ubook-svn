@@ -16,12 +16,10 @@ function import_book($bookString, Template $tmpl) {
     $indices = array('author', 'title', 'price', 'year', 'isbn', 'description');
     $bookString = trim($bookString);
     $bookLines = split("\n", $bookString, sizeof($labels));
-    if (sizeof($bookLines) < sizeof($labels))
-        return;
     for ($i = 0; $i < sizeof($labels); $i++) {
         list($label, $value) = split(':', $bookLines[$i], 2);
         if (trim($label) != $labels[$i])
-            return;
+            $value = '';
         $tmpl->assign($indices[$i], trim($value));
     }
 }
