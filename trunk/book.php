@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2008 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
 */
 
 require_once 'mysql_conn.php';
@@ -57,7 +57,7 @@ class bookPage {
         $bookTmpl = $this->tmpl->addSubtemplate('book');
         $bookTmpl->assign('img_tag', Image::imgTag($this->bookId));
         $this->book->assignHtmlToTemplate($bookTmpl);
-        $desc = nl2br($this->book->get('description'));
+        $desc = nl2br(Parser::text2html($this->book->get('description')));
         $bookTmpl->assign('nl2br_description', $desc);
         $categoryArray = array();
         $result = mysql_query('select category from book_cat_rel where'
