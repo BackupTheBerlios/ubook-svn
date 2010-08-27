@@ -12,7 +12,7 @@ class IsbnTest extends PHPUnit_Framework_TestCase {
         $string = '1%2034567890';
         try {
             $isbn = new Isbn($number);
-            fail('An ISBN must not contain an % char.');
+            $this->fail('An ISBN must not contain an % char.');
         } catch (Exception $ex) {
             $this->assertNotNull($ex->getMessage());
         }
@@ -34,6 +34,14 @@ class IsbnTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($string, $_POST['isbn']);
         $result = Isbn::stringFromPost();
         $this->assertEquals($string, $result);
+    }
+
+    function testContainsValidChars() {
+        $this->assertTrue(Isbn::containsValidChars('1234567890'));
+        $this->assertTrue(Isbn::containsValidChars('978-3-86680-192-9'));
+        $this->assertTrue(Isbn::containsValidChars('978 3 86680 192 9'));
+        $this->assertFalse(Isbn::containsValidChars('12345678'));
+        $this->assertFalse(Isbn::containsValidChars('978 3 86680 192 99'));
     }
 
 }

@@ -45,8 +45,7 @@ class Isbn {
      * @return boolean true, if $isbn contains only valid chars
      */
     public static function containsValidChars($isbnString) {
-        // TODO better expression
-        if (preg_match('/^[0-9-]+[xX]?$/', $isbnString) > 0) {
+        if (preg_match('/^[0-9- ]{9,17}[xX]?$/', $isbnString) > 0) {
             return true;
         } else {
             return false;
