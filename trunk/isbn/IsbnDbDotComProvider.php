@@ -23,10 +23,10 @@ class IsbnDbDotComProvider implements IsbnDbProvider {
         $this->accessKey = $accessKey;
     }
 
-    public function urlFor($isbn) {
+    public function urlFor(Isbn $isbn) {
         $urlString = 'http://isbndb.com/api/books.xml?'
                 . 'access_key=' . $this->accessKey
-                . '&index1=isbn&value1=' . $isbn;
+                . '&index1=isbn&value1=' . $isbn->toString();
         return new HttpUrl($urlString);
     }
 

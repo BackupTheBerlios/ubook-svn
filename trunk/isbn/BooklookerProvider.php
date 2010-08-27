@@ -23,9 +23,9 @@ class BooklookerProvider implements IsbnDbProvider {
         $this->pid = $pid;
     }
 
-    public function urlFor($isbn) {
+    public function urlFor(Isbn $isbn) {
         $urlString = 'http://www.booklooker.de/interface/search.php'
-                . '?pid=' . $this->pid . '&medium=book&isbn='.$isbn;
+                . '?pid=' . $this->pid . '&medium=book&isbn='.$isbn->toString();
         return new HttpUrl($urlString);
     }
 

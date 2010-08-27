@@ -1,8 +1,9 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
-*/
+ */
 
 require_once 'Isbn.php';
 require_once 'Providers.php';
@@ -20,7 +21,7 @@ class IsbnQuery {
     public static function query(Isbn $isbn) {
         $providers = Providers::createProviders();
         foreach ($providers as $i => $p) {
-            ThreadedDownloader::startDownload($p->urlFor($isbn->toString()), $p);
+            ThreadedDownloader::startDownload($p->urlFor($isbn), $p);
         }
         ThreadedDownloader::finishAll();
         foreach ($providers as $i => $p) {
@@ -30,11 +31,10 @@ class IsbnQuery {
             }
         }
         return new Book(array(
-                        'isbn' => $isbn->toString()
+            'isbn' => $isbn->toString()
         ));
     }
 
 }
-
 
 ?>

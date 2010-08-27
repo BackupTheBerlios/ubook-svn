@@ -19,10 +19,10 @@ class UBKarlsruheProvider implements IsbnDbProvider {
     private $isbn;
     private $book;
 
-    public function urlFor($isbn) {
+    public function urlFor(Isbn $isbn) {
         $this->isbn = $isbn;
         $urlString = 'http://www.ubka.uni-karlsruhe.de/hylib-bin/suche.cgi'
-                . '?opacdb=UBKA_OPAC&simple_search=isbn%3D' . $isbn
+                . '?opacdb=UBKA_OPAC&simple_search=isbn%3D' . $isbn->toString()
                 . '&raw=1&einzeltreffer=kurz';
         return new HttpUrl($urlString);
     }
@@ -38,7 +38,7 @@ class UBKarlsruheProvider implements IsbnDbProvider {
                         'author' => $author,
                         'title' => $title,
                         'year' => $year,
-                        'isbn' => $this->isbn
+                        'isbn' => $this->isbn->toString()
         ));
     }
 

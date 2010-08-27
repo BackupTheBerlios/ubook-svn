@@ -19,10 +19,10 @@ class GoogleProvider implements IsbnDbProvider {
     private $isbn;
     private $book;
 
-    public function urlFor($isbn) {
+    public function urlFor(Isbn $isbn) {
         $this->isbn = $isbn;
         $urlString = 'http://books.google.com/books/feeds/volumes'
-                . '?q=isbn%3A' . $isbn;
+                . '?q=isbn%3A' . $isbn->toString();
         return new HttpUrl($urlString);
     }
 
@@ -49,7 +49,7 @@ class GoogleProvider implements IsbnDbProvider {
                         'author' => implode(' and ', $authors),
                         'title' => (string) $dcChilds->title,
                         'year' => $year,
-                        'isbn' => $this->isbn
+                        'isbn' => $this->isbn->toString()
         ));
     }
 
