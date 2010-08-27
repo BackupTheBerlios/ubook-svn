@@ -17,7 +17,7 @@ class GoogleProviderTest extends PHPUnit_Framework_TestCase {
                         'author' => 'Ray, Randy J. and Kulchenko, Pavel',
                         'title' => 'Programming Web services with Perl',
                         'isbn' => $isbn,
-                        'year' => '2002'
+                        'year' => '2003'
         ));
         $prov = new GoogleProvider();
         ThreadedDownloader::startDownload($prov->urlFor($isbn), $prov);

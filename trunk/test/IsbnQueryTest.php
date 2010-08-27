@@ -14,7 +14,7 @@ class IsbnQueryTest extends PHPUnit_Framework_TestCase {
 		$isbn13 = new Isbn('978-3897215429');
         $expected = new Book(array(
                         'author' => 'Dalheimer, Matthias Kalle and Günther, Karsten',
-                        'title' => 'Latex- kurz& gut',
+                        'title' => 'LaTeX- kurz& gut',
                         'year' => '2008',
                         'isbn' => $isbn13->toString()
         ));
