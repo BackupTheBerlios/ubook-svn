@@ -1,26 +1,22 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
-*/
+ */
 
 require_once 'Template.php';
 
-/*
- * TODO: check more header functionality from:
- * http://php.net/manual/de/function.header.php
- */
-
-/*
+/**
  * Represents the output sent to the browser.
-*/
+ */
 class Output {
 
     private $template;
     private $expires = 0;
     private $menuEntries;
 
-    public function  __construct() {
+    public function __construct() {
         $this->template = Template::fromFile('view/page.html');
         $this->menuEntries = array(
             'Buch suchen' => './',
@@ -96,5 +92,7 @@ class Output {
             $entryContent->assign('label', $label);
         }
     }
+
 }
+
 ?>
