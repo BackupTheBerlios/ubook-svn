@@ -1,13 +1,14 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
-*/
+ * Copyright (C) 2010 Maikel Linke
+ */
+
 /**
  * This handles an image of a book.
  */
 class Image {
-
     /**
      * @var String PATH of image folder.
      */
@@ -17,13 +18,17 @@ class Image {
      */
     const FILE_INDEX = 'image';
 
+    private static $filename = null;
+
     /**
      * Tests wether the upload-function is available.
      * @return boolean, true: uploads are available, false: uploads are not available
      */
     public static function uploadable() {
-        if (!is_writable(self::PATH)) return false;
-        if (!defined('GD_VERSION')) return false;
+        if (!is_writable(self::PATH))
+            return false;
+        if (!defined('GD_VERSION'))
+            return false;
         return true;
     }
 
@@ -32,8 +37,10 @@ class Image {
      * @return boolean true, if a file was uploaded
      */
     public static function wasUploaded() {
-        if (self::upladedFileName()) return true;
-        else return false;
+        if (self::upladedFileName())
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -49,7 +56,8 @@ class Image {
         /* How many bytes needs the calling script? We guess 1MB. */
         $scriptBytes = (int) 1E6;
         $memoryLimit = self::returnBytes(ini_get('memory_limit'));
-        if (($scriptBytes + $imageBytes) > $memoryLimit) return false;
+        if (($scriptBytes + $imageBytes) > $memoryLimit)
+            return false;
         return true;
     }
 
@@ -61,26 +69,31 @@ class Image {
      */
     public static function imgTag($id) {
         $imgURL = self::PATH . $id . '.png';
-        if (!is_file($imgURL)) return '';
+        if (!is_file($imgURL))
+            return '';
         $thumbURL = self::PATH . $id . '_thumb.png';
         if (is_file($thumbURL)) {
             $thumbSize = getimagesize($thumbURL);
-            $tag = '<img src="'.$thumbURL.'" '.$thumbSize[3].' class="bookImage" />';
-            $tag = '<a href="'.$imgURL.'" target="_blank" title="Bild in Originalgröße">'.$tag.'</a>';
-        }
-        else {
-            $tag = '<img src="'.$imgURL.'" class="bookImage" />';
+            $tag = '<img src="' . $thumbURL . '" ' . $thumbSize[3] . ' class="bookImage" />';
+            $tag = '<a href="' . $imgURL . '" target="_blank" title="Bild in Originalgröße">' . $tag . '</a>';
+        } else {
+            $tag = '<img src="' . $imgURL . '" class="bookImage" />';
         }
         return $tag;
     }
 
     private static function upladedFileName() {
-        // TODO: static $tmp_name;
-        if (count($_FILES) != 1) return null;
-        if (!isset($_FILES[self::FILE_INDEX])) return null;
-        $tmp_name = $_FILES[self::FILE_INDEX]['tmp_name'];
-        if (!is_uploaded_file($tmp_name)) return null;
-        return $tmp_name;
+        if (self::$filename !== null) {
+            return self::$filename;
+        }
+        if (count($_FILES) == 1 && isset($_FILES[self::FILE_INDEX])) {
+            $tmp_name = $_FILES[self::FILE_INDEX]['tmp_name'];
+            if (is_uploaded_file($tmp_name)) {
+                self::$filename = $tmp_name;
+                return self::$filename;
+            }
+        }
+        self::$filename = false;
     }
 
     private $id;
@@ -101,8 +114,10 @@ class Image {
      */
     public function moveUploaded() {
         $tmp_name = self::upladedFileName();
-        if ($tmp_name == null) return;
-        if (!self::isStorable()) return;
+        if ($tmp_name == null)
+            return;
+        if (!self::isStorable())
+            return;
         $imageSize = getimagesize($tmp_name);
         switch ($imageSize[2]) {
             case IMAGETYPE_GIF:
@@ -127,8 +142,7 @@ class Image {
             if ($img_width > $img_height) {
                 $thumb_width = $max_thumb_width;
                 $thumb_height = $thumb_width * $img_height / $img_width;
-            }
-            else {
+            } else {
                 $thumb_height = $max_thumb_height;
                 $thumb_width = $thumb_height * $img_width / $img_height;
             }
@@ -164,8 +178,8 @@ class Image {
      */
     private static function returnBytes($val) {
         $val = trim($val);
-        $last = strtolower($val[strlen($val)-1]);
-        switch($last) {
+        $last = strtolower($val[strlen($val) - 1]);
+        switch ($last) {
             // The 'G' modifier is available since PHP 5.1.0
             case 'g':
                 $val *= 1024;
@@ -177,5 +191,7 @@ class Image {
 
         return $val;
     }
+
 }
+
 ?>
