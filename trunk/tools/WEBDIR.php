@@ -1,8 +1,9 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
-*/
+ */
 
 /**
  * Defines the constant WEBDIR. Normally it consists of the server name and
@@ -13,19 +14,11 @@ function define_webdir() {
         $protocoll = 'http://';
         $uri = $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/';
     } else {
-        $protocoll = 'file://';
+        $protocol = 'file://';
         $uri = $_ENV['PWD'] . '/';
     }
-    define('WEBDIR', $protocoll . str_replace('//', '/', $uri));
+    define('WEBDIR', $protocol . str_replace('//', '/', $uri));
 }
-/*
- * TODO: check alternativ from the php.net forum:
- * $host  = $_SERVER['HTTP_HOST'];
- * $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
- * $extra = 'mypage.php';
- * header("Location: http://$host$uri/$extra");
-*/
 
 define_webdir();
-
 ?>
