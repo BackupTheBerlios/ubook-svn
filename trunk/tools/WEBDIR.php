@@ -11,7 +11,7 @@
  */
 function define_webdir() {
     if (isset($_SERVER['SERVER_NAME'])) {
-        $protocoll = 'http://';
+        $protocol = 'http://';
         $uri = $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/';
     } else {
         $protocol = 'file://';
