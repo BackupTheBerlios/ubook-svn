@@ -1,16 +1,19 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
-*/
+ */
 
 /*
  * Represents an RSS channel and produces the correct XML output.
-*/
+ */
+
 class RssChannel {
 
     private $doc;
     private $channel;
+    private $newest = 0;
 
     /**
      * Creates an empty news feed.
@@ -20,7 +23,7 @@ class RssChannel {
      * @param string $lang language, e.g. de-de
      * @param string $copyright author of the feed
      */
-    public function  __construct($title, $link, $desc, $lang, $copyright) {
+    public function __construct($title, $link, $desc, $lang, $copyright) {
         $this->doc = $this->createRssDoc();
         $channel = $this->createChannel($title, $link, $desc, $lang, $copyright);
         $this->channel = $channel;
@@ -54,8 +57,17 @@ class RssChannel {
      * Sends the XML output to the user.
      */
     public function send() {
+        $xml = $this->doc->saveXML();
+        $etag = md5($xml);
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s", $this->newest) . " GMT");
+        header("Etag: $etag");
+        if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $this->newest
+                || trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+            header("HTTP/1.1 304 Not Modified");
+            exit;
+        }
         header('Content-Type: text/xml; charset=utf-8');
-        echo $this->doc->saveXML();
+        echo $xml;
     }
 
     private function createRssDoc() {
@@ -115,6 +127,10 @@ class RssChannel {
     }
 
     private function createItem($id, $title, $desc, $link, $author, $date) {
+        $time = strtotime($date);
+        if ($time > $this->newest) {
+            $this->newest = $time;
+        }
         $item = $this->createElement('item');
         $item->appendChild(
                 $this->createElement('title', $title)
@@ -132,7 +148,7 @@ class RssChannel {
         $guid->setAttribute('isPermaLink', 'false');
         $item->appendChild($guid);
         $item->appendChild(
-                $this->createPubDate(strtotime($date))
+                $this->createPubDate($time)
         );
         return $item;
     }
@@ -148,4 +164,5 @@ class RssChannel {
     }
 
 }
+
 ?>

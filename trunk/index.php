@@ -7,7 +7,6 @@
  * TODO and further ideas
  * A collection of ideas, what should or could be done in the future.
  *
- * - Sending HTTP Not Changed answers
  * - feedback, if a wrong mail address was typed in
  * - statistics:
  *   - percentage of books with image

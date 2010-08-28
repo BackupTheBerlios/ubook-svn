@@ -27,8 +27,8 @@
         </p>
         <p class="text">
             <img src="Feed-icon.png" alt="Feed-Icon" style="float:right; margin-left: 0.5em;"/>
-            Die meisten Browser zeigen dazu ein Symbol wie dieses hier an.
-            Klickt man auf dieses Symbol, wird der diese Suche als RSS-Feed
+            Die meisten Browser zeigen dazu ein Symbol wie dieses hier rechts
+            an. Klickt man auf dieses Symbol, wird diese Suche als RSS-Feed
             abonniert. Weitere Informationen:
         </p>
         <ul class="text">
