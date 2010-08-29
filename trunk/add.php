@@ -1,26 +1,63 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
-*/
+ */
 
 /* anti spam */
-if (isset($_POST['name']) && $_POST['name'] != '') exit;
+if (!isset($_POST['name']) || $_POST['name'] != '') {
+    exit;
+}
 
 require_once 'books/Book.php';
 require_once 'isbn/Isbn.php';
+require_once 'isbn/IsbnQuery.php';
+require_once 'notification/Searches.php';
 require_once 'tools/KeyGenerator.php';
+require_once 'tools/Mailer.php';
+require_once 'tools/Output.php';
 require_once 'tools/SelectableCategories.php';
+require_once 'tools/Template.php';
 
 include_once 'mysql_conn.php';
 
-$selectableCategories = new SelectableCategories();
+class addPage {
+    private static $formFields = array('name', 'author', 'mail', 'title',
+        'isbn', 'year', 'price', 'desc', 'categories');
+    private $selectableCategories;
+    private $mail;
+    private $book;
+    private $output;
+    private $addForm;
 
-if (isset($_POST['author'])) {
-    require_once 'tools/Mailer.php';
-    $mail = Mailer::mailFromUser('author');
-    if ($mail && strstr($mail,'@')) {
-        $quotedAuthor =  trim($_POST['mail']);
+    public function __construct() {
+        $this->selectableCategories = new SelectableCategories();
+        $this->output = new Output();
+        $this->output->setExpires('43200');
+        $this->output->addNavigationLink('first', 'Erste', 'add.php');
+        $this->addForm = Template::fromFile('view/add_form.html');
+    }
+
+    public function formSubmitted() {
+        if (sizeof($_POST) != sizeof(self::$formFields)) {
+            return false;
+        }
+        foreach (self::$formFields as $f) {
+            if (!isset($_POST[$f])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function formDataComplete() {
+        $mail = $this->getMail();
+        return ($mail && strstr($mail, '@'));
+    }
+
+    public function sendMail() {
+        $quotedAuthor = trim($_POST['mail']);
         $quotedTitle = trim($_POST['title']);
         $isbn = Isbn::stringFromPost();
         $year = (int) trim($_POST['year']);
@@ -37,20 +74,18 @@ if (isset($_POST['author'])) {
                 . ', "' . $price . '"'
                 . ', "' . $isbn . '"'
                 . ', "' . $quotedDescription . '"'
-                . ', "' . $mail . '"'
+                . ', "' . $this->getMail() . '"'
                 . ', "' . $key . '"'
                 . ', now()'
                 . ', date_add(now(), interval 45 day)'
                 . ')';
         mysql_query($query);
         $book_id = mysql_insert_id();
-        $selectableCategories->setBookId($book_id);
-        $selectableCategories->update();
+        $this->selectableCategories->setBookId($book_id);
+        $this->selectableCategories->update();
         $subject = '';
         $message = 'Mit deiner E-Mailadresse wurde das unten stehende Buch angeboten. Hebe diese E-Mail auf, um das Angebot später ändern und löschen zu können.';
-        require_once 'tools/Mailer.php';
         Mailer::send($book_id, $subject, $message);
-        require_once 'notification/Searches.php';
         $searches = new Searches();
         if ($searches->areActivated()) {
             $author = stripslashes($quotedAuthor);
@@ -58,39 +93,74 @@ if (isset($_POST['author'])) {
             $description = stripslashes($quotedDescription);
             $searches->bookAdded($book_id, $author, $title, $description);
         }
-        header('Location: book.php?id='.$book_id.'&key='.$key.'&new=1');
+        header('Location: book.php?id=' . $book_id . '&key=' . $key . '&new=1');
+        exit;
+    }
+
+    public function fillFormAndMarkWrongMail() {
+        $bookData = array();
+        foreach (self::$formFields as $f) {
+            $bookData[$f] = stripslashes($_POST[$f]);
+        }
+        $mail = $bookData['author'];
+        $bookData['author'] = $bookData['mail'];
+        $bookData['mail'] = $mail;
+        $bookData['description'] = $bookData['desc'];
+        $this->book = new Book($bookData);
+        $this->addForm->addSubtemplate('wrongMail');
+    }
+
+    public function checkIsbnQuery() {
+        if (!$this->book && isset($_POST['isbn'])) {
+            try {
+                $isbn = new Isbn($_POST['isbn']);
+                $book = IsbnQuery::query($isbn);
+            } catch (Exception $ex) {
+                // forget it
+            }
+            $this->output->setFocus('author');
+        } else {
+            $this->output->unlinkMenuEntry('Buch anbieten');
+            $this->output->setFocus('isbn');
+        }
+    }
+
+    public function display() {
+        if ($this->book == null) {
+            $book = new Book();
+        } else {
+            $book = $this->book;
+        }
+
+        $book->assignHtmlToTemplate($this->addForm);
+
+        $categoryString = implode(' ', $this->selectableCategories->createSelectArray());
+        $this->addForm->assign('categories', $categoryString);
+        $this->addForm->assign('isbn', $book->get('isbn'));
+        $this->addForm->addSubtemplate('isbnSubmit');
+        $this->output->send($this->addForm->result());
+    }
+
+    private function getMail() {
+        if ($this->mail === null) {
+            $this->mail = Mailer::mailFromUser('author');
+        }
+        return $this->mail;
+    }
+
+}
+
+$page = new addPage();
+
+if ($page->formSubmitted()) {
+    if ($page->formDataComplete()) {
+        $page->sendMail();
+    } else {
+        $page->fillFormAndMarkWrongMail();
     }
 }
 
-require_once 'tools/Output.php';
-require_once 'tools/Template.php';
+$page->checkIsbnQuery();
 
-$output = new Output();
-$output->setExpires('43200');
-$output->addNavigationLink('first', 'Erste', 'add.php');
-$addForm = Template::fromFile('view/add_form.html');
-
-if (isset($_POST['isbn'])) {
-    require_once 'isbn/IsbnQuery.php';
-    try {
-        $isbn = new Isbn($_POST['isbn']);
-        $book = IsbnQuery::query($isbn);
-    } catch (Exception $ex) {
-        // forget it
-    }
-    $output->setFocus('author');
-} else {
-    $output->unlinkMenuEntry('Buch anbieten');
-    $output->setFocus('isbn');
-}
-
-if (!isset($book)) $book = new Book();
-
-$book->assignHtmlToTemplate($addForm);
-
-$categoryString = implode(' ', $selectableCategories->createSelectArray());
-$addForm->assign('categories', $categoryString);
-$addForm->assign('isbn', $book->get('isbn'));
-$addForm->addSubtemplate('isbnSubmit');
-$output->send($addForm->result());
+$page->display();
 ?>

@@ -134,6 +134,10 @@ div.infobox {
     margin:1em;
 }
 
+fieldset div.infobox {
+    width: 18em;
+}
+
 /*** result sets ***/
 div.results table {
     border-width: 0px;
