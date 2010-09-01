@@ -23,9 +23,11 @@ require_once 'tools/Template.php';
 include_once 'mysql_conn.php';
 
 class addPage {
+
     private static $formFields = array('name', 'author', 'mail', 'title',
         'isbn', 'year', 'price', 'desc', 'categories');
     private $selectableCategories;
+    private $categoryString;
     private $mail;
     private $book;
     private $output;
@@ -56,7 +58,7 @@ class addPage {
         return ($mail && strstr($mail, '@'));
     }
 
-    public function sendMail() {
+    public function InsertAndSendMail() {
         $quotedAuthor = trim($_POST['mail']);
         $quotedTitle = trim($_POST['title']);
         $isbn = Isbn::stringFromPost();
@@ -106,15 +108,17 @@ class addPage {
         $bookData['author'] = $bookData['mail'];
         $bookData['mail'] = $mail;
         $bookData['description'] = $bookData['desc'];
+        assert("is_array(\$_POST['categories'])");
+        $this->getCategoryString($_POST['categories']);
         $this->book = new Book($bookData);
         $this->addForm->addSubtemplate('wrongMail');
     }
 
     public function checkIsbnQuery() {
-        if (!$this->book && isset($_POST['isbn'])) {
+        if (!$this->book && isset($_POST['isbnQuery']) && isset($_POST['isbn'])) {
             try {
                 $isbn = new Isbn($_POST['isbn']);
-                $book = IsbnQuery::query($isbn);
+                $this->book = IsbnQuery::query($isbn);
             } catch (Exception $ex) {
                 // forget it
             }
@@ -134,8 +138,7 @@ class addPage {
 
         $book->assignHtmlToTemplate($this->addForm);
 
-        $categoryString = implode(' ', $this->selectableCategories->createSelectArray());
-        $this->addForm->assign('categories', $categoryString);
+        $this->addForm->assign('categories', $this->getCategoryString());
         $this->addForm->assign('isbn', $book->get('isbn'));
         $this->addForm->addSubtemplate('isbnSubmit');
         $this->output->send($this->addForm->result());
@@ -148,13 +151,22 @@ class addPage {
         return $this->mail;
     }
 
+    private function getCategoryString($selectedCats = null) {
+        if ($this->categoryString == null) {
+            $selectArr = $this->selectableCategories->
+                            createSelectArray($selectedCats);
+            $this->categoryString = implode(' ', $selectArr);
+        }
+        return $this->categoryString;
+    }
+
 }
 
 $page = new addPage();
 
 if ($page->formSubmitted()) {
     if ($page->formDataComplete()) {
-        $page->sendMail();
+        $page->InsertAndSendMail();
     } else {
         $page->fillFormAndMarkWrongMail();
     }

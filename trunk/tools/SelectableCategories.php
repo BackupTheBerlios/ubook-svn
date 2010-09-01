@@ -26,11 +26,14 @@ class SelectableCategories {
 
     // started a method for a number of selects depending on the number of categories
 
-    public function createSelectArray() {
+    public function createSelectArray($selectedCats = null) {
+        if (!is_array($selectedCats)) {
+            $selectedCats = $this->bookCats;
+        }
         $size = $this->numberOfSelectableCategories();
         $selectArray = array();
         for ($i=0; $i<$size; $i++) {
-            $selectArray[] = $this->createSelect($i);
+            $selectArray[] = $this->createSelect($i, $selectedCats);
         }
         return $selectArray;
     }
@@ -61,11 +64,11 @@ class SelectableCategories {
         $this->bookId = $bookId;
     }
 
-    private function createSelect($index) {
+    private function createSelect($index, $selectedCats) {
         $cats = $this->categories->getArray();
         $selectedCat = '';
-        if (isset($this->bookCats[$index])) {
-            $selectedCat = $this->bookCats[$index];
+        if (isset($selectedCats[$index])) {
+            $selectedCat = $selectedCats[$index];
         }
         $select = Template::fromFile('view/select.html');
         $select->assign('index', $index);
