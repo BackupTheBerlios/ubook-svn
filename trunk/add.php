@@ -100,17 +100,7 @@ class addPage {
     }
 
     public function fillFormAndMarkWrongMail() {
-        $bookData = array();
-        foreach (self::$formFields as $f) {
-            $bookData[$f] = stripslashes($_POST[$f]);
-        }
-        $mail = $bookData['author'];
-        $bookData['author'] = $bookData['mail'];
-        $bookData['mail'] = $mail;
-        $bookData['description'] = $bookData['desc'];
-        assert("is_array(\$_POST['categories'])");
-        $this->getCategoryString($_POST['categories']);
-        $this->book = new Book($bookData);
+        $this->fillForm();
         $this->addForm->addSubtemplate('wrongMail');
     }
 
@@ -119,10 +109,11 @@ class addPage {
             try {
                 $isbn = new Isbn($_POST['isbn']);
                 $this->book = IsbnQuery::query($isbn);
+                $this->output->setFocus('author');
             } catch (Exception $ex) {
-                // forget it
+                $this->fillForm();
+                $this->addForm->addSubtemplate('wrongIsbn');
             }
-            $this->output->setFocus('author');
         } else {
             $this->output->unlinkMenuEntry('Buch anbieten');
             $this->output->setFocus('isbn');
@@ -142,6 +133,20 @@ class addPage {
         $this->addForm->assign('isbn', $book->get('isbn'));
         $this->addForm->addSubtemplate('isbnSubmit');
         $this->output->send($this->addForm->result());
+    }
+
+    private function fillForm() {
+        $bookData = array();
+        foreach (self::$formFields as $f) {
+            $bookData[$f] = stripslashes($_POST[$f]);
+        }
+        $mail = $bookData['author'];
+        $bookData['author'] = $bookData['mail'];
+        $bookData['mail'] = $mail;
+        $bookData['description'] = $bookData['desc'];
+        assert("is_array(\$_POST['categories'])");
+        $this->getCategoryString($_POST['categories']);
+        $this->book = new Book($bookData);
     }
 
     private function getMail() {
