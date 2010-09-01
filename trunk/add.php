@@ -6,7 +6,7 @@
  */
 
 /* anti spam */
-if (!isset($_POST['name']) || $_POST['name'] != '') {
+if (sizeof($_POST) && (!isset($_POST['name']) || $_POST['name'] != '')) {
     exit;
 }
 
