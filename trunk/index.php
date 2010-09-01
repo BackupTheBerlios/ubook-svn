@@ -2,23 +2,7 @@
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
-*/
-/*
- * TODO and further ideas
- * A collection of ideas, what should or could be done in the future.
- *
- * - statistics:
- *   - percentage of books with image
- *   - distribution of books in the time (created, expire, lifetime)
- *   - books per person
- *   - number of stored mail addresses
- *   - active books / total number of books (with deleted ones)
- * - (Bielefeld) category 'Sprachbücher', because of a lot of language lectures
- * - (Bielefeld) categories of the FH
- * - new category schema, perhaps a tree?
- * - Provide more than HTML and XML for the book search results:
- *   - JASON, JAML, RDF(S)
-*/
+ */
 if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
