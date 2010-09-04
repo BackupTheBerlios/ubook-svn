@@ -34,7 +34,7 @@ class ExternalBookListReader {
     }
 
     public function read() {
-        Thread::runAndWait();
+        Thread::joinAll();
         return $this->bookListArray;
         $bookListArray = array();
     }

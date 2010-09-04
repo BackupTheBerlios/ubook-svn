@@ -27,9 +27,6 @@ abstract class IsbnDbProvider {
         if ($this->thread == null) {
             throw new Exception('No ISBN was given.');
         }
-        if (!$this->thread->isFinished()) {
-            $this->thread->runAndWait();
-        }
         return $this->bookFor($this->thread->getResult());
     }
 

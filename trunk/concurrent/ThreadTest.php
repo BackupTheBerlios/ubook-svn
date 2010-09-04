@@ -10,16 +10,35 @@ require_once 'Thread.php';
 
 class ThreadTest extends PHPUnit_Framework_TestCase {
 
-    public static $result = array();
+    public static $result;
 
-    function testRunAndWait() {
+    protected function setUp() {
+        self::$result = array();
+    }
+
+    protected function tearDown() {
+        Thread::joinAll();
+    }
+
+    function testJoinAll() {
         $thread1 = new TestThread(array('Hallo', 'Welt'));
         $thread2 = new TestThread(array('Eins', 'Zwei', 'Drei'));
-        Thread::runAndWait();
+        Thread::joinAll();
         $this->assertTrue(in_array('Hallo', self::$result));
         $this->assertTrue(in_array('Welt', self::$result));
         $this->assertTrue(in_array('Eins', self::$result));
+        $this->assertTrue(in_array('Zwei', self::$result));
         $this->assertTrue(in_array('Drei', self::$result));
+    }
+
+    function testJoin() {
+        $thread1 = new TestThread(array('Hallo'));
+        $thread2 = new TestThread(array('Eins', 'Zwei', 'Drei'));
+        $thread1->join();
+        $this->assertTrue(in_array('Hallo', self::$result));
+        $this->assertTrue(in_array('Eins', self::$result));
+        $this->assertFalse(in_array('Zwei', self::$result));
+        $this->assertFalse(in_array('Drei', self::$result));
     }
 
 }

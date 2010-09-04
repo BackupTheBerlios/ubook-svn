@@ -47,6 +47,8 @@ class NetworkThread extends Thread {
 $thread1 = new NetworkThread('www.example.org');
 $thread2 = new NetworkThread('www.example.net');
 
+Thread::joinAll();
+
 echo $thread1->getResponse();
 echo $thread2->getResponse();
 // Will print both HTTP responses.
@@ -54,24 +56,33 @@ echo $thread2->getResponse();
  *
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
- * @version 2010-08-16
+ * @version 2010-09-04
 */
 abstract class Thread {
 
     private static $threads = array();
+    private $running = null;
 
     /**
      * Runs all threads until they are finished.
      *
-     * While execution new threads can be added and will be executed, too.
+     * While execution new threads can be created and will be executed, too.
      */
-    public static function runAndWait() {
+    public static function joinAll() {
         while (sizeof(self::$threads) > 0) {
-            foreach (self::$threads as $i => $t) {
-                $t->step();
-                if ($t->isFinished()) {
-                    unset(self::$threads[$i]);
-                }
+            self::stepAll();
+        }
+    }
+
+    /**
+     * Iterates through all threads and calls <code>step()</code> once.
+     */
+    private static function stepAll() {
+        foreach (self::$threads as $i => $t) {
+            $t->step();
+            if ($t->isFinished()) {
+                $t->running = false;
+                unset(self::$threads[$i]);
             }
         }
     }
@@ -82,7 +93,22 @@ abstract class Thread {
      * <b>Important:</b> Your subclass has to call <i>parent::__construct()</i>.
      */
     protected function __construct() {
+        $this->running = true;
         self::$threads[] = $this;
+    }
+
+    /**
+     * Blocks until this thread is finished. Other threads are executed, too.
+     * But it is unknown, if they are finished or not.
+     */
+    public function join() {
+        if ($this->running === null) {
+            throw new Exception(
+                    'Thread in invalid state. Forgot parent::__construct()?');
+        }
+        while ($this->running) {
+            self::stepAll();
+        }
     }
 
     /**

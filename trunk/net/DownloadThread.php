@@ -32,7 +32,7 @@ class DownloadThread extends Thread {
     }
 
     public function getResult() {
-        assert('$this->isFinished()');
+        $this->join();
         return $this->connection->getBody();
     }
 
