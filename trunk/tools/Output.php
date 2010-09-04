@@ -43,6 +43,16 @@ class Output {
         $sub->assign('href', $href);
     }
 
+    /**
+     * Adds a refresh rule. The browser should load the given reference after
+     * some seconds.
+     * @param string $href an URL
+     */
+    public function addRefreshLink($href) {
+        $sub = $this->template->addSubtemplate('refresh');
+        $sub->assign('url', $href);
+    }
+
     public function unlinkMenuEntry($label) {
         $this->menuEntries[$label] = '';
     }
