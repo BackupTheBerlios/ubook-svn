@@ -139,19 +139,19 @@ fieldset div.infobox {
 }
 
 /*** result sets ***/
-div.results table {
+div.results table, div.external_results table {
     border-width: 0px;
     font-size:120%;
     border-spacing: 0px;
     border-collapse: collapse;
 }
 
-div.results th {
+div.results th, div.external_results th {
     text-align: center;
     padding-top: 1em;
 }
 
-div.results td
+div.results td, div.external_results td
 {
     text-align:left;
     padding:0.4em;
@@ -160,26 +160,26 @@ div.results td
     border-right-width: 0px;
 }
 
+div.results a, div.external_results a {
+    text-decoration: none;
+}
+
+div.results tr:hover td, div.external_results tr:hover td {
+    background-color: #fff;
+}
+
+div.results td+td, div.external_results td+td {
+    /* price column */
+    text-align:right;
+    font-style: italic;
+}
+
 div.external_results td {
     border-color: #c86;
 }
 
 div.external_results table, div.external_results a, div.external_results h3 {
     color: #a55;
-}
-
-div.results a {
-    text-decoration: none;
-}
-
-div.results tr:hover td {
-    background-color: #fff;
-}
-
-div.results td+td {
-    /* price column */
-    text-align:right;
-    font-style: italic;
 }
 
 div.notificationSubscription {

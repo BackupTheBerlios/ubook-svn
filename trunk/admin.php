@@ -24,8 +24,8 @@ function number_of_servers() {
 	return $countArr[0];
 }
 
-require_once 'books/AbstractBookList.php';
-$numberOfBooks = AbstractBookList::numberOfAllBooks();
+require_once 'books/LocalBookList.php';
+$numberOfBooks = LocalBookList::numberOfAllBooks();
 
 require_once 'tools/Categories.php';
 $categories = new Categories();

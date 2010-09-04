@@ -7,7 +7,7 @@
 require_once 'books/SearchKey.php';
 require_once 'net/Message.php';
 require_once 'net/LocalServer.php';
-require_once 'books/SearchKeyExportBookList.php';
+require_once 'books/LocalSearchExportBookList.php';
 
 $searchKey = new SearchKey();
 
@@ -27,7 +27,7 @@ if (isset($_GET['from']) && $localServer->rememberNewServers()) {
 	}
 }
 
-$bookList = new SearchKeyExportBookList($searchKey);
+$bookList = new LocalSearchExportBookList($searchKey);
 
 $message = new Message($localServer->name());
 if ($bookList->size() > 0) {

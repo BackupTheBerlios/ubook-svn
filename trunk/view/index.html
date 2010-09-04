@@ -18,25 +18,24 @@
 <div class="results">
     <table>
         'HtmlRows'
+        <!-- begin nearbyResultSet -->
+        <tr><th colspan="2">'locationName'</th></tr>
+        'HtmlRows'
+        <!-- end nearbyResultSet -->
     </table>
-    <div style="margin-top: 0.3em;" title="Summe gefundener Bücher / Summe aller Bücher insgesamt">
-        [ Gefunden: 'found' ][ Insgesamt: 'numberOfAllBooks' ]
-    </div>
 </div>
 <!-- end searchResults -->
 <!-- begin externalSearch -->
 <h2>Suchergebnisse aus anderen Orten:</h2>
 <div>Hier wurden keine Bücher gefunden. Stattdessen werden Suchergebnisse
     von anderen Standorten angezeigt.</div>
-<div class="results">
-    <div class="external_results">
-        <table title="Suchergebnisse aus anderen Orten">
-            <!-- begin externalResultSet -->
-            <tr><th colspan="2">'locationName'</th></tr>
+<div class="external_results">
+    <table title="Suchergebnisse aus anderen Orten">
+        <!-- begin externalResultSet -->
+        <tr><th colspan="2">'locationName'</th></tr>
             'HtmlRows'
-            <!-- end externalResultSet -->
-        </table>
-    </div>
+        <!-- end externalResultSet -->
+    </table>
 </div>
 <!-- end externalSearch -->
 <!-- begin noResults -->
@@ -58,15 +57,12 @@
 <!-- end saveSearch -->
 'categoryMenu'
 <!-- begin categorySearch -->
-<h2><?php echo $category ?></h2>
+<h2>'category'</h2>
 <!-- begin categoryResults -->
 <div class="results">
     <table>
         'HtmlRows'
     </table>
-    <div style="margin-top: 0.3em;" title="Summe gefundener Bücher / Summe aller Bücher insgesamt">
-        [ Gefunden: 'found' ][ Insgesamt: 'numberOfAllBooks' ]
-    </div>
 </div>
 <!-- end categoryResults -->
 <!-- begin noCategoryResults -->

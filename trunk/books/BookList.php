@@ -1,15 +1,15 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 interface BookList {
-	
-	public function size();
-	
-	public function toHtmlRows();
-	
+
+    public function size();
+
+    public function toHtmlRows();
 }
 
 ?>

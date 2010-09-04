@@ -1,46 +1,50 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
  */
 
-require_once 'books/AbstractBookList.php';
+require_once 'books/BookList.php';
 require_once 'Message.php';
 
-class ExternalBookList extends AbstractBookList {
+class ExternalBookList implements BookList {
 
-	private $from;
-	private $books;
-	
-	public function __construct($from, array $bookList) {
-		$this->from = $from;
-		$this->books = $bookList;
-		$this->formatBooks($bookList);
-	}
+    private $from;
+    private $books;
 
-	public function locationName() {
-		return $this->from;
-	}
+    public function __construct($from, array $bookList) {
+        $this->from = $from;
+        $this->books = $bookList;
+    }
 
-	public function size() {
-		return sizeof($this->books);
-	}
+    public function locationName() {
+        return $this->from;
+    }
 
-	private function formatBooks($books) {
-		$books_string = '';
-		foreach ($books as $i => $book) {
-			$books_string .= '<tr><td>';
-			$books_string .= '<a href="'.$book->getUrl().'" target="_blank">';
-			if ($book->getAuthor()) {
-				$books_string .= $book->getAuthor();
-				$books_string .= ': ';
-			}
-			$books_string .= $book->getTitle();
-			$books_string .= '</a>';
-			$books_string .= '</td><td>'.$book->getPrice().'&nbsp;&euro;</td></tr>'."\n";
-		}
-		parent::setHtmlRows($books_string);
-	}
+    public function size() {
+        return sizeof($this->books);
+    }
+
+    public function toHtmlRows() {
+        $template = new Template('<tr><td><a href="\'url\'" target="_blank">'
+                        . '<!-- begin author -->\'author\': <!-- end author -->'
+                        . '\'title\'</a></td>'
+                        . '<td>\'price\'&nbsp;&euro;</td></tr>' . "\n");
+        $html = '';
+        foreach ($this->books as $i => $book) {
+            $t = clone $template;
+            $t->assign('url', $book->getUrl());
+            if ($book->getAuthor()) {
+                $t->addSubtemplate('author');
+                $t->assign('author', $book->getAuthor());
+            }
+            $t->assign('title', $book->getTitle());
+            $t->assign('price', $book->getPrice());
+            $html .= $t->result();
+        }
+        return $html;
+    }
 
 }
 

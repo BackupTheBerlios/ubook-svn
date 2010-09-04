@@ -1,13 +1,16 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * Copyright (C) 2010 Maikel Linke
  */
-if (!is_readable('mysql.php')) header('Location: ./admin_setup.php');
+if (!is_readable('mysql.php'))
+    header('Location: ./admin_setup.php');
 
 include_once 'magic_quotes.php';
+require_once 'books/Cleaner.php';
+require_once 'books/LocalSearchBookList.php';
 require_once 'books/SearchKey.php';
-require_once 'books/BookList.php';
 require_once 'tools/Categories.php';
 require_once 'tools/Output.php';
 require_once 'tools/Template.php';
@@ -35,8 +38,7 @@ class indexPage {
     public function displayMessages() {
         if (isset($_GET['searchSaved'])) {
             $this->tmpl->addSubtemplate('searchSaved');
-        }
-        elseif (isset($_GET['searchDeleted']) && $_GET['searchDeleted']) {
+        } elseif (isset($_GET['searchDeleted']) && $_GET['searchDeleted']) {
             $this->tmpl->addSubtemplate('searchDeleted');
         }
     }
@@ -44,29 +46,26 @@ class indexPage {
     public function search() {
         $searchKey = new SearchKey();
         $this->tmpl->assign('htmlSearchKey', $searchKey->asHtml());
-        if (!$searchKey->isGiven()) return;
-        $searchKey->getOption();
+        if (!$searchKey->isGiven())
+            return;
         if ($searchKey->getOption() != 'random') {
             $this->createFeedLink($searchKey);
             $this->createSaveLink();
         }
-        require_once 'books/SearchKeyBookList.php';
-        $bookList = new SearchKeyBookList($searchKey);
-        if ($bookList->size() == 0) {
+        $localBookList = new LocalSearchBookList($searchKey);
+        if ($localBookList->size()) {
+            $results = $this->tmpl->addSubtemplate('searchResults');
+            $results->assign('HtmlRows', $localBookList->toHtmlRows());
+        } else {
             /* Nothing found here, ask other servers. */
             $this->externalSearch($searchKey);
-            return;
         }
-        $results = $this->tmpl->addSubtemplate('searchResults');
-        $results->assign('HtmlRows', $bookList->toHtmlRows());
-        $results->assign('found', $bookList->size());
-        $results->assign('numberOfAllBooks', AbstractBookList::numberOfAllBooks());
     }
 
     public function displayCategories() {
         $categories = new Categories();
         $cat_arr = $categories->getArray();
-        $menu =	'<div class="categories" style="width:30em; margin:0px auto; margin-top:1em;">Kategorien: ';
+        $menu = '<div class="categories" style="width:30em; margin:0px auto; margin-top:1em;">Kategorien: ';
         foreach ($cat_arr as $index => $category) {
             $menu .= '<span><a href="?cat=';
             $menu .= urlencode($category);
@@ -79,16 +78,16 @@ class indexPage {
     }
 
     public function searchCategory() {
-        if (!isset($_GET['cat'])) return;
+        if (!isset($_GET['cat']))
+            return;
         require_once 'books/CategoryBookList.php';
         $category = trim($_GET['cat']);
         $catTmpl = $this->tmpl->addSubtemplate('categorySearch');
+        $catTmpl->assign('category', $category);
         $catBookList = new CategoryBookList($category);
         if ($catBookList->size()) {
             $results = $catTmpl->addSubtemplate('categoryResults');
             $results->assign('HtmlRows', $catBookList->toHtmlRows());
-            $results->assign('found', $catBookList->size());
-            $results->assign('numberOfAllBooks', AbstractBookList::numberOfAllBooks());
         } else {
             $catTmpl->addSubtemplate('noCategoryResults');
         }
@@ -112,10 +111,12 @@ class indexPage {
     }
 
     private function createSaveLink() {
-        if (isset($_GET['searchSaved'])) return;
+        if (isset($_GET['searchSaved']))
+            return;
         require_once 'notification/Searches.php';
         $searches = new Searches();
-        if (!$searches->areActivated()) return;
+        if (!$searches->areActivated())
+            return;
         $this->tmpl->addSubtemplate('saveSearch');
     }
 
@@ -137,6 +138,7 @@ class indexPage {
             $set->assign('HtmlRows', $externalBookList->toHtmlRows());
         }
     }
+
 }
 
 $indexPage = new indexPage();
@@ -148,18 +150,15 @@ $searchKey = new SearchKey();
 
 if (sizeof($_GET) == 0) {
     $indexPage->setStatic();
-}
-else {
+} else {
     /* Okay, dealing user input */
     $indexPage->setDynamic();
     /* Cleaning old books before searching */
-    require_once 'books/Cleaner.php';
     Cleaner::checkOld();
 
     $indexPage->displayMessages();
     $indexPage->search();
     $indexPage->searchCategory();
-
 }
 
 $indexPage->send();
