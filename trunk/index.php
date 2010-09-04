@@ -13,6 +13,7 @@ require_once 'books/LocalSearchBookList.php';
 require_once 'books/SearchKey.php';
 require_once 'tools/Categories.php';
 require_once 'tools/Output.php';
+require_once 'tools/Statistics.php';
 require_once 'tools/Template.php';
 
 class indexPage {
@@ -155,6 +156,9 @@ if (sizeof($_GET) == 0) {
     $indexPage->setDynamic();
     /* Cleaning old books before searching */
     Cleaner::checkOld();
+    /* Log statistics */
+    $statistics = new Statistics();
+    $statistics->writeStats();
 
     $indexPage->displayMessages();
     $indexPage->search();
