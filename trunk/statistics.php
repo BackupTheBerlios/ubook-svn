@@ -11,7 +11,12 @@ require_once 'tools/Template.php';
 
 $stat = new Statistics();
 $statTpl = Template::fromFile('view/statistics.html');
-$stat->fillTemplate($statTpl);
+if (file_exists(Statistics::STATS_FILE)) {
+    $statTpl->addSubtemplate('stats');
+    $stat->fillTemplate($statTpl);
+} else {
+    $statTpl->addSubtemplate('noStats');
+}
 
 $output = new Output();
 $output->setExpires(43200);
