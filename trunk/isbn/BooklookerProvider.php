@@ -8,28 +8,26 @@ require_once 'IsbnDbProvider.php';
 
 require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
-require_once 'net/ThreadedDownloader.php';
 
 /**
  * Fetches information about a book from the API of booklooker.de.
  * @author maikel
  */
-class BooklookerProvider implements IsbnDbProvider {
+class BooklookerProvider extends IsbnDbProvider {
 
     private $pid;
-    private $book;
 
     public function  __construct($pid) {
         $this->pid = $pid;
     }
 
-    public function urlFor(Isbn $isbn) {
+    protected function urlFor(Isbn $isbn) {
         $urlString = 'http://www.booklooker.de/interface/search.php'
                 . '?pid=' . $this->pid . '&medium=book&isbn='.$isbn->toString();
         return new HttpUrl($urlString);
     }
 
-    public function process($xmlString) {
+    protected function bookFor($xmlString) {
         try {
             $xml = @new SimpleXMLElement($xmlString);
         } catch (Exception $ex) {
@@ -38,7 +36,7 @@ class BooklookerProvider implements IsbnDbProvider {
         }
         if (!isset($xml->Book)) return;
         $xmlBook = $xml->Book[0];
-        $this->book = new Book(array(
+        return new Book(array(
                         'author' => (string) $xmlBook->Author,
                         'title' => (string) $xmlBook->Title,
                         'year' => (string) $xmlBook->Year,
@@ -46,10 +44,6 @@ class BooklookerProvider implements IsbnDbProvider {
         ));
     }
     
-    public function getBook() {
-        return $this->book;
-    }
-
 }
 
 ?>

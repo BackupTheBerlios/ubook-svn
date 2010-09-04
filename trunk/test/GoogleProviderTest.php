@@ -8,7 +8,6 @@ require_once 'PHPUnit/Framework.php';
 require_once 'books/Book.php';
 require_once 'isbn/GoogleProvider.php';
 require_once 'isbn/Isbn.php';
-require_once 'net/ThreadedDownloader.php';
 
 class GoogleProviderTest extends PHPUnit_Framework_TestCase {
 
@@ -21,8 +20,7 @@ class GoogleProviderTest extends PHPUnit_Framework_TestCase {
                         'year' => '2003'
         ));
         $prov = new GoogleProvider();
-        ThreadedDownloader::startDownload($prov->urlFor($isbn), $prov);
-        ThreadedDownloader::finishAll();
+        $prov->provideBookFor($isbn);
         $result = $prov->getBook();
         $this->assertEquals($expected, $result);
     }

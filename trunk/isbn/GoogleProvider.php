@@ -8,25 +8,23 @@ require_once 'IsbnDbProvider.php';
 
 require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
-require_once 'net/ThreadedDownloader.php';
 
 /**
  * Fetches information about a book from the API of Google Books.
  * @author maikel
  */
-class GoogleProvider implements IsbnDbProvider {
+class GoogleProvider extends IsbnDbProvider {
 
     private $isbn;
-    private $book;
 
-    public function urlFor(Isbn $isbn) {
+    protected function urlFor(Isbn $isbn) {
         $this->isbn = $isbn;
         $urlString = 'http://books.google.com/books/feeds/volumes'
                 . '?q=isbn%3A' . $isbn->toString();
         return new HttpUrl($urlString);
     }
 
-    public function process($atomPub) {
+    protected function bookFor($atomPub) {
         try {
             $xml = @new SimpleXMLElement($atomPub);
         } catch (Exception $ex) {
@@ -45,16 +43,12 @@ class GoogleProvider implements IsbnDbProvider {
         	$authors[] = $last . ', ' . implode(' ', $names);
         }
         $year = substr($dcChilds->date, 0, 4);
-        $this->book = new Book(array(
+        return new Book(array(
                         'author' => implode(' and ', $authors),
                         'title' => (string) $dcChilds->title,
                         'year' => $year,
                         'isbn' => $this->isbn->toString()
         ));
-    }
-
-    public function getBook() {
-        return $this->book;
     }
 
 }

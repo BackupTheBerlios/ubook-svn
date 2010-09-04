@@ -9,8 +9,6 @@ require_once 'Isbn.php';
 require_once 'Providers.php';
 
 require_once 'books/Book.php';
-require_once 'net/HttpUrl.php';
-require_once 'net/ThreadedDownloader.php';
 
 /**
  * Fetches information about a book from different APIs.
@@ -21,9 +19,8 @@ class IsbnQuery {
     public static function query(Isbn $isbn) {
         $providers = Providers::createProviders();
         foreach ($providers as $i => $p) {
-            ThreadedDownloader::startDownload($p->urlFor($isbn), $p);
+            $p->provideBookFor($isbn);
         }
-        ThreadedDownloader::finishAll();
         foreach ($providers as $i => $p) {
             $book = $p->getBook();
             if ($book) {

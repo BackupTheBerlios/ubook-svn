@@ -6,8 +6,8 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'books/Book.php';
+require_once 'isbn/Isbn.php';
 require_once 'isbn/UBKarlsruheProvider.php';
-require_once 'net/ThreadedDownloader.php';
 
 class UBKarlsruheProviderTest extends PHPUnit_Framework_TestCase {
 
@@ -20,8 +20,7 @@ class UBKarlsruheProviderTest extends PHPUnit_Framework_TestCase {
                         'isbn' => $isbn13->toString()
         ));
         $prov = new UBKarlsruheProvider();
-        ThreadedDownloader::startDownload($prov->urlFor($isbn13), $prov);
-        ThreadedDownloader::finishAll();
+        $prov->provideBookFor($isbn13);
         $result = $prov->getBook();
         $this->assertEquals($expected, $result);
     }

@@ -6,8 +6,8 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'books/Book.php';
+require_once 'isbn/Isbn.php';
 require_once 'isbn/IsbnDbDotComProvider.php';
-require_once 'net/ThreadedDownloader.php';
 
 class IsbnDbDotComProviderTest extends PHPUnit_Framework_TestCase {
 
@@ -24,8 +24,7 @@ class IsbnDbDotComProviderTest extends PHPUnit_Framework_TestCase {
                         'isbn' => $isbn->toString()
         ));
         $prov = new IsbnDbDotComProvider(self::$authKey);
-        ThreadedDownloader::startDownload($prov->urlFor($isbn), $prov);
-        ThreadedDownloader::finishAll();
+        $prov->provideBookFor($isbn);
         $result = $prov->getBook();
         $this->assertEquals($expected, $result);
     }
