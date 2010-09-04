@@ -123,9 +123,9 @@ class indexPage {
     private function externalSearch(SearchKey $searchKey) {
         require_once 'net/ExternalBookList.php';
         require_once 'net/ExternalServerPool.php';
-        require_once 'net/ThreadedBookListReader.php';
+        require_once 'net/ExternalBookListReader.php';
         $serverPool = ExternalServerPool::activeServerPool();
-        $reader = new ThreadedBookListReader($serverPool, $searchKey);
+        $reader = new ExternalBookListReader($serverPool, $searchKey);
         $externalBookListArray = $reader->read();
         if (sizeof($externalBookListArray) == 0) {
             $this->tmpl->addSubtemplate('noResults');

@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2009 Maikel Linke
+ * Copyright (C) 2010 Maikel Linke
  */
 
 require_once 'mysql_conn.php';
@@ -120,7 +120,7 @@ if (!$localServer->isEmpty()) {
 
 	$activeServers = ExternalServerPool::whiteServerPool();
 	$activeList = '';
-	while ($server = $activeServers->next()) {
+        foreach ($activeServers->toArray() as $server) {
 		$activeList .= '<li>'
 		. $server->toHtmlLink()
 		. AdminServers::menuLinksWhite($server->getUrl())
@@ -129,7 +129,7 @@ if (!$localServer->isEmpty()) {
 
 	$unknownServers = ExternalServerPool::unknownServerPool();
 	$unknownList = '';
-	while ($server = $unknownServers->next()) {
+        foreach ($unknownServers->toArray() as $server) {
 		$unknownList .= '<li>'
 		. $server->toHtmlLink()
 		. AdminServers::menuLinksUnknown($server->getUrl())
@@ -138,7 +138,7 @@ if (!$localServer->isEmpty()) {
 
 	$blacklistServers = ExternalServerPool::blacklistServerPool();
 	$blackList = '';
-	while ($server = $blacklistServers->next()) {
+        foreach ($blacklistServers->toArray() as $server) {
 		$blackList .= '<li>'
 		. $server->toHtmlLink()
 		. AdminServers::menuLinksBlack($server->getUrl())

@@ -12,6 +12,11 @@ class Message {
     private $bookList = array();
     private $servers = array();
 
+    /**
+     * Tries to build a new Message.
+     * @param string $xmlString to build Message
+     * @return Message if $xmlString was valid, throws Exception otherwise
+     */
     public static function createFromXml($xmlString) {
         $doc = @DOMDocument::loadXML($xmlString);
         if ($doc == null) {
