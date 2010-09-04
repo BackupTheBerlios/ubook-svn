@@ -50,7 +50,7 @@ class Statistics {
         $tmpl->assign('books', $s[1]);
         $tmpl->assign('total', $s[2]);
         $tmpl->assign('offerors', $s[3]);
-        $tmpl->assign('booksPerOfferor', $s[1] / $s[3]);
+        $tmpl->assign('booksPerOfferor', round($s[1] / $s[3], 1));
         $tmpl->assign('images', $s[4]);
         $tmpl->assign('imageFraction', round($s[4] / $s[1] * 100));
         $iterator = new DirectoryIterator(self::STATS_DIR);
