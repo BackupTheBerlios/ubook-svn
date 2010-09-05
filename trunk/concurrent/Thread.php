@@ -1,9 +1,10 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * It's licensed under the GNU General Public License.
  * Copyright (C) 2010 Maikel Linke
-*/
+ */
 
 /**
  * Represents a thread running concurrent to other threads.
@@ -56,12 +57,11 @@ echo $thread2->getResponse();
  *
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
- * @version 2010-09-04
+ * @version 2010-09-05
 */
 abstract class Thread {
 
     private static $threads = array();
-    private $running = null;
 
     /**
      * Runs all threads until they are finished.
@@ -81,7 +81,6 @@ abstract class Thread {
         foreach (self::$threads as $i => $t) {
             $t->step();
             if ($t->isFinished()) {
-                $t->running = false;
                 unset(self::$threads[$i]);
             }
         }
@@ -93,7 +92,6 @@ abstract class Thread {
      * <b>Important:</b> Your subclass has to call <i>parent::__construct()</i>.
      */
     protected function __construct() {
-        $this->running = true;
         self::$threads[] = $this;
     }
 
@@ -102,11 +100,7 @@ abstract class Thread {
      * But it is unknown, if they are finished or not.
      */
     public function join() {
-        if ($this->running === null) {
-            throw new Exception(
-                    'Thread in invalid state. Forgot parent::__construct()?');
-        }
-        while ($this->running) {
+        while (!$this->isFinished()) {
             self::stepAll();
         }
     }
@@ -120,6 +114,6 @@ abstract class Thread {
      * Returns True, if the execution is finished.
      */
     public abstract function isFinished();
-
 }
+
 ?>
