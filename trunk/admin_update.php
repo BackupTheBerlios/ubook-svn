@@ -15,7 +15,8 @@ $updater = new Updater();
 
 if ($updater->hasWork()) {
     $updater->update();
-    $tmpl->addSubtemplate('working');
+    $sub = $tmpl->addSubtemplate('working');
+    $sub->assign('version', $updater->getNextVersion());
     $output->addRefreshLink('./admin_update.php');
 } else {
     $tmpl->addSubtemplate('noWork');
