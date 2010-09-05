@@ -51,7 +51,7 @@ class Updater {
             if (substr($entry, 0, 7) != 'update_') {
                 continue;
             }
-            if (substr($entry, -4) != '.php') {
+            if (substr($entry, -4) != '.inc') {
                 continue;
             }
             $version = substr($entry, 7, 10);
