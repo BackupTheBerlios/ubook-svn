@@ -18,31 +18,36 @@ require_once 'tools/WEBDIR.php';
 
 class ExternalBookListReader {
 
-    private $scriptRequest = null;
-    private $acceptServers = true;
+    private $serverPool;
+    private $serverPoolArray;
+    private $scriptRequest;
+    private $acceptServers;
     private $bookListArray = array();
 
     public function __construct(ExternalServerPool $externalServerPool, SearchKey $searchKey) {
         $this->serverPool = $externalServerPool;
+        $this->serverPoolArray = &$externalServerPool->toArray();
         $this->scriptRequest = self::scriptRequest($searchKey);
-        foreach ($externalServerPool->toArray() as $server) {
-            $this->queryServer($server);
-        }
         $localServer = new LocalServer();
         $this->acceptServers = $localServer->acceptSuggestedServers();
-
+        $this->startNextQueries(0);
     }
 
-    public function read() {
+    public function readNextGroup($maxDistanceGroup) {
+        $this->startNextQueries($maxDistanceGroup);
         Thread::joinAll();
         return $this->bookListArray;
-        $bookListArray = array();
     }
 
-    public function queryServer(ExternalServer $server) {
+    public function serverSuggested(ExternalServer $server) {
         if ($this->acceptServers) {
-            $url = new HttpUrl($server->getUrl() . $this->scriptRequest);
-            new ServerQuery($server, $url, $this);
+            if ($server->isNew()) {
+                $this->serverPool->add($server);
+            }
+            if (current($this->serverPoolArray) == $server) {
+                $this->createServerQuery($server);
+                next($this->serverPoolArray);
+            }
         }
     }
 
@@ -55,6 +60,26 @@ class ExternalBookListReader {
                 . urlencode($searchKey->asText())
                 . '&from=' . WEBDIR;
         return $requestUrlString;
+    }
+
+    private function startNextQueries($maxDistanceGroup) {
+        $server = current($this->serverPoolArray);
+        if (!$server) {
+            return;
+        }
+        $currentGroup = $server->getDistanceGroup();
+        if ($currentGroup > $maxDistanceGroup) {
+            return;
+        }
+        do {
+            $this->createServerQuery($server);
+            $server = next($this->serverPoolArray);
+        } while ($server && $server->getDistanceGroup() == $currentGroup);
+    }
+
+    private function createServerQuery(ExternalServer $server) {
+        $url = new HttpUrl($server->getUrl() . $this->scriptRequest);
+        new ServerQuery($server, $url, $this);
     }
 
 }

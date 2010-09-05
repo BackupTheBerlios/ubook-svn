@@ -11,6 +11,10 @@ include_once 'magic_quotes.php';
 require_once 'books/Cleaner.php';
 require_once 'books/LocalSearchBookList.php';
 require_once 'books/SearchKey.php';
+require_once 'net/ExternalBookList.php';
+require_once 'net/ExternalBookListReader.php';
+require_once 'net/ExternalServerPool.php';
+require_once 'notification/Searches.php';
 require_once 'tools/Categories.php';
 require_once 'tools/Output.php';
 require_once 'tools/Statistics.php';
@@ -53,13 +57,37 @@ class indexPage {
             $this->createFeedLink($searchKey);
             $this->createSaveLink();
         }
+        $serverPool = ExternalServerPool::activeServerPool();
+        /*
+         * Important order! ExternalBookListReader starts HTTP requests in the
+         * constructor. The local database can be read while the external
+         * servers are busy. Calling read(0) will read and parse the answers of
+         * the servers.
+         */
+        $externalReader = new ExternalBookListReader($serverPool, $searchKey);
         $localBookList = new LocalSearchBookList($searchKey);
-        if ($localBookList->size()) {
+        $nearbyBookListArray = $externalReader->readNextGroup(0);
+        if ($localBookList->size() || sizeof($nearbyBookListArray)) {
             $results = $this->tmpl->addSubtemplate('searchResults');
             $results->assign('HtmlRows', $localBookList->toHtmlRows());
+            foreach ($nearbyBookListArray as $nearbyBookList) {
+                $set = $results->addSubtemplate('nearbyResultSet');
+                $set->assign('locationName', $nearbyBookList->locationName());
+                $set->assign('HtmlRows', $nearbyBookList->toHtmlRows());
+            }
         } else {
-            /* Nothing found here, ask other servers. */
-            $this->externalSearch($searchKey);
+            /* Nothing found here, ask other servers group by group. */
+            $externalBookListArray = $externalReader->readNextGroup(255);
+            if (sizeof($externalBookListArray) == 0) {
+                $this->tmpl->addSubtemplate('noResults');
+                return;
+            }
+            $external = $this->tmpl->addSubtemplate('externalSearch');
+            foreach ($externalBookListArray as $externalBookList) {
+                $set = $external->addSubtemplate('externalResultSet');
+                $set->assign('locationName', $externalBookList->locationName());
+                $set->assign('HtmlRows', $externalBookList->toHtmlRows());
+            }
         }
     }
 
@@ -114,30 +142,10 @@ class indexPage {
     private function createSaveLink() {
         if (isset($_GET['searchSaved']))
             return;
-        require_once 'notification/Searches.php';
         $searches = new Searches();
         if (!$searches->areActivated())
             return;
         $this->tmpl->addSubtemplate('saveSearch');
-    }
-
-    private function externalSearch(SearchKey $searchKey) {
-        require_once 'net/ExternalBookList.php';
-        require_once 'net/ExternalServerPool.php';
-        require_once 'net/ExternalBookListReader.php';
-        $serverPool = ExternalServerPool::activeServerPool();
-        $reader = new ExternalBookListReader($serverPool, $searchKey);
-        $externalBookListArray = $reader->read();
-        if (sizeof($externalBookListArray) == 0) {
-            $this->tmpl->addSubtemplate('noResults');
-            return;
-        }
-        $external = $this->tmpl->addSubtemplate('externalSearch');
-        foreach ($externalBookListArray as $i => $externalBookList) {
-            $set = $external->addSubtemplate('externalResultSet');
-            $set->assign('locationName', $externalBookList->locationName());
-            $set->assign('HtmlRows', $externalBookList->toHtmlRows());
-        }
     }
 
 }

@@ -37,7 +37,7 @@ class ServerQuery extends DownloadThread {
         }
         $this->server->setLocationName($message->fromServer());
         foreach ($message->getNewServers() as $s) {
-            $this->reader->queryServer($s);
+            $this->reader->serverSuggested($s);
         }
         $list = new ExternalBookList($message->fromServer(), $message->bookList());
         if ($list->size()) {
