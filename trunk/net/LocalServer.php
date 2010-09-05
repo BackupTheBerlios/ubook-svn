@@ -46,6 +46,7 @@ class LocalServer {
 		$new_table = 'CREATE TABLE `servers` (';
 		$new_table .= '`url` varchar(128) NOT NULL,';
 		$new_table .= '`name` varchar(128) NOT NULL,';
+		$new_table .= '`distgroup` tinyint unsigned NOT NULL DEFAULT 1,';
 		$new_table .= '`fails` tinyint(3) unsigned NOT NULL,';
 		$new_table .= '`next_try` date NOT NULL,';
 		$new_table .= 'PRIMARY KEY  (`url`)';

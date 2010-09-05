@@ -13,14 +13,14 @@ class ExternalServer {
 
     private $url;
     private $locationName;
-    private $distanceGroup = null;
+    private $distanceGroup = 255;
     private $fails = 0;
     private $nextTry = '0000-01-01';
     private $dataFromDatabase = false;
 
     public static function newFromDbArray($array) {
         $server = new ExternalServer($array['name'], $array['url']);
-        $server->distanceGroup = $array['distgroup'];
+        $server->distanceGroup = (int) $array['distgroup'];
         $server->fails = $array['fails'];
         $server->nextTry = $array['next_try'];
         $server->dataFromDatabase = true;
@@ -38,6 +38,11 @@ class ExternalServer {
         if ($url->getDomainName() == 'localhost')
             return;
         return new self('', $urlString);
+    }
+
+    public static function changeGroup($url, $group) {
+        mysql_query('update servers set distgroup="' . $group
+                . '" where url="' . $url . '";');
     }
 
     public static function blacklist($url) {
@@ -83,6 +88,14 @@ class ExternalServer {
         return $this->url;
     }
 
+    public function getName() {
+        if ($this->locationName) {
+            return $this->locationName;
+        } else {
+            return $this->url;
+        }
+    }
+
     public function getDistanceGroup() {
         return $this->distanceGroup;
     }
@@ -97,17 +110,6 @@ class ExternalServer {
             }
         }
         return false;
-    }
-
-    public function toHtmlLink() {
-        if ($this->locationName) {
-            $linkName = $this->locationName;
-        } else {
-            $linkName = $this->url;
-        }
-        $link = '<a href="' . $this->url . '" target="_blank">'
-                . $linkName . '</a>';
-        return $link;
     }
 
     public function dbInsert() {

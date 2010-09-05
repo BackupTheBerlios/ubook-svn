@@ -30,12 +30,20 @@ class ExternalBookListReader {
         $this->scriptRequest = self::scriptRequest($searchKey);
         $localServer = new LocalServer();
         $this->acceptServers = $localServer->acceptSuggestedServers();
-        $this->startNextQueries(0);
+        if ($this->hasServer(0)) {
+            $this->startNextQueries();
+        }
     }
 
     public function readNextGroup($maxDistanceGroup) {
-        $this->startNextQueries($maxDistanceGroup);
-        Thread::joinAll();
+        if ($maxDistanceGroup == 0) {
+            Thread::joinAll();
+            return $this->bookListArray;
+        }
+        while ($this->hasServer($maxDistanceGroup) && !count($this->bookListArray)) {
+            $this->startNextQueries();
+            Thread::joinAll();
+        }
         return $this->bookListArray;
     }
 
@@ -62,15 +70,21 @@ class ExternalBookListReader {
         return $requestUrlString;
     }
 
-    private function startNextQueries($maxDistanceGroup) {
+    private function hasServer($maxDistanceGroup) {
         $server = current($this->serverPoolArray);
         if (!$server) {
-            return;
+            return false;
         }
         $currentGroup = $server->getDistanceGroup();
         if ($currentGroup > $maxDistanceGroup) {
-            return;
+            return false;
         }
+        return true;
+    }
+
+    private function startNextQueries() {
+        $server = current($this->serverPoolArray);
+        $currentGroup = $server->getDistanceGroup();
         do {
             $this->createServerQuery($server);
             $server = next($this->serverPoolArray);

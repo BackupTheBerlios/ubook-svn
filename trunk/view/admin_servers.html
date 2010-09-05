@@ -1,0 +1,95 @@
+<div class="menu"><span><a href="admin.php">&larr; Zurück zur
+            Administrationsübersicht</a></span></div>
+
+<!-- begin defineName -->
+<h2>Namen des Standorts festlegen</h2>
+<div class="text">Falls die Suche in der lokalen Datenbank keine Treffer
+    ermittelt, können andere uBook-Webseiten abgefragt werden. Im Gegenzug
+    können andere Webseiten dann auch Suchanfragen hierhin schicken. Dafür
+    wird ein eindeutige Bezeichnung des Standorts gebraucht, zum Biespiel
+    den Namen der Stadt.<br />
+    <form action="admin_servers.php" method="post">
+        <label for="local_name">Eindeutiger Name:</label>
+        <input type="text" name="local_name" value="'localServerName'" />
+        <input type="submit" value="Eintragen" />
+    </form>
+</div>
+<!-- end defineName -->
+<!-- begin listServers -->
+<h2>Standort 'localServerName'</h2>
+<p><a href="admin_servers.php?edit_name=1">Namen des Standorts ändern</a></p>
+<p><a href="admin_servers.php?drop=1">Suche an anderen Standorten
+        ausschalten</a><br />
+    Dies löscht den Standortnamen und die Liste der Standorte.</p>
+
+<h2>Automatische Standortverwaltung</h2>
+<p>Unbekannte Standorte deaktiviert merken:
+    <!-- begin rememberingServers -->
+    aktiv &harr; <a href="admin_servers.php?remember=0">deaktivieren</a>
+    <!-- end rememberingServers -->
+    <!-- begin notRememberingServers -->
+    <a href="admin_servers.php?remember=1">aktivieren</a> &harr; deaktiviert
+    <!-- end notRememberingServers -->
+</p>
+
+<p>Empfohlene Standorte von anderen übernehmen:
+    <!-- begin acceptingSuggestedServers -->
+    aktiv &harr; <a href="admin_servers.php?add_suggested=0">deaktivieren</a>
+    <!-- end acceptingSuggestedServers -->
+    <!-- begin notAcceptingSuggestedServers -->
+    <a href="admin_servers.php?add_suggested=1">aktivieren</a>
+    &harr; deaktiviert
+    <!-- end notAcceptingSuggestedServers -->
+</p>
+
+<h2>Liste aller Standorte</h2>
+
+<h3>Aktive Standorte: 'numOfActive'</h3>
+<ul class="text">
+    <!-- begin activeListEntry -->
+    <li>
+        <a href="'url'" target="_blank">'name'</a>
+        <form action="admin_servers.php" method="post">
+            <input type="hidden" name="url" value="'url'" style="width:3em;"/>
+            <input type="text" name="group" value="'group'" style="width:3em;"/>
+        </form>
+        [&darr;<a href="admin_servers.php?blacklist='url'">blacklist</a>]
+        [X<a href="admin_servers.php?delete='url'">delete</a>]
+    </li>
+    <!-- end activeListEntry -->
+    <li>
+        <form action="admin_servers.php" method="post">
+            <input type="text" name="new_url" value="http://"/>
+            <input type="submit" value="Eintragen" />
+        </form>
+    </li>
+</ul>
+
+<h3>Unbekannte Standorte: 'numOfUnknown'</h3>
+<ul class="text">
+    <!-- begin unknownListEntry -->
+    <li>
+        <a href="'url'" target="_blank">'name'</a>
+        [&uarr;<a href="admin_servers.php?activate='url'">activate</a>]
+        [X<a href="admin_servers.php?delete='url'">delete</a>]
+    </li>
+    <!-- end unknownListEntry -->
+</ul>
+
+<h3>Blacklist: 'numOfBlacklisted'</h3>
+<ul class="text">
+    <!-- begin blackListEntry -->
+    <li>
+        <a href="'url'" target="_blank">'name'</a>
+        [&uarr;<a href="admin_servers.php?activate='url'">activate</a>]
+        [X<a href="admin_servers.php?delete='url'">delete</a>]
+    </li>
+    <!-- end blackListEntry -->
+</ul>
+
+
+<h2>Reset</h2>
+<div class="menu"><span><a href="admin_servers.php?reset_servers=1">Alle
+            Standorteinträge zurücksetzen</a></span></div>
+
+<!-- end listServers -->
