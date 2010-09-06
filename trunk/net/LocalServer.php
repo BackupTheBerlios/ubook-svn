@@ -48,7 +48,7 @@ class LocalServer {
 		$new_table .= '`name` varchar(128) NOT NULL,';
 		$new_table .= '`distgroup` tinyint unsigned NOT NULL DEFAULT 1,';
 		$new_table .= '`fails` tinyint(3) unsigned NOT NULL,';
-		$new_table .= '`next_try` date NOT NULL,';
+		$new_table .= '`next_try` datetime NOT NULL,';
 		$new_table .= 'PRIMARY KEY  (`url`)';
 		$new_table .= ')';
 		mysql_query($new_table);

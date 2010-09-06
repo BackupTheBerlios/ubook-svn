@@ -51,7 +51,7 @@ class ExternalServer {
     }
 
     public static function activate($url) {
-        mysql_query('update servers set next_try=curdate() where url="' . $url . '";');
+        mysql_query('update servers set next_try=now() where url="' . $url . '";');
     }
 
     public static function delete($url) {
@@ -167,13 +167,13 @@ class ExternalServer {
                 self::delete(($this->url));
                 return;
             }
-            if ($this->fails > 8) {
+            if ($this->fails  == 255) {
                 self::delete($this->url);
                 return;
             }
             $query = 'update servers set'
-                    . ' fails = fails + 1'
-                    . ' , next_try = adddate(curdate(), fails * fails)'
+                    . ' fails = fails + 1,'
+                    . ' next_try = timestampadd(minute, pow(fails, 2), now())'
                     . ' where url = "' . $this->url . '";';
             mysql_query($query);
         }

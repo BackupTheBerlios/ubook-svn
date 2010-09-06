@@ -74,7 +74,7 @@ class ExternalServerPool {
     private function loadActive() {
         $query = self::QUERY_START
                 . ' where url != ""'
-                . ' and next_try <= curdate()'
+                . ' and next_try <= now()'
                 . ' order by distgroup;';
         $this->loadFromDb($query);
     }
