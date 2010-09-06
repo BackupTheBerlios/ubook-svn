@@ -70,7 +70,7 @@ class ExternalServer {
     public function setLocationName($name) {
         if (self::containsSpecialChar($name))
             return;
-        if ($name == $this->locationName)
+        if ($name == $this->locationName && $this->fails == 0)
             return;
         $this->locationName = $name;
         if ($this->dataFromDatabase) {
