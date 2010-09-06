@@ -68,15 +68,21 @@ class ExternalServer {
     }
 
     public function setLocationName($name) {
-        if (self::containsSpecialChar($name))
+        if (self::containsSpecialChar($name)) {
             return;
-        if ($name == $this->locationName && $this->fails == 0)
-            return;
+        }
+        if ($this->fails == 0) {
+            if ($name == $this->locationName) {
+                return;
+            }
+        } else {
+            $this->fails--;
+        }
         $this->locationName = $name;
         if ($this->dataFromDatabase) {
             $query = 'update servers set'
                     . ' name = "' . $this->locationName . '"'
-                    . ' , fails = 0'
+                    . ' , fails = ' . (int) $this->fails
                     . ' where url = "' . $this->url . '";';
             mysql_query($query);
         } else {
@@ -167,7 +173,7 @@ class ExternalServer {
                 self::delete(($this->url));
                 return;
             }
-            if ($this->fails  == 255) {
+            if ($this->fails == 255) {
                 self::delete($this->url);
                 return;
             }
