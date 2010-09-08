@@ -9,50 +9,54 @@
 /**
  * Represents a thread running concurrent to other threads.
  *
- * PHP doesn't support threads. In most cases threads are no good idea. But
- * they can be useful while working with external resources like network
- * connections.
+ * PHP doesn't support threads
+ * ({@link http://php.net/manual/en/function.pcntl-fork.php exception}). In most
+ * cases threads are no good idea. But they can be useful while working with
+ * external resources like network connections.
  *
- * All your threads will run on one CPU.
+ * All your threads will run on one CPU. These are virtual threads.
+ *
+ * You can directly download the source code at BerliOS:
+ * - {@link http://svn.berlios.de/svnroot/repos/ubook/branches/concurrent/}
  *
  * <b>How To Use</b>
  *
  * Create two threads and let them run concurrently:
  * <code>
-class NetworkThread extends Thread {
-
-    private $handle;
-    private $response = '';
-
-    public function __construct($host) {
-        parent::__construct(); // This call is important!
-        $this->handle = fsockopen($host, 80);
-        stream_set_blocking($this->handle, 0);
-        fputs($this->handle, "GET / HTTP/1.0\r\n");
-    }
-
-    public function step() {
-        $this->response .= fread($this->handle, 1024);
-    }
-
-    public function isFinished() {
-        return feof($this->handle);
-    }
-
-    public function getResponse() {
-        return $this->response;
-    }
-
-}
-
-$thread1 = new NetworkThread('www.example.org');
-$thread2 = new NetworkThread('www.example.net');
-
-Thread::joinAll();
-
-echo $thread1->getResponse();
-echo $thread2->getResponse();
-// Will print both HTTP responses.
+ *     class NetworkThread extends Thread {
+ *
+ *         private $handle;
+ *         private $response = '';
+ *
+ *         public function __construct($host) {
+ *             parent::__construct(); // This call is important!
+ *             $this->handle = fsockopen($host, 80);
+ *             stream_set_blocking($this->handle, 0);
+ *             fputs($this->handle, "GET / HTTP/1.0\r\n");
+ *         }
+ *
+ *         public function step() {
+ *             $this->response .= fread($this->handle, 1024);
+ *         }
+ *
+ *         public function isFinished() {
+ *             return feof($this->handle);
+ *         }
+ *
+ *         public function getResponse() {
+ *             return $this->response;
+ *         }
+ *
+ *     }
+ *
+ *     $thread1 = new NetworkThread('www.example.org');
+ *     $thread2 = new NetworkThread('www.example.net');
+ *
+ *     Thread::joinAll();
+ *
+ *     echo $thread1->getResponse();
+ *     echo $thread2->getResponse();
+ *     // Will print both HTTP responses.
  * </code>
  *
  *
