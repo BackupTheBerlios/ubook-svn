@@ -9,7 +9,7 @@
 /**
  * Tests classes by executing usage examples in the class documentation.
  *
- * {@link http://ubook.berlios.de/doctest/doc/default/DocTest.html Download}
+ * {@link http://svn.berlios.de/svnroot/repos/ubook/branches/doctest/ Download}
  *
  * If you have a file called <samp>example.php</samp> like this below,
  * and execute it, the DocTest class will really execute
