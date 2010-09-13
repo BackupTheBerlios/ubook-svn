@@ -55,7 +55,7 @@
  * There are some more methods to examine the result of the test. See the list
  * below.
  *
- * The used syntax is compatible to the documentation syntax of PhpDocumentor
+ * The used syntax is compatible to the documentation syntax of
  * {@link http://pear.php.net/package/PhpDocumentor PhpDocumentor}.
  *
  * The praxis of doc tests is very common under python programmers. Python has
