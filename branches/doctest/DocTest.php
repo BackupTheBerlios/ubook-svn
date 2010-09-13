@@ -55,8 +55,8 @@
  * There are some more methods to examine the result of the test. See the list
  * below.
  *
- * The used syntax is compatible to the documentation syntax of PhpDocumentor:
- * - {@link http://pear.php.net/package/PhpDocumentor}
+ * The used syntax is compatible to the documentation syntax of PhpDocumentor
+ * {@link http://pear.php.net/package/PhpDocumentor PhpDocumentor}.
  *
  * The praxis of doc tests is very common under python programmers. Python has
  * a build in module for doc tests. Due it's no part of the PHP language (yet)
@@ -64,6 +64,13 @@
  * example:
  * - {@link http://pear.php.net/package/Testing_DocTest}
  * - {@link http://github.com/xdissent/php-doctest}
+ *
+ * Sometimes you are not able to test your application only with doc tests. In
+ * some cases a more complex testing framework is usefull. I recommend
+ * {@link http://www.phpunit.de/ PhpUnit}, which has a similar functionality to
+ * {@link http://www.junit.org/ JUnit} for Java.
+ *
+ * This class is part of the {@link http://ubook.berlios.de/ uBook Project}.
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
  * @version 2010-09-11
