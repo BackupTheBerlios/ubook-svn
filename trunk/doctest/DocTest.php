@@ -101,7 +101,9 @@ class DocTest {
     public function __construct($testCandidate) {
         require_once $testCandidate;
         $this->testCandidate = $testCandidate;
+        $cwd = getcwd();
         $this->execute();
+        chdir($cwd);
     }
 
     /**
@@ -216,6 +218,7 @@ class DocTest {
         $this->executing = false;
         $this->lastCodeLineNumber = 0;
         $this->sourceLines = file($this->testCandidate);
+        chdir(dirname($this->testCandidate));
         while (list($this->i, $this->line) = each($this->sourceLines)) {
             $this->ltLine = ltrim($this->line);
             if ($this->ltLine[0] != '*') {
@@ -258,14 +261,19 @@ class DocTest {
             if ($this->executing) {
                 $this->expected = trim($this->expected);
                 ob_start();
-                eval($this->code);
+                try {
+                    eval($this->code);
+                } catch (Exception $ex) {
+                    $this->result = $ex;
+                    return;
+                }
                 $this->result = trim(ob_get_contents());
                 ob_end_clean();
-                $this->code = $this->nextCode;
-                $this->nextCode = '';
                 if ($this->result != $this->expected) {
                     return;
                 }
+                $this->code = $this->nextCode;
+                $this->nextCode = '';
                 $this->result = '';
                 $this->expected = '';
                 $this->executing = false;

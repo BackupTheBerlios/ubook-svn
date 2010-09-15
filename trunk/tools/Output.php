@@ -70,7 +70,9 @@ class Output {
     public function send($content) {
         $this->configureTemplate();
         $this->template->assign('content', $content);
-        header('Content-Type: text/html;charset=utf-8');
+        if (isset($_SERVER['SERVER_NAME'])) {
+            header('Content-Type: text/html;charset=utf-8');
+        }
         echo $this->template->result();
     }
 
