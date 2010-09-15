@@ -35,6 +35,7 @@ class DocumentationTest extends PHPUnit_Framework_TestCase {
                     $test = new DocTest($path);
                     if ($test->failed()) {
                         echo $test->toString();
+                        $this->fail('Doc test failed.');
                     } else {
                         if ($test->numOfPassed()) {
                             echo ',';

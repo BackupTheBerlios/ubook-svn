@@ -19,46 +19,46 @@
  *
  * Create two threads and let them run concurrently:
  * <code>
-class NetworkThread extends Thread {
-
-    private $handle;
-    private $response = '';
-
-    public function __construct($host) {
-        parent::__construct(); // This call is important!
-        $this->handle = fsockopen($host, 80);
-        stream_set_blocking($this->handle, 0);
-        fputs($this->handle, "GET / HTTP/1.0\r\n");
-    }
-
-    public function step() {
-        $this->response .= fread($this->handle, 1024);
-    }
-
-    public function isFinished() {
-        return feof($this->handle);
-    }
-
-    public function getResponse() {
-        return $this->response;
-    }
-
-}
-
-$thread1 = new NetworkThread('www.example.org');
-$thread2 = new NetworkThread('www.example.net');
-
-Thread::joinAll();
-
-echo $thread1->getResponse();
-echo $thread2->getResponse();
-// Will print both HTTP responses.
+ *  class NetworkThread extends Thread {
+ *
+ *      private $handle;
+ *      private $response = '';
+ *
+ *      public function __construct($host) {
+ *          parent::__construct(); // This call is important!
+ *          $this->handle = fsockopen($host, 80);
+ *          stream_set_blocking($this->handle, 0);
+ *          fputs($this->handle, "GET / HTTP/1.0\r\nConnection: close\r\n\r\n");
+ *      }
+ *
+ *      public function step() {
+ *          $this->response .= fread($this->handle, 1024);
+ *      }
+ *
+ *      public function isFinished() {
+ *          return feof($this->handle);
+ *      }
+ *
+ *      public function getResponse() {
+ *          return $this->response;
+ *      }
+ *
+ *  }
+ *
+ *  $thread1 = new NetworkThread('ubook.berlios.de');
+ *  $thread2 = new NetworkThread('ubook.asta-bielefeld.de');
+ *
+ *  Thread::joinAll();
+ *
+ *  // The responses begin with 'HTTP'.
+ *  echo substr($thread1->getResponse(), 0, 4); /// HTTP
+ *  echo substr($thread2->getResponse(), 0, 4); /// HTTP
  * </code>
  *
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
  * @version 2010-09-05
-*/
+ */
 abstract class Thread {
 
     private static $threads = array();
