@@ -9,11 +9,15 @@
 /**
  * Represents a thread running concurrent to other threads.
  *
- * PHP doesn't support threads. In most cases threads are no good idea. But
- * they can be useful while working with external resources like network
- * connections.
+ * PHP doesn't support threads
+ * ({@link http://php.net/manual/en/function.pcntl-fork.php exception}). In most
+ * cases threads are no good idea. But they can be useful while working with
+ * external resources like network connections.
  *
- * All your threads will run on one CPU.
+ * All your threads will run on one CPU. These are virtual threads.
+ *
+ * You can directly download the source code at BerliOS:
+ * - {@link http://svn.berlios.de/svnroot/repos/ubook/branches/concurrent/}
  *
  * <b>How To Use</b>
  *
