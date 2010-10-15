@@ -25,6 +25,10 @@ class ExternalBookListReader {
     private $bookListArray = array();
 
     public function __construct(ExternalServerPool $externalServerPool, SearchKey $searchKey) {
+        if ($searchKey->getOption()) {
+            // Options are not supported.
+            return;
+        }
         $this->serverPool = $externalServerPool;
         $this->serverPoolArray = &$externalServerPool->toArray();
         $this->scriptRequest = self::scriptRequest($searchKey);
@@ -36,6 +40,10 @@ class ExternalBookListReader {
     }
 
     public function readNextGroup($maxDistanceGroup) {
+        if ($this->serverPool == null) {
+            // see __construct
+            return $this->bookListArray;
+        }
         if ($maxDistanceGroup == 0) {
             Thread::joinAll();
             return $this->bookListArray;
