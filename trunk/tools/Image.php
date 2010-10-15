@@ -27,7 +27,7 @@ class Image {
     public static function uploadable() {
         if (!is_writable(self::PATH))
             return false;
-        if (!defined('GD_VERSION'))
+        if (!function_exists('imagecreatefrompng'))
             return false;
         return true;
     }
