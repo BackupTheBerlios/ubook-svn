@@ -52,4 +52,11 @@ class DocumentationTest extends PHPUnit_Framework_TestCase {
 
 }
 
+if (__FILE__ == realpath($_SERVER['SCRIPT_FILENAME'])) {
+    if (isset($_SERVER['argv'][1])) {
+        $test = new DocTest($_SERVER['argv'][1]);
+        echo $test->toString();
+    }
+}
+
 ?>

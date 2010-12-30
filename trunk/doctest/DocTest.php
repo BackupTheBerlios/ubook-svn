@@ -224,8 +224,11 @@ class DocTest {
             if ($this->ltLine[0] != '*') {
                 continue;
             }
-            $this->ltLine = ltrim(substr($this->ltLine, 1));
-            $this->tLine = rtrim($this->ltLine);
+            $this->ltLine = substr($this->ltLine, 1);
+            if ($this->ltLine[0] == ' ') {
+                $this->ltLine = substr($this->ltLine, 1);
+            }
+            $this->tLine = trim($this->ltLine);
             if ($this->tLine == '<code>') {
                 $this->readingCode = true;
                 continue;
@@ -253,7 +256,7 @@ class DocTest {
                         $this->expected .=
                                 substr($this->ltLine, $this->pos + 3);
                     }
-                    if ($this->pos === 0) {
+                    if (!trim(substr($this->ltLine, 0, $this->pos))) {
                         continue;
                     }
                 }
