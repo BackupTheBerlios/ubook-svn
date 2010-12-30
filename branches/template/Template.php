@@ -25,40 +25,47 @@
  *
  * <b>How To Use</b>
  *
- * Begin to create pure HTML. It could be like this:
- * <pre>
- *     &lt;p&gt;Hello, this is normal text. But it is also possible to insert
- *        variable text here. For example the time: 'time'.&lt;/p&gt;
- *     &lt;p&gt;Okay, this is easy. It's just a string replacement. But now follows
- *        a subtemplate. It allows you to repeat some code over and over again,
- *        everytime with different content. For example a list of names:&lt;/p&gt;
- *     &lt;ul&gt;
- *         &lt;!-- BEGIN item --&gt;
- *         &lt;li&gt;'name'&lt;/li&gt;
- *         &lt;!-- END item --&gt;
- *     &lt;/ul&gt;
- * </pre>
- *
- * Now we have the template. Let's write code to fill it with data.
+ * A usage example:
  *
  * <code>
- *     $template = new Template($theHtmlCodeAsString);
- *     // or
- *     $template = Template::fromFile($filenameOfTemplate);
+ * // Begin to create pure HTML. It could be like this:
+ * $theHtmlCodeAsString = <<<EOT
+ * <h1>Hi 'user'!</h1>
+ * <p>This is a list of names:</p>
+ * <ul>
+ *  <!-- BEGIN item -->
+ *  <li>'name'</li>
+ *  <!-- END item -->
+ * </ul>
+ * EOT;
+ * $template = new Template($theHtmlCodeAsString);
+ * //    or
+ * // $template = Template::fromFile($filenameOfTemplate);
  *
- *     // replace a variable with a value
- *     $template->assign('time', time());
+ * // Now let's write code to fill it with data.
  *
- *     // use the subtemplate to generate three list items
- *     $sub = $template->addSubtemplate('item');
- *     $sub->assign('name', 'Andrea');
- *     $sub = $template->addSubtemplate('item');
- *     $sub->assign('name', 'Andy');
- *     $sub = $template->addSubtemplate('item');
- *     $sub->assign('name', 'Anna');
+ * // replace a variable with a value
+ * $template->assign('user', 'Joe');
  *
- *     // ready...
- *     echo $template->result();
+ * // use the subtemplate to generate three list items
+ * $sub = $template->addSubtemplate('item');
+ * $sub->assign('name', 'Andrea');
+ * $sub = $template->addSubtemplate('item');
+ * $sub->assign('name', 'Andy');
+ * $sub = $template->addSubtemplate('item');
+ * $sub->assign('name', 'Anna');
+ *
+ * // ready...
+ * echo $template->result();
+ *
+ * // results in
+ * /// <h1>Hi Joe!</h1>
+ * /// <p>This is a list of names:</p>
+ * /// <ul>
+ * ///  <li>Andrea</li>
+ * ///  <li>Andy</li>
+ * ///  <li>Anna</li>
+ * /// </ul>
  * </code>
  *
  * <b>Why This Way</b>
@@ -100,11 +107,23 @@
  * prevent code injection. So depending on your application, perhaps you can do
  * something like this:
  * <code>
- *     $arr = mysql_fetch_array($result);
- *     foreach ($arr as $key => $value) {
- *         $encoded = htmlentities($value, ENT_QUOTES, 'UTF-8');
- *         $template->assign($key, $encoded);
- *     }
+ *  mysql_connect('localhost', 'test');
+ *  $result = mysql_query('select "Joe<script>...</script>" as user;');
+ *  $arr = mysql_fetch_array($result);
+ *  foreach ($arr as $key => $value) {
+ *      $encoded = htmlentities($value, ENT_QUOTES, 'UTF-8');
+ *      $template->assign($key, $encoded);
+ *  }
+ *  echo $template->result();
+ *
+ *  // results in
+ *  /// <h1>Hi Joe&lt;script&gt;...&lt;/script&gt;!</h1>
+ *  /// <p>This is a list of names:</p>
+ *  /// <ul>
+ *  ///  <li>Andrea</li>
+ *  ///  <li>Andy</li>
+ *  ///  <li>Anna</li>
+ *  /// </ul>
  * </code>
  *
  * But this depends on your application.
@@ -148,7 +167,7 @@ class Template {
      * - m - multiline
      * - s - dotall
      */
-    const SUB_PATTERN = '/<!--\s*BEGIN\s+([a-z0-9_\-]+)\s*-->(.*?)<!--\s*END\s+\\1\s*-->/ims';
+    const SUB_PATTERN = "/[\t ]*<!--\\s*BEGIN\\s+([a-z0-9_\\-]+)\\s*-->\n?(.*?)[\t ]*<!--\\s*END\\s+\\1\\s*-->\n?/ims"; // TODO: write with single quotes or heredoc if possible
 
     private $content;
     private $assignments = array();
