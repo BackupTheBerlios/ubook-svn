@@ -101,7 +101,9 @@ class DocTest {
     public function __construct($testCandidate) {
         require_once $testCandidate;
         $this->testCandidate = $testCandidate;
+        $cwd = getcwd();
         $this->execute();
+        chdir($cwd);
     }
 
     /**
@@ -216,13 +218,17 @@ class DocTest {
         $this->executing = false;
         $this->lastCodeLineNumber = 0;
         $this->sourceLines = file($this->testCandidate);
+        chdir(dirname($this->testCandidate));
         while (list($this->i, $this->line) = each($this->sourceLines)) {
             $this->ltLine = ltrim($this->line);
             if ($this->ltLine[0] != '*') {
                 continue;
             }
-            $this->ltLine = ltrim(substr($this->ltLine, 1));
-            $this->tLine = rtrim($this->ltLine);
+            $this->ltLine = substr($this->ltLine, 1);
+            if ($this->ltLine[0] == ' ') {
+                $this->ltLine = substr($this->ltLine, 1);
+            }
+            $this->tLine = trim($this->ltLine);
             if ($this->tLine == '<code>') {
                 $this->readingCode = true;
                 continue;
@@ -250,7 +256,7 @@ class DocTest {
                         $this->expected .=
                                 substr($this->ltLine, $this->pos + 3);
                     }
-                    if ($this->pos === 0) {
+                    if (!trim(substr($this->ltLine, 0, $this->pos))) {
                         continue;
                     }
                 }
@@ -258,14 +264,19 @@ class DocTest {
             if ($this->executing) {
                 $this->expected = trim($this->expected);
                 ob_start();
-                eval($this->code);
+                try {
+                    eval($this->code);
+                } catch (Exception $ex) {
+                    $this->result = $ex;
+                    return;
+                }
                 $this->result = trim(ob_get_contents());
                 ob_end_clean();
-                $this->code = $this->nextCode;
-                $this->nextCode = '';
                 if ($this->result != $this->expected) {
                     return;
                 }
+                $this->code = $this->nextCode;
+                $this->nextCode = '';
                 $this->result = '';
                 $this->expected = '';
                 $this->executing = false;
