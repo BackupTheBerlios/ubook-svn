@@ -18,6 +18,8 @@ require_once 'tools/Template.php';
  */
 abstract class AdminServers {
 
+    public static $editName = false;
+
     public static function reload() {
         header('Location: admin_servers.php');
         exit;
@@ -69,6 +71,11 @@ if (isset($_GET['drop'])) {
 
 if (!$localServer->isEmpty()) {
 
+    if (isset($_GET['edit_name'])) {
+        AdminServers::$editName = true;
+        unset($_GET['edit_name']);
+    }
+
     if (isset($_GET['reset_servers'])) {
         AdminServers::resetDb();
     }
@@ -111,7 +118,7 @@ $output = new Output();
 $template = Template::fromFile('view/admin_servers.html');
 
 $template->assign('localServerName', $localServer->name());
-if ($localServer->isEmpty() || isset($_GET['edit_name'])) {
+if ($localServer->isEmpty() || AdminServers::$editName) {
     $template->addSubtemplate('defineName');
 } else {
     $sub = $template->addSubtemplate('listServers');
