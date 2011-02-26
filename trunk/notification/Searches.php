@@ -65,7 +65,7 @@ class Searches {
         . ' Titel: ' . $title . "\n"
         . "\n"
         . 'Mehr Informationen über das Angebot:' . "\n"
-        . Mailer::book_link($id) . "\n"
+        . Mailer::bookLink($id) . "\n"
         . "\n";
         $informedMails = array();
         $bookText = $author . ' ' . $title . ' ' . $description;

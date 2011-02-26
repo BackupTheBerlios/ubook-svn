@@ -36,7 +36,7 @@ class UsersBooks {
 		while ($book = Book::fromMySql($bookListResult)) {
 			$listString .= "\n";
 			$listString .= $book->get('author').': '.$book->get('title')."\n";
-			$listString .= Mailer::edit_link($book->get('id'), $book->get('auth_key'))."\n";
+			$listString .= Mailer::editLink($book->get('id'), $book->get('auth_key'))."\n";
 		}
 		$this->bookListString = $listString;
 	}

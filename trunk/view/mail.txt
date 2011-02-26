@@ -1,0 +1,14 @@
+Hallo!
+
+'message'
+
+'bookText'
+
+<!-- begin viewBook -->
+Buchangebot ansehen:
+'bookLink'
+<!-- end viewBook -->
+<!-- begin editBook -->
+Buchangebot ändern oder löschen:
+'editLink'
+<!-- end editBook -->
