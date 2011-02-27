@@ -49,7 +49,47 @@ class Mailer {
     }
 
     /**
-     * Simply sends an mail from uBook, without further content.
+     * Simply sends a mail from uBook.
+     *
+     * Currently known usages:
+     *
+     * - admin_mail.php - user (admin) defined message
+     * - Searches.php - "Neues Angebot"
+     * <pre>
+     * Hallo!
+     *
+     * Es gibt ein neues Buchangebot:
+     *  Autor: $author
+     *  Titel: $title
+     *
+     * Mehr Informationen über das Angebot:
+     * $bookLink
+     *
+     * Suche nach '$searchKey' beenden:
+     * $deleteSearchLink
+     * </pre>
+     * - Searches.php - "Suche beendet"
+     * <pre>
+     * Hallo!
+     *
+     * Folgende Suche(n) wurde(n) beendet und können über den Link neu
+     * eingetragen werden:
+     *
+     * $searchKey1
+     * $saveSearchLink1
+     *
+     * $searchKey2
+     * $saveSearchLink2
+     * </pre>
+     * - summary.php - "Deine Angebote"
+     * <pre>
+     * Hallo,
+     * hier eine Zusammenfassung aller Bücher, die mit deiner E-Mailadresse angeboten werden.
+     *
+     * $author: $title
+     * $editLink
+     * </pre>
+     * - Mailer.php - see {@link send()}
      *
      * @param string $to
      * @param string $subject
@@ -67,7 +107,6 @@ class Mailer {
         $header .= 'Content-Type: text/plain; charset=UTF-8' . "\n";
         $subject = '[ubook] ' . $subject;
         $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-        //$subject = utf8_decode($subject); // TODO: remove
         return mail($to, $encodedSubject, $content, $header);
     }
 
