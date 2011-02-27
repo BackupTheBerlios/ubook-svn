@@ -5,7 +5,7 @@
  * Copyright (C) 2010 Maikel Linke
  */
 
-require_once 'IsbnDbProvider.php';
+require_once 'HttpIsbnDbProvider.php';
 
 require_once 'books/Book.php';
 require_once 'isbn/Isbn.php';
@@ -15,7 +15,7 @@ require_once 'net/HttpUrl.php';
  * Fetches information about a book from the API of Uni Karlsruhe.
  * @author maikel
  */
-class UBKarlsruheProvider extends IsbnDbProvider {
+class UBKarlsruheProvider extends HttpIsbnDbProvider {
 
     private $isbn;
 

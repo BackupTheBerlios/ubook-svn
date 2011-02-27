@@ -5,7 +5,7 @@
 */
 
 require_once 'Isbn.php';
-require_once 'IsbnDbProvider.php';
+require_once 'HttpIsbnDbProvider.php';
 
 require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
@@ -14,7 +14,7 @@ require_once 'net/HttpUrl.php';
  * Fetches information about a book from the API of isbndb.com.
  * @author maikel
  */
-class IsbnDbDotComProvider extends IsbnDbProvider {
+class IsbnDbDotComProvider extends HttpIsbnDbProvider {
 
     private $accessKey;
 

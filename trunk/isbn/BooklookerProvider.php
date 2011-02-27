@@ -4,7 +4,7 @@
  * Copyright (C) 2010 Maikel Linke
 */
 
-require_once 'IsbnDbProvider.php';
+require_once 'HttpIsbnDbProvider.php';
 
 require_once 'books/Book.php';
 require_once 'net/HttpUrl.php';
@@ -13,7 +13,7 @@ require_once 'net/HttpUrl.php';
  * Fetches information about a book from the API of booklooker.de.
  * @author maikel
  */
-class BooklookerProvider extends IsbnDbProvider {
+class BooklookerProvider extends HttpIsbnDbProvider {
 
     private $pid;
 

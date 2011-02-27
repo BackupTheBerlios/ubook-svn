@@ -13,7 +13,7 @@ require_once 'UBKarlsruheProvider.php';
  * Creates all available IsbnDbProviders.
  * @author maikel
  */
-class Providers {
+class HttpProviders {
 
 	public static function createProviders() {
         $list = array();
