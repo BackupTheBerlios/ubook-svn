@@ -39,7 +39,7 @@ class bookPage {
 	     * It is named 'name' to trick robots.
         */
         if (!isset($_POST['name'])) return false;
-        $user_mail = stripslashes($_POST['name']);
+        $user_mail = stripslashes(Mailer::mailFromUser('name'));
         if (!strstr($user_mail,'@')) return true;
         require_once 'tools/Mailer.php';
         $subject = 'Anfrage: ';

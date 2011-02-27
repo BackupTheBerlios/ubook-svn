@@ -15,6 +15,10 @@ class MailerTest extends PHPUnit_Framework_TestCase {
         $_POST[$index] = 'juser';
         $result = Mailer::mailFromUser($index);
         $this->assertNotNull($result, 'Simple name not accepted.');
+        unset($_POST[$index]);
+        $_GET[$index] = 'juser';
+        $result = Mailer::mailFromUser($index);
+        $this->assertNotNull($result, 'From $_GET array not accepted.');
         $_POST[$index] = 'juser1';
         $result = Mailer::mailFromUser($index);
         $this->assertNotNull($result, "Number not accepted.");

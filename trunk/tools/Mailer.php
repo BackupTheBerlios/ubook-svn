@@ -139,13 +139,17 @@ class Mailer {
     /**
      * Returns a field of the $_POST array, if it doesn't contain invalid
      * characters.
-     * @param string $postIndex index in the $_POST array
+     * @param string $index index in the $_GET or $_POST array
      * @return string mail address or null, if there is no valid address
      */
-    public static function mailFromUser($postIndex) {
-        if (!isset($_POST[$postIndex]))
-            return null;
-        $mail = $_POST[$postIndex];
+    public static function mailFromUser($index) {
+        $mail = null;
+        if (isset($_GET[$index])) {
+            $mail = $_GET[$index];
+        }
+        if (isset($_POST[$index])) {
+            $mail = $_POST[$index];
+        }
         if (self::isValidAddress($mail)) {
             return $mail;
         }

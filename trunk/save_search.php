@@ -6,6 +6,7 @@
 
 require_once 'books/SearchKey.php';
 require_once 'notification/Searches.php';
+require_once 'tools/Mailer.php';
 
 $searchKey = new SearchKey();
 
@@ -13,13 +14,9 @@ if (!$searchKey->isGiven()) {
     header('Location: ./');
 }
 
-$mail = null;
-
-if (isset($_GET['mail'])) {
-    $mail = $_GET['mail'];
-}
-if (isset($_GET['name'])) { // field for mail address
-    $mail = $_GET['name'];
+$mail = Mailer::mailFromUser('mail');
+if ($mail == null) {
+    $mail = Mailer::mailFromUser('name');
 }
 
 if ($mail) {

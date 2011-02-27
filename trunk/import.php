@@ -7,6 +7,7 @@
 
 require_once 'magic_quotes.php';
 require_once 'books/Book.php';
+require_once 'tools/Mailer.php';
 require_once 'tools/Output.php';
 require_once 'tools/Template.php';
 require_once 'tools/SelectableCategories.php';
@@ -24,11 +25,12 @@ function import_book($bookString, Template $tmpl) {
     }
 }
 
+$usermail = Mailer::mailFromUser('mail');
 if (isset($_POST['book_data'])) {
     $tmpl = Template::fromFile('view/add_form.html');
     import_book($_POST['book_data'], $tmpl);
     if (isset($_POST['mail'])) {
-        $tmpl->assign('mail', $_POST['mail']);
+        $tmpl->assign('mail', $usermail);
     }
     $selectableCategories = new SelectableCategories();
     $categoryString = implode(' ', $selectableCategories->createSelectArray());
@@ -37,7 +39,7 @@ if (isset($_POST['book_data'])) {
     $tmpl = Template::fromFile('view/import.html');
     if (isset($_GET['mail'])) {
         $mailTmpl = $tmpl->addSubtemplate('mail');
-        $mailTmpl->assign('mail', $_GET['mail']);
+        $mailTmpl->assign('mail', $usermail);
     }
 }
 
