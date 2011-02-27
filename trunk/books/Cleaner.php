@@ -67,7 +67,7 @@ abstract class Cleaner {
                 . ' from books where expired is null and expires < now()';
         $result = mysql_query($query);
         while ($book = mysql_fetch_array($result)) {
-            $subject = 'Warnung: ';
+            $subject = 'Erneuern: ';
             $message = 'Anscheinend hat sich in letzter Zeit niemand für dein'
                     . ' unten stehendes Buch interessiert. In zehn Tagen wird das'
                     . ' Angebot automatisch gelöscht. Um das zu verhindern, kannst du'

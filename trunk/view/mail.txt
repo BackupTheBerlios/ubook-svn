@@ -11,4 +11,6 @@ Buchangebot ansehen:
 <!-- begin editBook -->
 Buchangebot ändern oder löschen:
 'editLink'
+
+Übersicht über all deine Bücher:'usersBooks'
 <!-- end editBook -->

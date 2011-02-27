@@ -6,12 +6,18 @@
  */
 
 require_once 'books/Book.php';
+require_once 'books/UsersBooks.php';
 require_once 'tools/Template.php';
 
 class Mailer {
 
     /**
      * Sends an E-Mail to the offerer of the book.
+     *
+     * Known usages:
+     * - add.php
+     * - book.php - "Anfrage: "
+     * - Cleaner.php - "Erneuern: "
      *
      * @param int $bookId database id of th book, this mail is about
      * @param string $subjectStart beginning of the subject, the title will
@@ -38,6 +44,8 @@ class Mailer {
             $subTmpl = $tmpl->addSubtemplate('editBook');
             $link = self::editLink($book->get('id'), $book->get('auth_key'));
             $subTmpl->assign('editLink', $link);
+            $books = new UsersBooks($book->get('mail'));
+            $subTmpl->assign('usersBooks', $books->toString());
         } else {
             $subTmpl = $tmpl->addSubtemplate('editBook');
             $link = self::bookLink($book->get('id'));
