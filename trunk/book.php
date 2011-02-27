@@ -97,8 +97,11 @@ class bookPage {
     public function showAdminElements($userKey) {
         $this->tmpl->assign('key', $_GET['key']);
         $this->tmpl->addSubtemplate('editAndDelete');
-        if (Image::uploadable()) {
-            $this->tmpl->addSubtemplate('uploadButton');
+        if (Image::exists($this->bookId)) {
+            $this->tmpl->addSubtemplate('imgDeleteButton');
+        }
+        elseif (Image::uploadable()) {
+            $this->tmpl->addSubtemplate('imgUploadButton');
         }
         if (isset($_GET['new'])) {
             $this->tmpl->addSubtemplate('messageNew');

@@ -42,13 +42,18 @@
 <!-- begin bookingFailed -->
 <div class="infobox">Dem Anbieter konnte keine E-Mail gesendet werden.</div>
 <!-- end bookingFailed -->
-<!-- begin uploadButton -->
+<!-- begin imgUploadButton -->
 <form action="upload.php?id='id'&amp;key='key'" method="post">
     <div style="display:inline">
         <input type="submit" value="Bild hochladen" />
     </div>
 </form>
-<!-- end uploadButton -->
+<!-- end imgUploadButton -->
+<!-- begin imgDeleteButton -->
+<form action="upload.php?id='id'&amp;key='key'&amp;delete=0" method="post">
+    <input type="submit" value="Bild Löschen" />
+</form>
+<!-- end imgDeleteButton -->
 <!-- begin editAndDelete -->
 <form action="edit.php?id='id'&amp;key='key'" method="post">
     <div style="display:inline">

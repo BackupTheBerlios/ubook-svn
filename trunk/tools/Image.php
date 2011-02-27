@@ -2,7 +2,7 @@
 
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2010 Maikel Linke
+ * Copyright (C) 2011 Maikel Linke
  */
 
 /**
@@ -68,7 +68,7 @@ class Image {
      * @return String HTML-Code or empty (no image present).
      */
     public static function imgTag($id) {
-        $imgURL = self::PATH . $id . '.png';
+        $imgURL = self::imageUrl($id);
         if (!is_file($imgURL))
             return '';
         $thumbURL = self::PATH . $id . '_thumb.png';
@@ -156,18 +156,36 @@ class Image {
     }
 
     /**
+     * Checks whether an image for the given book exists.
+     *
+     * @param $id identifiyng the book
+     * @return bool true, if an image exists
+     */
+    public static function exists($id) {
+        return is_file(self::imageUrl($id));
+    }
+
+    /**
      * Removes all images belonging to a book.
      * @return void
      */
     public function delete() {
-        $imgURL = self::PATH . $this->id . '.png';
-        $thumbURL = self::PATH . $this->id . '_thumb.png';
+        $imgURL = $this->imageUrl($this->id);
+        $thumbURL = $this->thumbUrl($this->id);
         if (is_file($imgURL)) {
             unlink($imgURL);
         }
         if (is_file($thumbURL)) {
             unlink($thumbURL);
         }
+    }
+
+    private static function imageUrl($id) {
+        return self::PATH . $id . '.png';
+    }
+
+    private static function thumbUrl($id) {
+        return self::PATH . $id . '_thumb.png';
     }
 
     /**
