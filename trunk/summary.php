@@ -12,6 +12,7 @@ function sendSummary() {
 	if (!$userMail) {
 		return false;
 	}
+        $userMail = stripslashes($userMail);
 	$mailText = 'Hallo,'."\n".'hier eine Zusammenfassung aller Bücher, die mit deiner E-Mailadresse angeboten werden.';
 	$books = new UsersBooks($userMail);
 	$mailText.= $books->toString();

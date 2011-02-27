@@ -105,6 +105,9 @@ class Mailer {
      * @return bool false on failure
      */
     public static function mail($to, $subject, $content, $reply_to = null) {
+        if (!self::isValidAddress($to)) {
+            return false;
+        }
         $header = 'From: "uBook" <noreply>' . "\n";
         if (isset($reply_to)) {
             $header .= 'Reply-To: ' . $reply_to . "\n";

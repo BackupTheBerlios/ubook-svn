@@ -81,8 +81,9 @@ class Searches {
                 if ($search_array['life_counter'] > 0) {
                     $mailContent .= 'Suche nach \''
                     . $search_array['search'] . '\' beenden:' . "\n"
-                    . WEBDIR . 'delete_search.php?search=' . $search_array['search']
-                    . '&mail=' . $search_array['mail']
+                    . WEBDIR . 'delete_search.php?search='
+                    . urlencode($search_array['search'])
+                    . '&mail=' . urlencode($search_array['mail'])
                     . '&auth_key=' . $search_array['auth_key'] . "\n";
                 }
                 Mailer::mail($search_array['mail'], $subject, $mailContent);

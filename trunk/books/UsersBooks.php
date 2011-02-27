@@ -28,7 +28,7 @@ class UsersBooks {
 		$query =
 		'select
 		 id, author, title, price, year, description, auth_key
-		 from books where mail="'.$userMail.'"
+		 from books where mail="'.addslashes($userMail).'"
 		 order by author, title, price';
 		$bookListResult = mysql_query($query);
 		$this->bookCount = mysql_num_rows($bookListResult);
