@@ -1,9 +1,10 @@
 <?php
+
 /*
  * This file is part of uBook - a website to buy and sell books.
  * It's licensed under the GNU General Public License.
- * Copyright (C) 2010 Maikel Linke
-*/
+ * Copyright (C) 2011 Maikel Linke
+ */
 
 /**
  * Substitutes special template tags with given content.
@@ -148,9 +149,8 @@
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
  * @version 2010-05-24
-*/
+ */
 class Template {
-
     /**
      * The beginning of a tag to substitute. Tag example: 'foo'
      */
@@ -167,7 +167,7 @@ class Template {
      * - m - multiline
      * - s - dotall
      */
-    const SUB_PATTERN = "/[\t ]*<!--\\s*BEGIN\\s+([a-z0-9_\\-]+)\\s*-->\n?(.*?)[\t ]*<!--\\s*END\\s+\\1\\s*-->\n?/ims"; // TODO: write with single quotes or heredoc if possible
+    const SUB_PATTERN = '/[\t ]*<!--\s*BEGIN\s+([a-z0-9_\-]+)\s*-->\n?(.*?)[\t ]*<!--\s*END\s+\1\s*-->\n?/ims';
 
     private $content;
     private $assignments = array();
@@ -294,4 +294,5 @@ class Template {
     }
 
 }
+
 ?>

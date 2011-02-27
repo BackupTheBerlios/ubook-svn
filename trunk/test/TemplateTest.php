@@ -73,6 +73,16 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expText, $t->result());
     }
 
+    function testAddUglySubtemplate() {
+        $subText = ' Define your own style!';
+        $tText = "<!--\tBEGIN    subtemplate-->"
+                . $subText
+                . "<!--END \tsubtemplate -->";
+        $t = new Template($tText);
+        $t->addSubtemplate('subtemplate');
+        $this->assertEquals($subText, $t->result());
+    }
+
     function testAddSubtemplateFailing() {
         $tText = 'Hello World.';
         $t = new Template($tText);
