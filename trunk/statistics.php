@@ -7,7 +7,7 @@
 
 require_once 'tools/Output.php';
 require_once 'tools/Statistics.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 $stat = new Statistics();
 $statTpl = Template::fromFile('view/statistics.html');

@@ -5,7 +5,7 @@
  */
 
 require_once 'tools/Output.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 $helpTpl = Template::fromFile('view/help.html');
 

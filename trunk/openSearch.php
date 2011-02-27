@@ -5,7 +5,7 @@
  * Copyright (C) 2010 Maikel Linke
  */
 
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 require_once 'tools/WEBDIR.php';
 
 $tmpl = Template::fromFile('view/openSearch.xml');

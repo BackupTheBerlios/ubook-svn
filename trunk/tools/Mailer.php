@@ -7,7 +7,7 @@
 
 require_once 'books/Book.php';
 require_once 'books/UsersBooks.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 class Mailer {
 

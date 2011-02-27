@@ -18,7 +18,7 @@ require_once 'notification/Searches.php';
 require_once 'tools/Categories.php';
 require_once 'tools/Output.php';
 require_once 'tools/Statistics.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 class indexPage {
 

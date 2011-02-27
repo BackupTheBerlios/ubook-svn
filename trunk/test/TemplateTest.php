@@ -5,7 +5,7 @@
 */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 
 class TemplateTest extends PHPUnit_Framework_TestCase {

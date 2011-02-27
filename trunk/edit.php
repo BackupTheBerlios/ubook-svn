@@ -56,7 +56,7 @@ if (mysql_num_rows($result) == 0) {
     $book = Book::fromMySql($result);
 
     require_once 'tools/Output.php';
-    require_once 'tools/Template.php';
+    require_once 'text/Template.php';
     $tmpl = Template::fromFile('view/edit.html');
     $book->assignHtmlToTemplate($tmpl);
     assignSelectableCategories($selectableCategories, $tmpl);

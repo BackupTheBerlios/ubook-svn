@@ -5,7 +5,7 @@
 */
 
 require_once 'Categories.php';
-require_once 'Template.php';
+require_once 'text/Template.php';
 require_once 'mysql_conn.php';
 
 /**

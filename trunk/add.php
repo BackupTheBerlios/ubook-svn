@@ -18,7 +18,7 @@ require_once 'tools/KeyGenerator.php';
 require_once 'tools/Mailer.php';
 require_once 'tools/Output.php';
 require_once 'tools/SelectableCategories.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 include_once 'mysql_conn.php';
 

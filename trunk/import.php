@@ -10,7 +10,7 @@ require_once 'books/Book.php';
 require_once 'tools/Mailer.php';
 require_once 'tools/Output.php';
 require_once 'tools/Parser.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 require_once 'tools/SelectableCategories.php';
 
 function import_book($bookString, Template $tmpl) {

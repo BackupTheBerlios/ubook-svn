@@ -6,7 +6,7 @@
 
 require_once 'update/Updater.php';
 require_once 'tools/Output.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 $output = new Output();
 $tmpl = Template::fromFile('view/update.html');

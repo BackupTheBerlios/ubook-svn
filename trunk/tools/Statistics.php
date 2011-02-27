@@ -6,7 +6,7 @@
  */
 
 require_once 'tools/Image.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 require_once 'mysql_conn.php';
 
 /**

@@ -12,7 +12,7 @@
 
 require_once 'tools/MyDatabase.php';
 require_once 'tools/Output.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 $templateText = <<<EOT
     <h2>Störung</h2>

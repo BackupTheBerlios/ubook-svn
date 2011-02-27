@@ -5,7 +5,7 @@
  * Copyright (C) 2010 Maikel Linke
  */
 
-require_once 'Template.php';
+require_once 'text/Template.php';
 
 /**
  * Represents the output sent to the browser.

@@ -5,7 +5,7 @@
 */
 
 require_once 'tools/Parser.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 class Book {
 

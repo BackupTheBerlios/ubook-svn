@@ -10,7 +10,7 @@ require_once 'net/ExternalServer.php';
 require_once 'net/ExternalServerPool.php';
 require_once 'net/LocalServer.php';
 require_once 'tools/Output.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 /**
  * Provides admin functions to manipulate the servers table.

@@ -9,7 +9,7 @@ require_once 'books/Book.php';
 require_once 'tools/Parser.php';
 require_once 'tools/Image.php';
 require_once 'tools/Output.php';
-require_once 'tools/Template.php';
+require_once 'text/Template.php';
 
 /**
  * Structures the display of a book.
