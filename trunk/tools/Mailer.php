@@ -47,7 +47,7 @@ class Mailer {
             $books = new UsersBooks($book->get('mail'));
             $subTmpl->assign('usersBooks', $books->toString());
         } else {
-            $subTmpl = $tmpl->addSubtemplate('editBook');
+            $subTmpl = $tmpl->addSubtemplate('viewBook');
             $link = self::bookLink($book->get('id'));
             $subTmpl->assign('bookLink', $link);
         }
