@@ -1,0 +1,10 @@
+
+ == Where to Find What ==
+
+ - Template.php - the class you may want to use
+ - doc/default/Template.html - a documentation file
+ - TemplateTest.php - contains testcases to run with phpunit
+ - example.html - a bad example file, but it's a real world example
+		  TemplateTest uses it to test the fromFile() method
+ - COPYING - the license file
+
