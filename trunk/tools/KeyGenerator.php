@@ -15,6 +15,11 @@ class KeyGenerator {
 	 * @return string random chars
 	 */
 	public static function genKey($l=32) {
+            /*
+             * TODO: check md5(uniqid(mt_rand(), true))
+             * More info at:
+             * http://www.php.net/manual/de/function.uniqid.php
+             */
 		$char = array();
 		for($i=48;$i<58;$i++) $char[] = chr($i);
 		for($i=65;$i<91;$i++) $char[] = chr($i);
