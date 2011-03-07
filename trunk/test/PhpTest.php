@@ -76,6 +76,16 @@ class PhpTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1, sizeof($b));
     }
 
+    function testImplode() {
+        $a = array(
+            'a' => 'A',
+            'b' => 'B'
+        );
+        $expected = 'A:B';
+        $result = implode(':', $a);
+        $this->assertEquals($expected, $result);
+    }
+
 }
 
 ?>
