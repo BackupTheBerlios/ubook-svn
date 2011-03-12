@@ -7,7 +7,25 @@
 
 require_once 'PHPUnit/Framework.php';
 
+class Root {
+    public static function makeNew() {
+        return new self();
+    }
+}
+
+class Child extends Root {
+
+}
+
 class PhpTest extends PHPUnit_Framework_TestCase {
+
+    function testSelf() {
+        $this->assertTrue(Root::makeNew() instanceof Root);
+        $this->assertTrue(Child::makeNew() instanceof Root);
+        $this->assertFalse(Child::makeNew() instanceof Child);
+        $child = new Child();
+        $this->assertFalse($child->makeNew() instanceof Child);
+    }
 
     /**
      * Demonstrates array walking behaviour, important for
