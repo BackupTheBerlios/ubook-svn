@@ -87,6 +87,7 @@ class Image {
             return self::$filename;
         }
         if (count($_FILES) == 1 && isset($_FILES[self::FILE_INDEX])) {
+            // TODO: check $_FILES[self::FILE_INDEX]['error'] == UPLOAD_ERR_OK
             $tmp_name = $_FILES[self::FILE_INDEX]['tmp_name'];
             if (is_uploaded_file($tmp_name)) {
                 self::$filename = $tmp_name;

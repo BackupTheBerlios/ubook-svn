@@ -54,6 +54,7 @@ class addPage {
     }
 
     public function formDataComplete() {
+        // TODO: move @ check into getMail
         $mail = $this->getMail();
         return ($mail && strstr($mail, '@'));
     }

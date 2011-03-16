@@ -211,7 +211,7 @@ class Template {
 
     /**
      * Assigns all values of the given array to the keys of the array.
-     * <b>Warning:</b> This function is seldom usefull. Don't assign arrays from
+     * <b>Warning:</b> This function is seldom useful. Don't assign arrays from
      * your database without encoding the data. See documentation above.
      * @param array $associativeArray of the form array( 'tag_name' => 'value' )
      */
