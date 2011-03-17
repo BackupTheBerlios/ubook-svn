@@ -8,6 +8,7 @@ require_once 'mysql_conn.php';
 require_once 'books/Book.php';
 require_once 'tools/Parser.php';
 require_once 'tools/Image.php';
+require_once 'tools/Mailer.php';
 require_once 'tools/Output.php';
 require_once 'text/Template.php';
 
@@ -158,3 +159,4 @@ if (isset($_GET['key'])) {
 
 $page->send();
 ?>
+
