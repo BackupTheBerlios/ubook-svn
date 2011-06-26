@@ -17,7 +17,7 @@ class BookQuery {
         $fields = 'concat(author, " ", title, " ", isbn, " ", description) ';
         $keys = explode(' ', $searchKey);
         $and = ' ';
-        $query = 'select id, author, title, price, year, description, created from books where ';
+        $query = 'select id, author, title, price, year, isbn, description, created from books where ';
         foreach ($keys as $i => $k) {
             $query .= $and . $fields . 'like "%' . $k . '%"';
             $and = ' and ';
