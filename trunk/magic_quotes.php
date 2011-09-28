@@ -1,10 +1,10 @@
 <?php
 /*
  * This file is part of uBook - a website to buy and sell books.
- * Copyright (C) 2007 Maikel Linke
+ * Copyright (C) 2011 Maikel Linke
  */
 
-function quote($var) {
+function quote(&$var) {
 	if (is_array($var)) {
 		$var = array_map('quote',$var);
 	}
@@ -15,8 +15,8 @@ function quote($var) {
 }
 
 if (!ini_get('magic_quotes_gpc')) {
-	quote(&$_GET);
-	quote(&$_POST);
+	quote($_GET);
+	quote($_POST);
 }
 
 ?>
