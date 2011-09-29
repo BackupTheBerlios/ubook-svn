@@ -48,19 +48,26 @@ class Statistics {
         $s = &$this->stats;
         $tmpl->assign('statsFile', self::STATS_FILE);
         $tmpl->assign('books', $s[1]);
-        $tmpl->assign('total', $s[2]);
+        $tmpl->assign('total', (int) $s[2]);
         $tmpl->assign('offerors', $s[3]);
-        $tmpl->assign('booksPerOfferor', round($s[1] / $s[3], 1));
+        $booksPerOfferor = $s[3] ? round($s[1] / $s[3], 1) : 0;
+        $tmpl->assign('booksPerOfferor', $booksPerOfferor);
         $tmpl->assign('images', $s[4]);
-        $tmpl->assign('imageFraction', round($s[4] / $s[1] * 100));
+        $imageFraction = $s[1] ? round($s[4] / $s[1] * 100) : 0;
+        $tmpl->assign('imageFraction', $imageFraction);
+        $imageFiles = array();
         $iterator = new DirectoryIterator(self::STATS_DIR);
         while ($iterator->valid()) {
             $entry = $iterator->getFilename();
             $iterator->next();
             if (substr($entry, -4) == '.png') {
-                $sub = $tmpl->addSubtemplate('image');
-                $sub->assign('url', self::STATS_DIR . $entry);
+                $imageFiles[] = $entry;
             }
+        }
+        sort($imageFiles);
+        foreach ($imageFiles as $file) {
+            $sub = $tmpl->addSubtemplate('image');
+            $sub->assign('url', self::STATS_DIR . $file);
         }
     }
 
