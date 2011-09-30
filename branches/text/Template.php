@@ -9,8 +9,8 @@
 /**
  * Substitutes special template tags with given content.
  *
- * This is just another template class for HTML/XML templates. BUT it is the
- * result of studying several other template engines and tries to merge all
+ * This is just another template class for HTML/XML/text templates. BUT it is
+ * the result of studying several other template engines and tries to merge all
  * advantages. This text explains you two things:
  *
  * 1. How To Use - some examples
@@ -86,7 +86,7 @@
  * </ol>
  *
  * Besides, if you like another syntax, just change the constants in the script.
- * It's free software.
+ * It's free.
  *
  * <i>Why don't you recommend the assignArray-method?</i>
  *
@@ -145,7 +145,7 @@
  * - {@link http://kuerbis.org/asap/article/12/}
  *
  * @author Maikel Linke (ubook-info@lists.berlios.de)
- * @version 2010-05-24
+ * @version 2011-09-30
  */
 class Template {
     /**
@@ -164,7 +164,7 @@ class Template {
      * - m - multiline
      * - s - dotall
      */
-    const SUB_PATTERN = '/[\t ]*<!--\s*BEGIN\s+([a-z0-9_\-]+)\s*-->\n?(.*?)[\t ]*<!--\s*END\s+\1\s*-->\n?/ims';
+    const SUB_PATTERN = '/(\n[\t ]*)?<!--\s*BEGIN\s+([a-z0-9_\-]+)\s*-->(.*?)(\n[\t ]*)?<!--\s*END\s+\2\s*-->/ims';
 
     private $content;
     private $assignments = array();
@@ -211,7 +211,7 @@ class Template {
 
     /**
      * Assigns all values of the given array to the keys of the array.
-     * <b>Warning:</b> This function is seldom usefull. Don't assign arrays from
+     * <b>Warning:</b> This function is seldom useful. Don't assign arrays from
      * your database without encoding the data. See documentation above.
      * @param array $associativeArray of the form array( 'tag_name' => 'value' )
      */
@@ -259,8 +259,8 @@ class Template {
         preg_match_all(self::SUB_PATTERN, $this->content, $matches);
         for ($i = 0; $i < sizeof($matches[0]); $i++) {
             $key = $matches[0][$i];
-            $name = $matches[1][$i];
-            $substring = $matches[2][$i];
+            $name = $matches[2][$i];
+            $substring = $matches[3][$i];
             if (isset($this->subTemplates[$name])) {
                 throw new Exception('This template contains more than one'
                         . ' subtemplate with one name: ' . $name);
