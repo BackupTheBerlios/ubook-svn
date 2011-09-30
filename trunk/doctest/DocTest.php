@@ -221,6 +221,9 @@ class DocTest {
         chdir(dirname($this->testCandidate));
         while (list($this->i, $this->line) = each($this->sourceLines)) {
             $this->ltLine = ltrim($this->line);
+            if (strlen($this->ltLine) < 1) {
+                continue;
+            }
             if ($this->ltLine[0] != '*') {
                 continue;
             }

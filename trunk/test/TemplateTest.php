@@ -73,6 +73,16 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expText, $t->result());
     }
 
+    function testAddOnelineSubtemplate() {
+        $tText = '<a href="./">'
+                . '<!-- begin author -->author: <!-- end author -->'
+                . 'title</a>';
+        $expText = '<a href="./">author: title</a>';
+        $t = new Template($tText);
+        $t->addSubtemplate('author');
+        $this->assertEquals($expText, $t->result());
+    }
+
     function testAddUglySubtemplate() {
         $subText = ' Define your own style!';
         $tText = "<!--\tBEGIN    subtemplate-->"
